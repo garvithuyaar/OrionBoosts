@@ -14,7 +14,7 @@ app.get('/1000056901.gif', (req, res) => {
 
 const orders = new Map();
 const RECEIVER_ADDRESS = 'ltc1qrlygyv2z8am20lgxpju3fdtky39lux7wlpwru3';
-const LTC_USD = 85; // TODO: Connect to live exchange rate API when scaling
+const LTC_USD = 85; 
 
 // Dynamic Glassmorphic Landing Page
 app.get('/', (req, res) => {
@@ -55,20 +55,18 @@ app.get('/', (req, res) => {
   `);
 });
 
-// 1. Generate unique checkout session
+// 1. Checkout Endpoint supporting Auto and Manual methods
 app.post('/api/checkout', (req, res) => {
-  const { plan, qty, serverId } = req.body;
+  const { plan, qty, serverId, method } = req.body;
   const orderId = `ORB-${Math.random().toString(36).slice(2, 10).toUpperCase()}`;
 
   const pricePerTwo = plan === '1M' ? 0.27 : 0.88;
   const totalUsd = (qty / 2) * pricePerTwo;
   
-  // Create base amount and add a tiny random fraction so the backend can uniquely identify this user's payment
   const baseLtc = totalUsd / LTC_USD;
   const exactLtc = parseFloat((baseLtc + (Math.floor(Math.random() * 9000) + 1000) / 1e8).toFixed(8));
   const expectedLitoshis = Math.round(exactLtc * 100000000);
 
-  // Strict $0.04 Tolerance Logic
   const toleranceLtc = 0.04 / LTC_USD;
   const toleranceLitoshis = Math.round(toleranceLtc * 100000000);
   const minRequiredLitoshis = expectedLitoshis - toleranceLitoshis;
@@ -80,6 +78,7 @@ app.post('/api/checkout', (req, res) => {
     expectedLitoshis: expectedLitoshis,
     minRequiredLitoshis: minRequiredLitoshis, 
     server: serverId,
+    method: method || 'auto', // 'auto' or 'manual'
     status: 'pending',
     createdAt: Date.now()
   });
@@ -87,9 +86,37 @@ app.post('/api/checkout', (req, res) => {
   res.json({ orderId, exactLtc, usd: totalUsd });
 });
 
-// 2. Background Auto-Tracker (Checks Master Address every 15s)
+// 2. Manual Verification Endpoint (Fallback if user submits TXID directly)
+app.post('/api/verify-txid', async (req, res) => {
+  const { orderId, txid } = req.body;
+  const order = orders.get(orderId);
+  if (!order) return res.status(404).json({ error: 'Order not found' });
+
+  try {
+    const response = await axios.get(`https://api.blockcypher.com/v1/ltc/main/txs/${txid}`);
+    const data = response.data;
+    
+    let paymentFound = false;
+    for (const output of data.outputs) {
+      if (output.addresses && output.addresses.includes(RECEIVER_ADDRESS) && output.value >= order.minRequiredLitoshis) {
+        paymentFound = true;
+        break;
+      }
+    }
+
+    if (paymentFound) {
+      order.status = 'confirmed';
+      res.json({ success: true, status: 'confirmed' });
+    } else {
+      res.json({ success: false, error: 'Transaction amount or destination address does not match.' });
+    }
+  } catch (e) {
+    res.json({ success: false, error: 'Invalid TXID or network lookup failed.' });
+  }
+});
+
+// 3. Background Auto-Tracker Loop
 setInterval(async () => {
-  // Only hit the API if there are active users waiting
   let activeOrders = false;
   for (const order of orders.values()) {
     if (order.status === 'pending' || order.status === 'detected') activeOrders = true;
@@ -97,17 +124,13 @@ setInterval(async () => {
   if (!activeOrders) return;
 
   try {
-    // Get all recent transactions for your specific address
     const response = await axios.get(`https://api.blockcypher.com/v1/ltc/main/addrs/${RECEIVER_ADDRESS}`);
     const data = response.data;
     
-    // Combine confirmed and unconfirmed transactions
     const allTxs = [
       ...(data.unconfirmed_txrefs || []).map(t => ({ ...t, confs: 0 })),
       ...(data.txrefs || []).map(t => ({ ...t, confs: t.confirmations }))
     ];
-
-    // Filter to only look at incoming payments (tx_input_n < 0 means it is a receiving output)
     const incomingTxs = allTxs.filter(t => t.tx_input_n < 0);
 
     for (const [id, order] of orders.entries()) {
@@ -118,29 +141,28 @@ setInterval(async () => {
         continue;
       }
       
-      // Match incoming transaction to this specific user's expected Litoshis
       const match = incomingTxs.find(t => t.value >= order.minRequiredLitoshis);
 
       if (match) {
         if (match.confs > 0) {
           order.status = 'confirmed';
-          console.log(`✅ [1/2 CONFIRMATION] Payment Confirmed for ${id}! Executing Discord Boosts...`);
+          console.log(`✅ [CONFIRMED] Payment Confirmed for ${id}!`);
         } else if (order.status === 'pending') {
           order.status = 'detected';
-          console.log(`⏱️ [0/2 DETECTED] Payment seen on network for ${id}. Waiting for confirmation...`);
+          console.log(`⏱️ [DETECTED] Payment seen on network for ${id}.`);
         }
       }
     }
   } catch (error) {
-    // Silently continue if BlockCypher rate-limits briefly
+    // Silent catch for API rate limits
   }
 }, 15000);
 
-// 3. Status endpoint for Frontend polling
+// 4. Status endpoint
 app.get('/api/status/:id', (req, res) => {
   const order = orders.get(req.params.id);
   if (!order) return res.status(404).json({ error: 'Not found' });
-  res.json({ status: order.status, usd: order.usd });
+  res.json({ status: order.status, usd: order.usd, method: order.method });
 });
 
 const PORT = process.env.PORT || 3000;
