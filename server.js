@@ -7,8 +7,12 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// Allows the backend to serve local static files if needed
-app.use(express.static(__dirname));
+// 🔴 FIX: Removed express.static(__dirname) which was accidentally loading index.html on Render
+
+// Serve ONLY the logo file directly so the dashboard can display it without exposing index.html
+app.get('/1000056901.gif', (req, res) => {
+  res.sendFile(path.join(__dirname, '1000056901.gif'));
+});
 
 const orders = new Map();
 
@@ -16,11 +20,9 @@ const orders = new Map();
 const RECEIVER_ADDRESS = 'ltc1qrlygyv2z8am20lgxpju3fdtky39lux7wlpwru3';
 const LTC_USD = 85; 
 
-// Dynamic Glassmorphic Landing Page
+// Dynamic Glassmorphic Landing Page exclusively for the Render URL
 app.get('/', (req, res) => {
-  // Force the browser to render this as a webpage, not raw text
   res.setHeader('Content-Type', 'text/html');
-  
   res.send(`
     <!DOCTYPE html>
     <html lang="en">
