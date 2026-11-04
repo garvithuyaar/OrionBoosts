@@ -234,7 +234,7 @@ nav .x{flex:none}
       <div class="c rv"><div class="ic">1</div><h3>Pick a plan</h3><p>Choose 1M or 3M boosts and slide to the amount you want.</p></div>
       <div class="c rv"><div class="ic">2</div><h3>Add your server</h3><p>Paste your invite link and check the server preview.</p></div>
       <div class="c rv"><div class="ic">3</div><h3>Pay in Litecoin</h3><p>Scan the QR code or copy the address and exact amount.</p></div>
-      <div class="c rv"><div class="ic">4</div><h3>Get boosted</h3><p>Our system detects your payment instantly and starts delivery.</p></div>
+      <div class="c rv"><div class="ic">4</div><h3>Get boosted</h3><p>Choose Automatic or Manual delivery and receive your secret key.</p></div>
     </div>
   </div></section>
 
@@ -253,8 +253,8 @@ nav .x{flex:none}
     <details class="rv"><summary>Why only even numbers of boosts?</summary><p>Boosts are sold in pairs, so you can pick any even amount from 2 to 30.</p></details>
     <details class="rv"><summary>What is the difference between 1M and 3M?</summary><p>1M boosts last 1 month and 3M boosts last 3 months. 1M costs $0.27 and 3M costs $0.88 per 2 boosts.</p></details>
     <details class="rv"><summary>Do you need my Discord password?</summary><p>Never. We only need your server invite link.</p></details>
-    <details class="rv"><summary>How do I pay?</summary><p>Pay in Litecoin (LTC). Send the exact amount shown at checkout. The system will detect it automatically.</p></details>
-    <details class="rv"><summary>When does delivery start?</summary><p>As soon as your payment gets 1 network confirmation.</p></details>
+    <details class="rv"><summary>How do I pay?</summary><p>Pay in Litecoin (LTC). Send the exact amount shown at checkout.</p></details>
+    <details class="rv"><summary>When does delivery start?</summary><p>As soon as your payment is confirmed.</p></details>
   </div></section>
 
   <footer><div class="wrap">
@@ -276,7 +276,7 @@ nav .x{flex:none}
 <!-- Checkout -->
 <div class="ov" id="ovC" onclick="if(event.target===this&&!busy)closeAll()"><div class="sheet">
   <div class="sh"><h3 id="ct">Select quantity</h3><button class="x" onclick="closeAll()">✕</button></div>
-  <div class="dots"><i></i><i></i><i></i><i></i></div>
+  <div class="dots"><i></i><i></i><i></i><i></i><i></i></div>
 
   <div class="step" id="s1">
     <div class="mut" id="pn"></div>
@@ -294,13 +294,21 @@ nav .x{flex:none}
     <button class="btn" id="lb2" style="width:100%" onclick="lookup()">Find server</button>
   </div>
 
+  <!-- Step 3: Choose Method (Automatic vs Manual) -->
   <div class="step" id="s3">
     <div class="sum" id="sm"></div>
-    <label class="chk"><input type="checkbox" id="cf" onchange="document.getElementById('pay').disabled=!this.checked"><span>I confirm the server, quantity and total are correct.</span></label>
-    <button class="btn" id="pay" style="width:100%" disabled onclick="initiateCheckout()">Confirm and proceed</button>
+    
+    <div style="margin: 16px 0 10px; font-weight:600; font-size:15px">Select Delivery Method:</div>
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 16px;">
+      <button type="button" id="m-auto" class="btn" style="background:var(--acc); border:2px solid var(--acc)" onclick="setMethod('auto')">⚡ Automatic</button>
+      <button type="button" id="m-man" class="btn g" style="border:2px solid var(--line)" onclick="setMethod('manual')">🎟️ Manual Ticket</button>
+    </div>
+    
+    <label class="chk"><input type="checkbox" id="cf" onchange="document.getElementById('pay').disabled=!this.checked"><span>I confirm the server, quantity and total are correct. Instructions will be given after payment.</span></label>
+    <button class="btn" id="pay" style="width:100%; margin-top:12px" disabled onclick="initiateCheckout()">Confirm and proceed</button>
   </div>
 
-  <!-- Auto-Tracking QR Screen -->
+  <!-- Step 4: Auto-Tracking QR Screen -->
   <div class="step" id="s4">
     <div class="qr" id="qr"></div>
     <div class="mut">Send exactly</div>
@@ -316,25 +324,50 @@ nav .x{flex:none}
     <div class="cp"><span id="ex"></span><button onclick="cp(exact)">Copy</button></div>
     <div class="sep"></div>
     
-    <div style="display:flex; align-items:center; justify-content:center; gap:10px; margin-top:14px">
+    <!-- Manual TXID fallback option -->
+    <details style="margin-bottom: 12px; background:var(--card); border:1px solid var(--line); border-radius:14px; padding:10px 14px;">
+      <summary style="font-size:13px; color:var(--mute);">Auto-tracking slow? Submit TXID manually</summary>
+      <div style="margin-top: 10px;">
+        <input type="text" id="manual-tx" placeholder="Paste 64-char TXID here" style="font-size:14px; padding:10px 14px;" maxlength="64">
+        <button class="btn" style="width:100%; margin-top:8px; padding:10px;" onclick="submitManualTx()">Verify TXID Instantly</button>
+      </div>
+    </details>
+
+    <div style="display:flex; align-items:center; justify-content:center; gap:10px; margin-top:10px">
       <div class="spin" style="width:20px; height:20px; margin:0; border-width:3px"></div>
       <span style="font-size:14px; color:var(--acc); font-weight:600">Scanning network for payment...</span>
     </div>
   </div>
 
-  <!-- Detected Payment UI (0/2 Confirmations) -->
+  <!-- Step 5: Detected Payment UI (0/2 Confirmations) -->
   <div class="step" id="s5" style="text-align:center">
     <div class="spin" style="border-top-color:var(--ok)"></div>
     <h3 style="font-size:22px; color:var(--acc); margin-top:12px; letter-spacing:-.03em">Payment Detected!</h3>
     <p class="mut" style="margin-top:12px; line-height:1.5">We have detected a payment transaction from you, kindly wait until the confirmation 0/2.</p>
   </div>
 
-  <!-- Confirmed Receipt UI (1/2+ Confirmations) -->
+  <!-- Step 6: Confirmed Receipt / Manual Instructions UI -->
   <div class="step" id="s6" style="text-align:center">
     <div class="ok">✓</div>
     <h3 style="font-size:24px; letter-spacing:-.03em; margin:14px 0">Order Successfully Confirmed</h3>
     
-    <div class="pc" style="margin-top:18px; text-align:left; padding:20px; background:rgba(47, 179, 109, 0.1); border-color:var(--ok)">
+    <!-- Manual Instructions Box (Shown if Manual selected) -->
+    <div id="manual-instructions" style="display:none; text-align:left; background:rgba(255,122,26,0.1); border:1px solid var(--acc); padding:18px; border-radius:20px; margin-bottom:16px;">
+      <h4 style="color:var(--acc); margin-bottom:8px; font-size:16px;">🎟️ Ticket Instructions</h4>
+      <p style="font-size:13px; color:var(--ink); line-height:1.6; margin-bottom:10px;">
+        1. First of all join <a href="https://discord.gg/tdUkxYJmZP" target="_blank" style="color:var(--acc); text-decoration:underline;">discord.gg/tdUkxYJmZP</a><br>
+        2. Go to Redeem Panel and Redeem your <b>Secret Key</b> below.<br>
+        3. <b>Don't Leak Your Key!</b> Put your secret key in the ticket and wait for boosts.<br>
+        4. If you don't get boosts under 24 hours, type <code>.support</code> and staff will help.
+      </p>
+      <div class="cp" style="background:var(--bg1)">
+        <span class="mut" style="flex:none">Secret Key:</span>
+        <span id="r-secret" style="font-weight:700; color:var(--acc)">Orion-Shop-67SixSeven</span>
+        <button onclick="cp('Orion-Shop-67SixSeven')">Copy</button>
+      </div>
+    </div>
+
+    <div class="pc" style="text-align:left; padding:18px; background:rgba(47, 179, 109, 0.1); border-color:var(--ok)">
       <div style="display:flex; justify-content:space-between; margin-bottom:8px">
         <span class="mut">Product</span> <b id="r-prod" style="color:var(--ink)"></b>
       </div>
@@ -359,13 +392,12 @@ nav .x{flex:none}
 <div class="toast" id="ts"></div>
 
 <script>
-// --- CORE RENDER BACKEND CONFIG ---
 const API_URL = "https://orionboosts.onrender.com";
 
 const ADDR="ltc1qrlygyv2z8am20lgxpju3fdtky39lux7wlpwru3";
 const PRICE={"1M":{n:"1M Server Boosts",p:.27},"3M":{n:"3M Server Boosts",p:.88}};
 const LTC_USD=85; 
-let plan="1M",qty=2,srv=null,total=0,exact="",busy=false,statusInterval=null,currentOrderId=null;
+let plan="1M",qty=2,srv=null,total=0,exact="",busy=false,statusInterval=null,currentOrderId=null,selectedMethod="auto";
 const $=id=>document.getElementById(id);
 function toast(m){const t=$("ts");t.textContent=m;t.classList.add("on");setTimeout(()=>t.classList.remove("on"),1800)}
 function cp(v){try{navigator.clipboard.writeText(v)}catch(e){}toast("Copied")}
@@ -381,12 +413,24 @@ function openOv(id){$(id).classList.add("on");document.body.classList.add("lock"
 function closeAll(){clearInterval(statusInterval);busy=false;document.querySelectorAll(".ov").forEach(o=>o.classList.remove("on"));document.body.classList.remove("lock")}
 function openBrowse(){openOv("ovB")}
 function buy(k){plan=k;qty=2;srv=null;$("sl").value=2;upd();$("inv").value="";$("er").textContent="";$("sv").innerHTML="";$("cf").checked=false;$("pay").disabled=true;$("ovB").classList.remove("on");openOv("ovC");go(1)}
-const titles=["","Select quantity","Your server","Review order","Awaiting Payment","Processing","Complete"];
-function go(n){document.querySelectorAll(".step").forEach(s=>s.classList.remove("on"));$("s"+n).classList.add("on");$("ct").textContent=titles[n];document.querySelectorAll(".dots i").forEach((d,i)=>d.classList.toggle("on",i<Math.min(n,4)));if(n===3)summary();$("ovC").querySelector(".sheet").scrollTop=0}
+const titles=["","Select quantity","Your server","Choose Method","Awaiting Payment","Processing","Complete"];
+function go(n){document.querySelectorAll(".step").forEach(s=>s.classList.remove("on"));$("s"+n).classList.add("on");$("ct").textContent=titles[n];document.querySelectorAll(".dots i").forEach((d,i)=>d.classList.toggle("on",i<Math.min(n,5)));if(n===3)summary();$("ovC").querySelector(".sheet").scrollTop=0}
 
 /* quantity */
 function upd(){const s=$("sl");qty=+s.value;total=+(qty/2*PRICE[plan].p).toFixed(2);$("qv").textContent=qty;$("pn").textContent=PRICE[plan].n;$("tp").textContent="$"+total.toFixed(2);$("lv").textContent=qty>=14?"Enough boosts for Level 3":qty>=7?"Enough boosts for Level 2":"Enough boosts for Level 1";s.style.setProperty("--p",((qty-2)/28*100)+"%")}
 $("sl").addEventListener("input",upd);
+
+/* method selection */
+function setMethod(m){
+  selectedMethod=m;
+  if(m==='auto'){
+    $("m-auto").style.background="var(--acc)"; $("m-auto").style.border="2px solid var(--acc)";
+    $("m-man").style.background="var(--pill)"; $("m-man").style.border="2px solid var(--line)";
+  } else {
+    $("m-man").style.background="var(--acc)"; $("m-man").style.border="2px solid var(--acc)";
+    $("m-auto").style.background="var(--pill)"; $("m-auto").style.border="2px solid var(--line)";
+  }
+}
 
 /* server lookup */
 const DEMO=false;
@@ -417,6 +461,12 @@ function completeOrder(finalOrderId, usdAmount){
   $("r-time").textContent = new Date().toLocaleString('en-US', { dateStyle: 'medium', timeStyle: 'short' });
   $("r-oid").textContent = finalOrderId;
   
+  if (selectedMethod === 'manual') {
+    $("manual-instructions").style.display = "block";
+  } else {
+    $("manual-instructions").style.display = "none";
+  }
+  
   try{
     const o=JSON.parse(localStorage.getItem("orb")||"[]");
     o.unshift({id:finalOrderId,n:PRICE[plan].n,q:qty,t:total,s:srv.name,d:new Date().toLocaleDateString()});
@@ -428,7 +478,7 @@ function completeOrder(finalOrderId, usdAmount){
 
 function openOrders(){let o=[];try{o=JSON.parse(localStorage.getItem("orb")||"[]")}catch(e){}$("ol").innerHTML=o.length?o.map(x=>`<div class="c" style="margin-bottom:10px;padding:16px"><b>${x.id}</b> - ${x.d}<p>${x.n} x ${x.q} for ${String(x.s).replace(/[<>&]/g,"")}, $${x.t.toFixed(2)}</p></div>`).join(""):'<p class="mut">No orders yet. Browse products to place your first order.</p>';openOv("ovO")}
 
-/* Automated Checkout & Auto-Tracking */
+/* Checkout & Auto-Tracking Initiation */
 async function initiateCheckout() {
   const btn = $("pay");
   btn.disabled = true;
@@ -439,14 +489,13 @@ async function initiateCheckout() {
     const res = await fetch(`${API_URL}/api/checkout`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ plan: plan, qty: qty, serverId: srv.id })
+      body: JSON.stringify({ plan: plan, qty: qty, serverId: srv.id, method: selectedMethod })
     });
     
     const data = await res.json();
     currentOrderId = data.orderId;
     exact = data.exactLtc.toFixed(8);
     
-    // Render QR and amounts
     $("la").textContent = exact + " LTC";
     $("ua").textContent = "≈ $" + data.usd.toFixed(2) + " USD";
     $("ad").textContent = ADDR;
@@ -460,7 +509,6 @@ async function initiateCheckout() {
     go(4);
     startTimer();
     
-    // Start automated backend polling immediately
     statusInterval = setInterval(checkStatus, 10000);
     
   } catch (e) {
@@ -478,12 +526,10 @@ async function checkStatus() {
     const data = await res.json();
 
     if (data.status === 'detected') {
-      // Payment seen on network, awaiting confirmation
       if ($("s4").classList.contains("on")) {
         go(5); 
       }
     } else if (data.status === 'confirmed') {
-      // Payment reached 1+ confirmations
       clearInterval(statusInterval);
       clearInterval(ctd);
       busy = false;
@@ -495,8 +541,36 @@ async function checkStatus() {
       alert('Payment window expired. Please contact support if you sent funds.');
       closeAll();
     }
+  } catch (e) {}
+}
+
+async function submitManualTx() {
+  const txid = $("manual-tx").value.trim();
+  if (!/^[0-9a-fA-F]{64}$/.test(txid)) {
+    alert("Please enter a valid 64-character transaction ID.");
+    return;
+  }
+  
+  try {
+    const res = await fetch(`${API_URL}/api/verify-txid`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ orderId: currentOrderId, txid })
+    });
+    const data = await res.json();
+    if (data.success) {
+      clearInterval(statusInterval);
+      clearInterval(ctd);
+      busy = false;
+      
+      const statusRes = await fetch(`${API_URL}/api/status/${currentOrderId}`);
+      const statusData = await statusRes.json();
+      completeOrder(currentOrderId, statusData.usd);
+    } else {
+      alert(data.error || "Payment verification failed.");
+    }
   } catch (e) {
-    // Keep checking seamlessly if network drops momentarily
+    alert("Network error verifying TXID.");
   }
 }
 
