@@ -20,7 +20,6 @@ button{font:inherit;color:inherit;border:0;background:none;cursor:pointer}
 a{color:inherit;text-decoration:none}
 .wrap{max-width:1040px;margin:0 auto;padding:0 20px}
 
-/* scroll blur wrap - Hardware accelerated */
 #main-wrap { will-change: filter, transform; transform: translate3d(0,0,0); backface-visibility: hidden; }
 
 /* loader */
@@ -28,7 +27,7 @@ a{color:inherit;text-decoration:none}
 #loader.done{opacity:0;visibility:hidden}
 .ld{text-align:center}
 
-/* Logo animations and styles */
+/* Logo */
 .brand-logo {width: 24px; height: 24px; border-radius: 6px; object-fit: contain; display: block;}
 .ld-img {width: 80px; height: 80px; margin: 0 auto 22px; border-radius: 20px; object-fit: contain; display: block; animation: pulse 2s infinite ease-in-out; box-shadow: 0 8px 30px rgba(255, 122, 26, 0.3);}
 @keyframes pulse {0%, 100% {transform: scale(1); box-shadow: 0 8px 30px rgba(255, 122, 26, 0.3);} 50% {transform: scale(1.06); box-shadow: 0 12px 40px rgba(255, 122, 26, 0.6);}}
@@ -94,9 +93,9 @@ footer .fl{display:flex;gap:18px;justify-content:center;margin:10px 0 14px;flex-
 .sh h3{font-size:22px;letter-spacing:-.03em}
 .x{width:34px;height:34px;border-radius:50%;background:var(--line);font-size:16px; transition:background .2s, transform .2s}
 .x:hover{background:rgba(255,255,255,0.15); transform:rotate(90deg)}
-.pc{padding:18px 14px;border-radius:26px;background:var(--card);border:1px solid var(--line);text-align:center;display:flex;flex-direction:column;gap:6px}
-.pc .ic{margin:0 auto}.pc h4{font-size:17px;letter-spacing:-.02em}.pc p{font-size:12px;color:var(--mute);line-height:1.4}
-.pc .pr{font-size:22px;font-weight:700;letter-spacing:-.03em}.pc .pr small{font-size:11px;color:var(--mute);font-weight:500}
+.pc{padding:18px 14px;border-radius:26px;background:var(--card);border:1px solid var(--line);text-align:left;display:flex;flex-direction:column;gap:6px}
+.pc .ic{margin:0 auto}.pc h4{text-align:center; font-size:17px;letter-spacing:-.02em}.pc p{text-align:center; font-size:12px;color:var(--mute);line-height:1.4}
+.pc .pr{text-align:center; font-size:22px;font-weight:700;letter-spacing:-.03em}.pc .pr small{font-size:11px;color:var(--mute);font-weight:500}
 .pc .btn{padding:11px;font-size:14px;margin-top:6px}
 .step{display:none;animation:pop .45s cubic-bezier(.2,1.1,.3,1)}.step.on{display:block}
 @keyframes pop{from{opacity:0;transform:translateY(16px) scale(.98)}}
@@ -235,7 +234,7 @@ nav .x{flex:none}
       <div class="c rv"><div class="ic">1</div><h3>Pick a plan</h3><p>Choose 1M or 3M boosts and slide to the amount you want.</p></div>
       <div class="c rv"><div class="ic">2</div><h3>Add your server</h3><p>Paste your invite link and check the server preview.</p></div>
       <div class="c rv"><div class="ic">3</div><h3>Pay in Litecoin</h3><p>Scan the QR code or copy the address and exact amount.</p></div>
-      <div class="c rv"><div class="ic">4</div><h3>Get boosted</h3><p>Submit your transaction ID and delivery starts once it is confirmed.</p></div>
+      <div class="c rv"><div class="ic">4</div><h3>Get boosted</h3><p>Our system detects your payment instantly and starts delivery.</p></div>
     </div>
   </div></section>
 
@@ -254,8 +253,8 @@ nav .x{flex:none}
     <details class="rv"><summary>Why only even numbers of boosts?</summary><p>Boosts are sold in pairs, so you can pick any even amount from 2 to 30.</p></details>
     <details class="rv"><summary>What is the difference between 1M and 3M?</summary><p>1M boosts last 1 month and 3M boosts last 3 months. 1M costs $0.27 and 3M costs $0.88 per 2 boosts.</p></details>
     <details class="rv"><summary>Do you need my Discord password?</summary><p>Never. We only need your server invite link.</p></details>
-    <details class="rv"><summary>How do I pay?</summary><p>Pay in Litecoin (LTC). Send the exact amount shown at checkout, then enter your transaction ID.</p></details>
-    <details class="rv"><summary>When does delivery start?</summary><p>As soon as your payment is confirmed on the network.</p></details>
+    <details class="rv"><summary>How do I pay?</summary><p>Pay in Litecoin (LTC). Send the exact amount shown at checkout. The system will detect it automatically.</p></details>
+    <details class="rv"><summary>When does delivery start?</summary><p>As soon as your payment gets 1 network confirmation.</p></details>
   </div></section>
 
   <footer><div class="wrap">
@@ -269,8 +268,8 @@ nav .x{flex:none}
 <div class="ov" id="ovB" onclick="if(event.target===this)closeAll()"><div class="sheet">
   <div class="sh"><h3>Browse products</h3><button class="x" onclick="closeAll()">✕</button></div>
   <div class="grid">
-    <div class="pc"><div class="ic">🚀</div><h4>1M Server Boosts</h4><p>Lasts 1 month<br>Best for short boosts</p><div class="pr">$0.27 <small>/ 2 boosts</small></div><button class="btn" onclick="buy('1M')">Buy</button></div>
-    <div class="pc"><div class="ic">💎</div><h4>3M Server Boosts</h4><p>Lasts 3 months<br>Best value per month</p><div class="pr">$0.88 <small>/ 2 boosts</small></div><button class="btn" onclick="buy('3M')">Buy</button></div>
+    <div class="pc"><div class="ic">🚀</div><h4 style="text-align:center">1M Server Boosts</h4><p style="text-align:center">Lasts 1 month<br>Best for short boosts</p><div class="pr" style="text-align:center">$0.27 <small>/ 2 boosts</small></div><button class="btn" onclick="buy('1M')">Buy</button></div>
+    <div class="pc"><div class="ic">💎</div><h4 style="text-align:center">3M Server Boosts</h4><p style="text-align:center">Lasts 3 months<br>Best value per month</p><div class="pr" style="text-align:center">$0.88 <small>/ 2 boosts</small></div><button class="btn" onclick="buy('3M')">Buy</button></div>
   </div>
 </div></div>
 
@@ -298,16 +297,16 @@ nav .x{flex:none}
   <div class="step" id="s3">
     <div class="sum" id="sm"></div>
     <label class="chk"><input type="checkbox" id="cf" onchange="document.getElementById('pay').disabled=!this.checked"><span>I confirm the server, quantity and total are correct.</span></label>
-    <button class="btn" id="pay" style="width:100%" disabled onclick="go(4)">Confirm and proceed</button>
+    <button class="btn" id="pay" style="width:100%" disabled onclick="initiateCheckout()">Confirm and proceed</button>
   </div>
 
+  <!-- Auto-Tracking QR Screen -->
   <div class="step" id="s4">
     <div class="qr" id="qr"></div>
     <div class="mut">Send exactly</div>
-    <div class="amt" id="la"></div>
+    <div class="amt" id="la">...</div>
     <div class="mut" id="ua"></div><div class="mut" id="cd" style="margin-top:4px"></div>
     
-    <!-- Tolerance Warning Box -->
     <div style="display:flex; gap:12px; align-items:flex-start; background:rgba(229,72,77,0.1); border:1px solid var(--bad); padding:14px; border-radius:16px; margin:18px 0; text-align:left; font-size:12px; line-height:1.5;">
       <div style="font-size:18px; flex:none">⚠️</div>
       <div><b>Important:</b> Send the exact amount shown above. Underpayment beyond $0.04 tolerance will result in a failed transaction.</div>
@@ -316,23 +315,44 @@ nav .x{flex:none}
     <div class="cp"><span id="ad"></span><button onclick="cp(ADDR)">Copy</button></div>
     <div class="cp"><span id="ex"></span><button onclick="cp(exact)">Copy</button></div>
     <div class="sep"></div>
-    <h3 style="font-size:18px;letter-spacing:-.02em;text-align:center">Already paid?</h3>
-    <p class="mut" style="margin:6px 0 12px">Enter your 64-character transaction ID.</p>
-    <input type="text" id="tx" placeholder="Transaction ID" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="64">
-    <div class="err" id="te"></div>
-    <button class="btn" style="width:100%" onclick="claim()">Verify payment</button>
+    
+    <div style="display:flex; align-items:center; justify-content:center; gap:10px; margin-top:14px">
+      <div class="spin" style="width:20px; height:20px; margin:0; border-width:3px"></div>
+      <span style="font-size:14px; color:var(--acc); font-weight:600">Scanning network for payment...</span>
+    </div>
   </div>
 
+  <!-- Detected Payment UI (0/2 Confirmations) -->
   <div class="step" id="s5" style="text-align:center">
-    <div class="spin"></div><h3 style="font-size:20px">Verifying your payment</h3>
-    <p class="mut" style="margin-top:8px">This can take a few minutes. Keep this window open.</p>
-    <p class="mut" id="chk" style="margin-top:14px"></p>
+    <div class="spin" style="border-top-color:var(--ok)"></div>
+    <h3 style="font-size:22px; color:var(--acc); margin-top:12px; letter-spacing:-.03em">Payment Detected!</h3>
+    <p class="mut" style="margin-top:12px; line-height:1.5">We have detected a payment transaction from you, kindly wait until the confirmation 0/2.</p>
   </div>
 
+  <!-- Confirmed Receipt UI (1/2+ Confirmations) -->
   <div class="step" id="s6" style="text-align:center">
-    <div class="ok">✓</div><h3 style="font-size:22px;letter-spacing:-.03em">Payment received</h3>
-    <p class="mut" id="oid" style="margin:8px 0 4px;font-weight:600"></p><p class="mut" style="margin:0 0 18px">Your boosts are being delivered to your server.</p>
-    <button class="btn" onclick="closeAll()">Done</button>
+    <div class="ok">✓</div>
+    <h3 style="font-size:24px; letter-spacing:-.03em; margin:14px 0">Order Successfully Confirmed</h3>
+    
+    <div class="pc" style="margin-top:18px; text-align:left; padding:20px; background:rgba(47, 179, 109, 0.1); border-color:var(--ok)">
+      <div style="display:flex; justify-content:space-between; margin-bottom:8px">
+        <span class="mut">Product</span> <b id="r-prod" style="color:var(--ink)"></b>
+      </div>
+      <div style="display:flex; justify-content:space-between; margin-bottom:8px">
+        <span class="mut">Amount Paid</span> <b id="r-usd" style="color:var(--ink)"></b>
+      </div>
+      <div style="display:flex; justify-content:space-between">
+        <span class="mut">Time</span> <b id="r-time" style="color:var(--ink); font-size:12px"></b>
+      </div>
+    </div>
+    
+    <div class="cp" style="margin-top:14px; background:var(--bg1)">
+      <span class="mut" style="flex:none">Order ID:</span>
+      <span id="r-oid" style="font-weight:700; color:var(--ink)"></span>
+      <button onclick="cp(currentOrderId)">Copy</button>
+    </div>
+
+    <button class="btn" style="width:100%; margin-top:20px" onclick="closeAll()">Done</button>
   </div>
 </div></div>
 <div class="ov" id="ovO" onclick="if(event.target===this)closeAll()"><div class="sheet"><div class="sh"><h3>My orders</h3><button class="x" onclick="closeAll()">✕</button></div><div id="ol"></div></div></div>
@@ -353,7 +373,6 @@ function cp(v){try{navigator.clipboard.writeText(v)}catch(e){}toast("Copied")}
 /* loader */
 (function(){let p=0;const t=setInterval(()=>{p+=Math.random()*18+6;if(p>=100){p=100;clearInterval(t);setTimeout(()=>{$("en").style.display="inline-block";$("en").onclick=()=>{$("loader").classList.add("done");count();reveal()}},250)}$("lb").style.width=p+"%"},140)})();
 
-/* counters */
 function count(){document.querySelectorAll("[data-n]").forEach(e=>{const n=+e.dataset.n,s=e.dataset.s||"",t0=performance.now();(function f(t){const k=Math.min(1,(t-t0)/1800),v=Math.round(n*(1-Math.pow(1-k,4)));e.textContent=v.toLocaleString()+s;if(k<1)requestAnimationFrame(f)})(t0)})}
 function reveal(){const io=new IntersectionObserver(es=>es.forEach(x=>{if(x.isIntersecting){x.target.classList.add("in");io.unobserve(x.target)}}),{threshold:.15});document.querySelectorAll(".rv").forEach(e=>io.observe(e))}
 
@@ -361,15 +380,15 @@ function reveal(){const io=new IntersectionObserver(es=>es.forEach(x=>{if(x.isIn
 function openOv(id){$(id).classList.add("on");document.body.classList.add("lock")}
 function closeAll(){clearInterval(statusInterval);busy=false;document.querySelectorAll(".ov").forEach(o=>o.classList.remove("on"));document.body.classList.remove("lock")}
 function openBrowse(){openOv("ovB")}
-function buy(k){plan=k;qty=2;srv=null;$("sl").value=2;upd();$("inv").value="";$("er").textContent="";$("sv").innerHTML="";$("cf").checked=false;$("pay").disabled=true;$("tx").value="";$("te").textContent="";$("ovB").classList.remove("on");openOv("ovC");go(1)}
-const titles=["","Select quantity","Your server","Review order","Pay with Litecoin","Verifying","Complete"];
-function go(n){document.querySelectorAll(".step").forEach(s=>s.classList.remove("on"));$("s"+n).classList.add("on");$("ct").textContent=titles[n];document.querySelectorAll(".dots i").forEach((d,i)=>d.classList.toggle("on",i<Math.min(n,4)));if(n===3)summary();if(n===4)payment();$("ovC").querySelector(".sheet").scrollTop=0}
+function buy(k){plan=k;qty=2;srv=null;$("sl").value=2;upd();$("inv").value="";$("er").textContent="";$("sv").innerHTML="";$("cf").checked=false;$("pay").disabled=true;$("ovB").classList.remove("on");openOv("ovC");go(1)}
+const titles=["","Select quantity","Your server","Review order","Awaiting Payment","Processing","Complete"];
+function go(n){document.querySelectorAll(".step").forEach(s=>s.classList.remove("on"));$("s"+n).classList.add("on");$("ct").textContent=titles[n];document.querySelectorAll(".dots i").forEach((d,i)=>d.classList.toggle("on",i<Math.min(n,4)));if(n===3)summary();$("ovC").querySelector(".sheet").scrollTop=0}
 
 /* quantity */
 function upd(){const s=$("sl");qty=+s.value;total=+(qty/2*PRICE[plan].p).toFixed(2);$("qv").textContent=qty;$("pn").textContent=PRICE[plan].n;$("tp").textContent="$"+total.toFixed(2);$("lv").textContent=qty>=14?"Enough boosts for Level 3":qty>=7?"Enough boosts for Level 2":"Enough boosts for Level 1";s.style.setProperty("--p",((qty-2)/28*100)+"%")}
 $("sl").addEventListener("input",upd);
 
-/* server lookup (Discord API) */
+/* server lookup */
 const DEMO=false;
 async function fetchServer(code){
   try{const r=await fetch("https://discord.com/api/v10/invites/"+encodeURIComponent(code)+"?with_counts=true");
@@ -390,52 +409,65 @@ async function lookup(){
   $("sv").innerHTML=`<div class="srv"><div class="bn" style="background:${srv.banner?`url(${srv.banner}) center/cover`:bg}"></div><div class="lg" style="background:${bg}">${srv.logo?`<img src="${srv.logo}" alt="">`:srv.name[0].toUpperCase()}</div><div class="nm">${srv.name.replace(/[<>&]/g,"")} ${srv.demo?'<span class="tag">preview data</span>':''}</div><div class="kv"><div>Server ID<b>${srv.id}</b></div><div>Members<b>${srv.members.toLocaleString()}</b></div><div>Online<b>${srv.online.toLocaleString()}</b></div></div></div><button class="btn" style="width:100%;margin-bottom:10px" onclick="go(3)">This is my server</button>`;
 }
 function summary(){$("sm").innerHTML=`<div><span>Product</span><span>${PRICE[plan].n}</span></div><div><span>Server</span><span>${srv.name.replace(/[<>&]/g,"")}</span></div><div><span>Quantity</span><span>${qty}</span></div><div><span>Total</span><span>$${total.toFixed(2)}</span></div>`}
-let ctd;function startTimer(){clearInterval(ctd);let s=1800;const f=()=>{$("cd").textContent="Amount reserved for "+String(Math.floor(s/60)).padStart(2,"0")+":"+String(s%60).padStart(2,"0");if(s--<=0)clearInterval(ctd)};f();ctd=setInterval(f,1000)}
+let ctd;function startTimer(){clearInterval(ctd);let s=1800;const f=()=>{$("cd").textContent="Amount reserved for "+String(Math.floor(s/60)).padStart(2,"0")+":"+String(s%60).padStart(2,"0");if(s--<=0){clearInterval(ctd); closeAll(); alert("Payment window expired.")}};f();ctd=setInterval(f,1000)}
 
-function done(finalOrderId){
-  $("oid").textContent="Order "+finalOrderId;
+function completeOrder(finalOrderId, usdAmount){
+  $("r-prod").textContent = PRICE[plan].n;
+  $("r-usd").textContent = "$" + parseFloat(usdAmount).toFixed(2);
+  $("r-time").textContent = new Date().toLocaleString('en-US', { dateStyle: 'medium', timeStyle: 'short' });
+  $("r-oid").textContent = finalOrderId;
+  
   try{
     const o=JSON.parse(localStorage.getItem("orb")||"[]");
     o.unshift({id:finalOrderId,n:PRICE[plan].n,q:qty,t:total,s:srv.name,d:new Date().toLocaleDateString()});
     localStorage.setItem("orb",JSON.stringify(o.slice(0,20)))
   }catch(e){}
-  go(6)
+  
+  go(6);
 }
 
 function openOrders(){let o=[];try{o=JSON.parse(localStorage.getItem("orb")||"[]")}catch(e){}$("ol").innerHTML=o.length?o.map(x=>`<div class="c" style="margin-bottom:10px;padding:16px"><b>${x.id}</b> - ${x.d}<p>${x.n} x ${x.q} for ${String(x.s).replace(/[<>&]/g,"")}, $${x.t.toFixed(2)}</p></div>`).join(""):'<p class="mut">No orders yet. Browse products to place your first order.</p>';openOv("ovO")}
 
-/* payment */
-function payment(){
-  const base=total/LTC_USD;exact=(base+Math.floor(Math.random()*900+100)/1e8).toFixed(8);
-  startTimer();$("la").textContent=exact+" LTC";$("ua").textContent="≈ $"+total.toFixed(2)+" USD";$("ad").textContent=ADDR;$("ex").textContent=exact;
-  const q=qrcode(0,"M");q.addData("litecoin:"+ADDR+"?amount="+exact);q.make();$("qr").innerHTML=q.createSvgTag(4,0);
-}
-
-/* API Backend Communication */
-async function claim() {
-  const t = $("tx").value.trim();
-  if (!/^[0-9a-fA-F]{64}$/.test(t)) {
-    $("te").textContent = "That isn't valid. A transaction ID is 64 characters (0-9, a-f).";
-    return;
-  }
-  $("te").textContent = "";
+/* Automated Checkout & Auto-Tracking */
+async function initiateCheckout() {
+  const btn = $("pay");
+  btn.disabled = true;
+  btn.textContent = "Generating Secure Link...";
   busy = true;
-  go(5); 
 
   try {
     const res = await fetch(`${API_URL}/api/checkout`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ plan: plan, qty: qty, serverId: srv.id, txid: t })
+      body: JSON.stringify({ plan: plan, qty: qty, serverId: srv.id })
     });
     
     const data = await res.json();
     currentOrderId = data.orderId;
+    exact = data.exactLtc.toFixed(8);
     
-    $("chk").textContent = "Checking blockchain...";
+    // Render QR and amounts
+    $("la").textContent = exact + " LTC";
+    $("ua").textContent = "≈ $" + data.usd.toFixed(2) + " USD";
+    $("ad").textContent = ADDR;
+    $("ex").textContent = exact;
+    
+    const q = qrcode(0, "M");
+    q.addData("litecoin:" + ADDR + "?amount=" + exact);
+    q.make();
+    $("qr").innerHTML = q.createSvgTag(4, 0);
+
+    go(4);
+    startTimer();
+    
+    // Start automated backend polling immediately
     statusInterval = setInterval(checkStatus, 10000);
+    
   } catch (e) {
-    $("chk").textContent = "Error connecting to server. Retrying...";
+    alert("Server error. Please try again.");
+    btn.disabled = false;
+    btn.textContent = "Confirm and proceed";
+    busy = false;
   }
 }
 
@@ -444,21 +476,27 @@ async function checkStatus() {
   try {
     const res = await fetch(`${API_URL}/api/status/${currentOrderId}`);
     const data = await res.json();
-    
-    $("chk").textContent = "Last checked " + new Date().toLocaleTimeString();
 
-    if (data.status === 'confirmed') {
+    if (data.status === 'detected') {
+      // Payment seen on network, awaiting confirmation
+      if ($("s4").classList.contains("on")) {
+        go(5); 
+      }
+    } else if (data.status === 'confirmed') {
+      // Payment reached 1+ confirmations
       clearInterval(statusInterval);
+      clearInterval(ctd);
       busy = false;
-      done(currentOrderId); 
+      completeOrder(currentOrderId, data.usd);
     } else if (data.status === 'expired') {
       clearInterval(statusInterval);
+      clearInterval(ctd);
       busy = false;
-      alert('Payment verification timed out. Please try again.');
+      alert('Payment window expired. Please contact support if you sent funds.');
       closeAll();
     }
   } catch (e) {
-    // Keep polling seamlessly if network drops momentarily
+    // Keep checking seamlessly if network drops momentarily
   }
 }
 
