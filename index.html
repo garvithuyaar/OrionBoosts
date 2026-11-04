@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <title>Orion Boosts</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -13,24 +13,24 @@ box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:en
 @media print{:root{--bg1:#1a1722;--bg2:#17192b;--bg3:#241b1e;--ink:#f4f2fa;--mute:#a7a5b8;--card:rgba(40,38,56,.72);--line:rgba(255,255,255,.1);--btn:#fff;--btnt:#16161f;--pill:#2a2838;--shadow:0 10px 40px rgba(0,0,0,.4)}}
 :root[data-theme="off"]{--bg1:#1a1722;--bg2:#17192b;--bg3:#241b1e;--ink:#f4f2fa;--mute:#a7a5b8;--card:rgba(40,38,56,.72);--line:rgba(255,255,255,.1);--btn:#fff;--btnt:#16161f;--pill:#2a2838;--shadow:0 10px 40px rgba(0,0,0,.4)}
 *{box-sizing:border-box;margin:0;-webkit-tap-highlight-color:transparent}
-html{scroll-behavior:smooth;scroll-padding-top:90px}
+html{scroll-behavior:smooth;scroll-padding-top:90px;max-width:100vw;overflow-x:hidden}
 body{font-family:Inter,"SF Pro Text",-apple-system,BlinkMacSystemFont,"Helvetica Neue",Arial,sans-serif;color:var(--ink);background:linear-gradient(180deg,var(--bg2),var(--bg1) 45%,var(--bg3));background-attachment:fixed;min-height:100%;overflow-x:hidden;-webkit-font-smoothing:antialiased}
 body.lock{overflow:hidden}
 button{font:inherit;color:inherit;border:0;background:none;cursor:pointer}
 a{color:inherit;text-decoration:none}
 .wrap{max-width:1040px;margin:0 auto;padding:0 20px}
 
-/* scroll blur wrap */
-#main-wrap { will-change: filter; transform: translateZ(0); }
+/* scroll blur wrap - Hardware accelerated to fix shutters */
+#main-wrap { will-change: filter, transform; transform: translate3d(0,0,0); backface-visibility: hidden; }
 
 /* loader */
 #loader{position:fixed;inset:0;z-index:100;display:grid;place-items:center;background:linear-gradient(180deg,var(--bg2),var(--bg3));transition:opacity .7s,visibility .7s}
 #loader.done{opacity:0;visibility:hidden}
 .ld{text-align:center}
 
-/* Logo animations and styles */
-.brand-logo {width: 24px; height: 24px; border-radius: 6px; object-fit: cover; display: block;}
-.ld-img {width: 80px; height: 80px; margin: 0 auto 22px; border-radius: 20px; object-fit: cover; display: block; animation: pulse 2s infinite ease-in-out; box-shadow: 0 8px 30px rgba(255, 122, 26, 0.3);}
+/* Logo animations and styles - object-fit contain fixes ratio */
+.brand-logo {width: 24px; height: 24px; border-radius: 6px; object-fit: contain; display: block;}
+.ld-img {width: 80px; height: 80px; margin: 0 auto 22px; border-radius: 20px; object-fit: contain; display: block; animation: pulse 2s infinite ease-in-out; box-shadow: 0 8px 30px rgba(255, 122, 26, 0.3);}
 @keyframes pulse {0%, 100% {transform: scale(1); box-shadow: 0 8px 30px rgba(255, 122, 26, 0.3);} 50% {transform: scale(1.06); box-shadow: 0 12px 40px rgba(255, 122, 26, 0.6);}}
 .ld b{font-size:22px;letter-spacing:-.02em}
 .bar{width:180px;height:4px;border-radius:4px;background:var(--line);margin:14px auto 0;overflow:hidden}
@@ -47,7 +47,7 @@ nav .lk a{color:var(--mute);transition:color .2s}nav .lk a:hover{color:var(--ink
 .pill:active{transform:scale(.94)}
 
 /* hero */
-.hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:110px 20px 60px;position:relative}
+.hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:110px 20px 60px;position:relative;overflow:hidden}
 .blob{position:absolute;border-radius:50%;filter:blur(70px);opacity:.55;pointer-events:none;animation:float 9s ease-in-out infinite}
 .b1{width:280px;height:280px;background:var(--acc);top:18%;left:-80px}
 .b2{width:300px;height:300px;background:var(--acc2);bottom:12%;right:-90px;animation-delay:-4s}
@@ -87,7 +87,7 @@ footer .fl{display:flex;gap:18px;justify-content:center;margin:10px 0 14px;flex-
 /* modal */
 .ov{position:fixed;inset:0;z-index:70;background:rgba(15,12,25,.45);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);display:flex;align-items:flex-end;justify-content:center;opacity:0;visibility:hidden;transition:.35s}
 .ov.on{opacity:1;visibility:visible}
-.sheet{width:100%;max-width:640px;max-height:92vh;overflow:auto;background:var(--bg1);border-radius:32px 32px 0 0;padding:22px 20px calc(28px + env(safe-area-inset-bottom,0px));transform:translateY(60px) scale(.97);transition:transform .5s cubic-bezier(.2,1.1,.3,1)}
+.sheet{width:100%;max-width:640px;max-height:90dvh;overflow:auto;background:var(--bg1);border-radius:32px 32px 0 0;padding:22px 20px calc(28px + env(safe-area-inset-bottom,0px));transform:translateY(60px) scale(.97);transition:transform .5s cubic-bezier(.2,1.1,.3,1)}
 .ov.on .sheet{transform:none}
 @media(min-width:700px){.ov{align-items:center}.sheet{border-radius:32px}}
 .sh{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
@@ -145,6 +145,16 @@ details p{margin-top:10px;font-size:14px;color:var(--mute);line-height:1.5;anima
 nav .x{flex:none}
 :root[data-theme="light"]{--bg1:#f3f1ee;--bg2:#e9e7e4;--bg3:#fde6d3;--ink:#1f1f23;--mute:#66666e;--card:rgba(255,255,255,.75);--line:rgba(0,0,0,.08);--btn:#e8590c;--btnt:#fff;--pill:#fff;--shadow:0 10px 40px rgba(80,60,40,.14)}
 #lv{color:var(--acc);font-weight:600}
+
+/* Mobile Responsive Fixes */
+@media (max-width: 640px) {
+  .grid { grid-template-columns: 1fr; }
+  .c[style*="grid-column"] { grid-column: 1 / -1 !important; }
+  .stats { grid-template-columns: 1fr; gap: 8px; }
+  h1 { font-size: clamp(38px, 10vw, 44px); }
+  .b1 { left: -120px; top: 10%; }
+  .b2 { right: -120px; bottom: 5%; }
+}
 </style>
 </head>
 <body>
@@ -326,16 +336,19 @@ nav .x{flex:none}
 <script>
 const ADDR="ltc1qrlygyv2z8am20lgxpju3fdtky39lux7wlpwru3";
 const PRICE={"1M":{n:"1M Server Boosts",p:.27},"3M":{n:"3M Server Boosts",p:.88}};
-const LTC_USD=85; // TODO: replace with a live rate from your backend
+const LTC_USD=85; // TODO: update with live rate if needed
 let plan="1M",qty=2,srv=null,total=0,exact="",busy=false,poll=null;
 const $=id=>document.getElementById(id);
 function toast(m){const t=$("ts");t.textContent=m;t.classList.add("on");setTimeout(()=>t.classList.remove("on"),1800)}
 function cp(v){try{navigator.clipboard.writeText(v)}catch(e){}toast("Copied")}
+
 /* loader */
 (function(){let p=0;const t=setInterval(()=>{p+=Math.random()*18+6;if(p>=100){p=100;clearInterval(t);setTimeout(()=>{$("en").style.display="inline-block";$("en").onclick=()=>{$("loader").classList.add("done");count();reveal()}},250)}$("lb").style.width=p+"%"},140)})();
+
 /* counters */
 function count(){document.querySelectorAll("[data-n]").forEach(e=>{const n=+e.dataset.n,s=e.dataset.s||"",t0=performance.now();(function f(t){const k=Math.min(1,(t-t0)/1800),v=Math.round(n*(1-Math.pow(1-k,4)));e.textContent=v.toLocaleString()+s;if(k<1)requestAnimationFrame(f)})(t0)})}
 function reveal(){const io=new IntersectionObserver(es=>es.forEach(x=>{if(x.isIntersecting){x.target.classList.add("in");io.unobserve(x.target)}}),{threshold:.15});document.querySelectorAll(".rv").forEach(e=>io.observe(e))}
+
 /* modals */
 function openOv(id){$(id).classList.add("on");document.body.classList.add("lock")}
 function closeAll(){clearInterval(poll);busy=false;document.querySelectorAll(".ov").forEach(o=>o.classList.remove("on"));document.body.classList.remove("lock")}
@@ -343,11 +356,13 @@ function openBrowse(){openOv("ovB")}
 function buy(k){plan=k;qty=2;srv=null;$("sl").value=2;upd();$("inv").value="";$("er").textContent="";$("sv").innerHTML="";$("cf").checked=false;$("pay").disabled=true;$("tx").value="";$("te").textContent="";$("ovB").classList.remove("on");openOv("ovC");go(1)}
 const titles=["","Select quantity","Your server","Review order","Pay with Litecoin","Verifying","Complete"];
 function go(n){document.querySelectorAll(".step").forEach(s=>s.classList.remove("on"));$("s"+n).classList.add("on");$("ct").textContent=titles[n];document.querySelectorAll(".dots i").forEach((d,i)=>d.classList.toggle("on",i<Math.min(n,4)));if(n===3)summary();if(n===4)payment();$("ovC").querySelector(".sheet").scrollTop=0}
+
 /* quantity */
 function upd(){const s=$("sl");qty=+s.value;total=+(qty/2*PRICE[plan].p).toFixed(2);$("qv").textContent=qty;$("pn").textContent=PRICE[plan].n;$("tp").textContent="$"+total.toFixed(2);$("lv").textContent=qty>=14?"Enough boosts for Level 3":qty>=7?"Enough boosts for Level 2":"Enough boosts for Level 1";s.style.setProperty("--p",((qty-2)/28*100)+"%")}
 $("sl").addEventListener("input",upd);
-/* server lookup: swap fetchServer for your backend call (Discord API needs a bot token) */
-const DEMO=false; // never show sample data; lookups need a host that can reach discord.com
+
+/* server lookup (Discord API) */
+const DEMO=false;
 async function fetchServer(code){
   try{const r=await fetch("https://discord.com/api/v10/invites/"+encodeURIComponent(code)+"?with_counts=true");
   if(r.status===404)return{error:"This invite is invalid or has expired."};
@@ -372,17 +387,36 @@ function setQ(n){$("sl").value=n;upd()}
 function theme(){const r=document.documentElement;r.dataset.theme=r.dataset.theme==="light"?"dark":"light"}
 function done(t){const id="ORB-"+Math.random().toString(36).slice(2,8).toUpperCase();$("oid").textContent="Order "+id;try{const o=JSON.parse(localStorage.getItem("orb")||"[]");o.unshift({id,n:PRICE[plan].n,q:qty,t:total,s:srv.name,d:new Date().toLocaleDateString()});localStorage.setItem("orb",JSON.stringify(o.slice(0,20)))}catch(e){}go(6)}
 function openOrders(){let o=[];try{o=JSON.parse(localStorage.getItem("orb")||"[]")}catch(e){}$("ol").innerHTML=o.length?o.map(x=>`<div class="c" style="margin-bottom:10px;padding:16px"><b>${x.id}</b> - ${x.d}<p>${x.n} x ${x.q} for ${String(x.s).replace(/[<>&]/g,"")}, $${x.t.toFixed(2)}</p></div>`).join(""):'<p class="mut">No orders yet. Browse products to place your first order.</p>';openOv("ovO")}
+
 /* payment */
 function payment(){
   const base=total/LTC_USD;exact=(base+Math.floor(Math.random()*900+100)/1e8).toFixed(8);
   startTimer();$("la").textContent=exact+" LTC";$("ua").textContent="≈ $"+total.toFixed(2)+" USD";$("ad").textContent=ADDR;$("ex").textContent=exact;
   const q=qrcode(0,"M");q.addData("litecoin:"+ADDR+"?amount="+exact);q.make();$("qr").innerHTML=q.createSvgTag(4,0);
 }
-/* claim + verify. checkPayment must be replaced by a real backend call (blockchain API) */
-const API=""; // your backend base URL, e.g. https://api.yourdomain.com
-async function checkPayment(txid){
-  if(!API)return new Promise(r=>setTimeout(()=>r(++tries>=2),600)); // demo until API is set
-  try{const r=await fetch(API+"/api/orders/verify",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({txid,plan,qty,exact,server:srv&&srv.id})});const d=await r.json();return d.status==="confirmed"}catch(e){return false}}
+
+/* claim + verify using BlockCypher Free Public API directly from frontend */
+async function checkPayment(txid) {
+  try {
+    const res = await fetch(`https://api.blockcypher.com/v1/ltc/main/txs/${txid}`);
+    if (!res.ok) return false;
+    
+    const data = await res.json();
+    const expectedLitoshis = Math.round(parseFloat(exact) * 100000000);
+    let paymentFound = false;
+    
+    for (const output of data.outputs) {
+      if (output.addresses && output.addresses.includes(ADDR) && output.value >= expectedLitoshis) {
+        paymentFound = true;
+        break;
+      }
+    }
+    return paymentFound && data.confirmations > 0;
+  } catch (e) {
+    return false;
+  }
+}
+
 let tries=0;
 function claim(){
   const t=$("tx").value.trim();
@@ -392,7 +426,7 @@ function claim(){
   run();poll=setInterval(run,30000);
 }
 
-/* Scroll Motion Blur */
+/* Scroll Motion Blur (Performance Optimized) */
 const blurAmt = $("mblur"), blurWrap = $("main-wrap");
 let vel = 0, lastY = window.scrollY, lastT = performance.now();
 function applyBlur(t) {
@@ -400,13 +434,10 @@ function applyBlur(t) {
   const y = window.scrollY;
   const curVel = Math.abs(y - lastY) / (dt || 16);
   
-  // Smooth the velocity so the blur ramps up/down cleanly
-  vel += (curVel - vel) * 0.12; 
+  vel += (curVel - vel) * 0.15; 
+  const b = Math.min(vel * 10, 20); // Capped at 20 for smoother performance
   
-  // Multiply velocity for heavy effect. Cap at 40px blur
-  const b = Math.min(vel * 12, 40); 
-  
-  if (b > 0.5) {
+  if (b > 0.8) {
     blurAmt.setAttribute("stdDeviation", `0,${b.toFixed(1)}`);
     if(blurWrap.style.filter !== 'url(#scroll-blur)') blurWrap.style.filter = 'url(#scroll-blur)';
   } else {
@@ -419,7 +450,6 @@ function applyBlur(t) {
   requestAnimationFrame(applyBlur);
 }
 
-// Ensure it only runs if the user hasn't requested reduced motion on their OS
 if(!window.matchMedia('(prefers-reduced-motion: reduce)').matches){
   requestAnimationFrame(applyBlur);
 }
