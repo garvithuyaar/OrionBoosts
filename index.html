@@ -20,7 +20,7 @@ button{font:inherit;color:inherit;border:0;background:none;cursor:pointer}
 a{color:inherit;text-decoration:none}
 .wrap{max-width:1040px;margin:0 auto;padding:0 20px}
 
-/* scroll blur wrap - Hardware accelerated to fix shutters */
+/* scroll blur wrap - Hardware accelerated */
 #main-wrap { will-change: filter, transform; transform: translate3d(0,0,0); backface-visibility: hidden; }
 
 /* loader */
@@ -28,7 +28,7 @@ a{color:inherit;text-decoration:none}
 #loader.done{opacity:0;visibility:hidden}
 .ld{text-align:center}
 
-/* Logo animations and styles - object-fit contain fixes ratio */
+/* Logo animations and styles */
 .brand-logo {width: 24px; height: 24px; border-radius: 6px; object-fit: contain; display: block;}
 .ld-img {width: 80px; height: 80px; margin: 0 auto 22px; border-radius: 20px; object-fit: contain; display: block; animation: pulse 2s infinite ease-in-out; box-shadow: 0 8px 30px rgba(255, 122, 26, 0.3);}
 @keyframes pulse {0%, 100% {transform: scale(1); box-shadow: 0 8px 30px rgba(255, 122, 26, 0.3);} 50% {transform: scale(1.06); box-shadow: 0 12px 40px rgba(255, 122, 26, 0.6);}}
@@ -158,7 +158,6 @@ nav .x{flex:none}
 </style>
 </head>
 <body>
-<!-- SVG Filter for true directional vertical motion blur -->
 <svg style="display:none"><filter id="scroll-blur"><feGaussianBlur id="mblur" in="SourceGraphic" stdDeviation="0,0"/></filter></svg>
 
 <div id="loader"><div class="ld"><img src="1000056901.gif" alt="Orion Boosts Logo" class="ld-img"><b>Orion Boosts</b><div class="bar"><i id="lb"></i></div><button class="btn" id="en">Enter</button></div></div>
@@ -169,7 +168,6 @@ nav .x{flex:none}
   <button class="x" onclick="theme()" aria-label="Theme">◐</button><button class="pill" onclick="openBrowse()">Browse</button>
 </nav>
 
-<!-- Main content wrapped for the blur effect -->
 <div id="main-wrap">
   <header class="hero" id="home">
     <div class="blob b1"></div><div class="blob b2"></div>
@@ -265,7 +263,7 @@ nav .x{flex:none}
     <div class="fl"><a href="#features">Features</a><a href="#products">Products</a><a href="#why">Why us</a><a href="#reviews">Reviews</a></div>
     <button onclick="openOrders()" style="text-decoration:underline;color:var(--ink);font-size:13px">My orders</button><br>Not affiliated with Discord Inc.<br>© 2026 Orion Boosts. All rights reserved.
   </div></footer>
-</div> <!-- End of main-wrap -->
+</div>
 
 <!-- Browse -->
 <div class="ov" id="ovB" onclick="if(event.target===this)closeAll()"><div class="sheet">
@@ -334,10 +332,13 @@ nav .x{flex:none}
 <div class="toast" id="ts"></div>
 
 <script>
+// --- CORE RENDER BACKEND CONFIG ---
+const API_URL = "https://orionboosts.onrender.com";
+
 const ADDR="ltc1qrlygyv2z8am20lgxpju3fdtky39lux7wlpwru3";
 const PRICE={"1M":{n:"1M Server Boosts",p:.27},"3M":{n:"3M Server Boosts",p:.88}};
-const LTC_USD=85; // TODO: update with live rate if needed
-let plan="1M",qty=2,srv=null,total=0,exact="",busy=false,poll=null;
+const LTC_USD=85; 
+let plan="1M",qty=2,srv=null,total=0,exact="",busy=false,statusInterval=null,currentOrderId=null;
 const $=id=>document.getElementById(id);
 function toast(m){const t=$("ts");t.textContent=m;t.classList.add("on");setTimeout(()=>t.classList.remove("on"),1800)}
 function cp(v){try{navigator.clipboard.writeText(v)}catch(e){}toast("Copied")}
@@ -351,7 +352,7 @@ function reveal(){const io=new IntersectionObserver(es=>es.forEach(x=>{if(x.isIn
 
 /* modals */
 function openOv(id){$(id).classList.add("on");document.body.classList.add("lock")}
-function closeAll(){clearInterval(poll);busy=false;document.querySelectorAll(".ov").forEach(o=>o.classList.remove("on"));document.body.classList.remove("lock")}
+function closeAll(){clearInterval(statusInterval);busy=false;document.querySelectorAll(".ov").forEach(o=>o.classList.remove("on"));document.body.classList.remove("lock")}
 function openBrowse(){openOv("ovB")}
 function buy(k){plan=k;qty=2;srv=null;$("sl").value=2;upd();$("inv").value="";$("er").textContent="";$("sv").innerHTML="";$("cf").checked=false;$("pay").disabled=true;$("tx").value="";$("te").textContent="";$("ovB").classList.remove("on");openOv("ovC");go(1)}
 const titles=["","Select quantity","Your server","Review order","Pay with Litecoin","Verifying","Complete"];
@@ -383,9 +384,17 @@ async function lookup(){
 }
 function summary(){$("sm").innerHTML=`<div><span>Product</span><span>${PRICE[plan].n}</span></div><div><span>Server</span><span>${srv.name.replace(/[<>&]/g,"")}</span></div><div><span>Quantity</span><span>${qty}</span></div><div><span>Total</span><span>$${total.toFixed(2)}</span></div>`}
 let ctd;function startTimer(){clearInterval(ctd);let s=1800;const f=()=>{$("cd").textContent="Amount reserved for "+String(Math.floor(s/60)).padStart(2,"0")+":"+String(s%60).padStart(2,"0");if(s--<=0)clearInterval(ctd)};f();ctd=setInterval(f,1000)}
-function setQ(n){$("sl").value=n;upd()}
-function theme(){const r=document.documentElement;r.dataset.theme=r.dataset.theme==="light"?"dark":"light"}
-function done(t){const id="ORB-"+Math.random().toString(36).slice(2,8).toUpperCase();$("oid").textContent="Order "+id;try{const o=JSON.parse(localStorage.getItem("orb")||"[]");o.unshift({id,n:PRICE[plan].n,q:qty,t:total,s:srv.name,d:new Date().toLocaleDateString()});localStorage.setItem("orb",JSON.stringify(o.slice(0,20)))}catch(e){}go(6)}
+
+function done(finalOrderId){
+  $("oid").textContent="Order "+finalOrderId;
+  try{
+    const o=JSON.parse(localStorage.getItem("orb")||"[]");
+    o.unshift({id:finalOrderId,n:PRICE[plan].n,q:qty,t:total,s:srv.name,d:new Date().toLocaleDateString()});
+    localStorage.setItem("orb",JSON.stringify(o.slice(0,20)))
+  }catch(e){}
+  go(6)
+}
+
 function openOrders(){let o=[];try{o=JSON.parse(localStorage.getItem("orb")||"[]")}catch(e){}$("ol").innerHTML=o.length?o.map(x=>`<div class="c" style="margin-bottom:10px;padding:16px"><b>${x.id}</b> - ${x.d}<p>${x.n} x ${x.q} for ${String(x.s).replace(/[<>&]/g,"")}, $${x.t.toFixed(2)}</p></div>`).join(""):'<p class="mut">No orders yet. Browse products to place your first order.</p>';openOv("ovO")}
 
 /* payment */
@@ -395,38 +404,58 @@ function payment(){
   const q=qrcode(0,"M");q.addData("litecoin:"+ADDR+"?amount="+exact);q.make();$("qr").innerHTML=q.createSvgTag(4,0);
 }
 
-/* claim + verify using BlockCypher Free Public API directly from frontend */
-async function checkPayment(txid) {
+/* API Backend Communication */
+async function claim() {
+  const t = $("tx").value.trim();
+  if (!/^[0-9a-fA-F]{64}$/.test(t)) {
+    $("te").textContent = "That isn't valid. A transaction ID is 64 characters (0-9, a-f).";
+    return;
+  }
+  $("te").textContent = "";
+  busy = true;
+  go(5); 
+
   try {
-    const res = await fetch(`https://api.blockcypher.com/v1/ltc/main/txs/${txid}`);
-    if (!res.ok) return false;
+    const res = await fetch(`${API_URL}/api/checkout`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ plan: plan, qty: qty, serverId: srv.id, txid: t })
+    });
     
     const data = await res.json();
-    const expectedLitoshis = Math.round(parseFloat(exact) * 100000000);
-    let paymentFound = false;
+    currentOrderId = data.orderId;
     
-    for (const output of data.outputs) {
-      if (output.addresses && output.addresses.includes(ADDR) && output.value >= expectedLitoshis) {
-        paymentFound = true;
-        break;
-      }
-    }
-    return paymentFound && data.confirmations > 0;
+    $("chk").textContent = "Checking blockchain...";
+    statusInterval = setInterval(checkStatus, 10000);
   } catch (e) {
-    return false;
+    $("chk").textContent = "Error connecting to server. Retrying...";
   }
 }
 
-let tries=0;
-function claim(){
-  const t=$("tx").value.trim();
-  if(!/^[0-9a-fA-F]{64}$/.test(t)){$("te").textContent="That isn't valid. A transaction ID is 64 characters (0-9, a-f).";return}
-  $("te").textContent="";tries=0;busy=true;go(5);
-  const run=async()=>{$("chk").textContent="Last checked "+new Date().toLocaleTimeString();if(await checkPayment(t)){clearInterval(poll);busy=false;done(t)}};
-  run();poll=setInterval(run,30000);
+async function checkStatus() {
+  if (!currentOrderId) return;
+  try {
+    const res = await fetch(`${API_URL}/api/status/${currentOrderId}`);
+    const data = await res.json();
+    
+    $("chk").textContent = "Last checked " + new Date().toLocaleTimeString();
+
+    if (data.status === 'confirmed') {
+      clearInterval(statusInterval);
+      busy = false;
+      done(currentOrderId); 
+    } else if (data.status === 'expired') {
+      clearInterval(statusInterval);
+      busy = false;
+      alert('Payment verification timed out. Please try again.');
+      closeAll();
+    }
+  } catch (e) {
+    // Keep polling seamlessly if network drops momentarily
+  }
 }
 
-/* Scroll Motion Blur (Performance Optimized) */
+/* Scroll Motion Blur */
 const blurAmt = $("mblur"), blurWrap = $("main-wrap");
 let vel = 0, lastY = window.scrollY, lastT = performance.now();
 function applyBlur(t) {
@@ -435,7 +464,7 @@ function applyBlur(t) {
   const curVel = Math.abs(y - lastY) / (dt || 16);
   
   vel += (curVel - vel) * 0.15; 
-  const b = Math.min(vel * 10, 20); // Capped at 20 for smoother performance
+  const b = Math.min(vel * 10, 20); 
   
   if (b > 0.8) {
     blurAmt.setAttribute("stdDeviation", `0,${b.toFixed(1)}`);
