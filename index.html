@@ -306,6 +306,13 @@ nav .x{flex:none}
     <div class="mut">Send exactly</div>
     <div class="amt" id="la"></div>
     <div class="mut" id="ua"></div><div class="mut" id="cd" style="margin-top:4px"></div>
+    
+    <!-- Tolerance Warning Box -->
+    <div style="display:flex; gap:12px; align-items:flex-start; background:rgba(229,72,77,0.1); border:1px solid var(--bad); padding:14px; border-radius:16px; margin:18px 0; text-align:left; font-size:12px; line-height:1.5;">
+      <div style="font-size:18px; flex:none">⚠️</div>
+      <div><b>Important:</b> Send the exact amount shown above. Underpayment beyond $0.04 tolerance will result in a failed transaction.</div>
+    </div>
+    
     <div class="cp"><span id="ad"></span><button onclick="cp(ADDR)">Copy</button></div>
     <div class="cp"><span id="ex"></span><button onclick="cp(exact)">Copy</button></div>
     <div class="sep"></div>
