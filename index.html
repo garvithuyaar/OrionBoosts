@@ -20,6 +20,9 @@ button{font:inherit;color:inherit;border:0;background:none;cursor:pointer}
 a{color:inherit;text-decoration:none}
 .wrap{max-width:1040px;margin:0 auto;padding:0 20px}
 
+/* scroll blur wrap */
+#main-wrap { will-change: filter; transform: translateZ(0); }
+
 /* loader */
 #loader{position:fixed;inset:0;z-index:100;display:grid;place-items:center;background:linear-gradient(180deg,var(--bg2),var(--bg3));transition:opacity .7s,visibility .7s}
 #loader.done{opacity:0;visibility:hidden}
@@ -145,6 +148,9 @@ nav .x{flex:none}
 </style>
 </head>
 <body>
+<!-- SVG Filter for true directional vertical motion blur -->
+<svg style="display:none"><filter id="scroll-blur"><feGaussianBlur id="mblur" in="SourceGraphic" stdDeviation="0,0"/></filter></svg>
+
 <div id="loader"><div class="ld"><img src="1000056901.gif" alt="Orion Boosts Logo" class="ld-img"><b>Orion Boosts</b><div class="bar"><i id="lb"></i></div><button class="btn" id="en">Enter</button></div></div>
 
 <nav>
@@ -153,99 +159,103 @@ nav .x{flex:none}
   <button class="x" onclick="theme()" aria-label="Theme">◐</button><button class="pill" onclick="openBrowse()">Browse</button>
 </nav>
 
-<header class="hero" id="home">
-  <div class="blob b1"></div><div class="blob b2"></div>
-  <span class="badge">Delivered automatically, 24/7</span>
-  <h1>Boost with ease.</h1>
-  <p class="sub">Server boosts for your Discord community, delivered automatically after you pay. No waiting, no chasing.</p>
-  <div class="row">
-    <button class="btn" onclick="openBrowse()">Browse Products</button>
-    <a class="btn g" href="#reviews">Reviews</a>
-  </div>
-  <div class="stats">
-    <div class="st"><b data-n="144" data-s="+">0</b><span>Total customers</span></div>
-    <div class="st"><b data-n="49" data-s="+">0</b><span>Products delivered</span></div>
-    <div class="st"><b data-n="99" data-s="%">0</b><span>Success rate</span></div>
-  </div>
-</header>
+<!-- Main content wrapped for the blur effect -->
+<div id="main-wrap">
+  <header class="hero" id="home">
+    <div class="blob b1"></div><div class="blob b2"></div>
+    <span class="badge">Delivered automatically, 24/7</span>
+    <h1>Boost with ease.</h1>
+    <p class="sub">Server boosts for your Discord community, delivered automatically after you pay. No waiting, no chasing.</p>
+    <div class="row">
+      <button class="btn" onclick="openBrowse()">Browse Products</button>
+      <a class="btn g" href="#reviews">Reviews</a>
+    </div>
+    <div class="stats">
+      <div class="st"><b data-n="144" data-s="+">0</b><span>Total customers</span></div>
+      <div class="st"><b data-n="49" data-s="+">0</b><span>Products delivered</span></div>
+      <div class="st"><b data-n="99" data-s="%">0</b><span>Success rate</span></div>
+    </div>
+  </header>
 
-<section id="about"><div class="wrap rv">
-  <h2>What is Orion Boosts?</h2>
-  <p class="lead">Orion Boosts is an automated store for Discord server boosts. Pick a plan, paste your server link, pay in Litecoin, and your boosts are delivered without any manual work.</p>
-</div></section>
+  <section id="about"><div class="wrap rv">
+    <h2>What is Orion Boosts?</h2>
+    <p class="lead">Orion Boosts is an automated store for Discord server boosts. Pick a plan, paste your server link, pay in Litecoin, and your boosts are delivered without any manual work.</p>
+  </div></section>
 
-<section id="features"><div class="wrap">
-  <h2 class="rv">Features</h2><p class="lead rv">Everything is built to be quick and clear.</p>
-  <div class="grid">
-    <div class="c rv"><div class="ic">⚡</div><h3>Automatic delivery</h3><p>Orders start as soon as your payment is confirmed.</p></div>
-    <div class="c rv"><div class="ic">🔎</div><h3>Server preview</h3><p>See your server's logo, banner and member count before you pay.</p></div>
-    <div class="c rv"><div class="ic">🎚️</div><h3>Pick your amount</h3><p>Choose any even number of boosts from 2 to 30.</p></div>
-    <div class="c rv"><div class="ic">🔒</div><h3>Private checkout</h3><p>Pay with Litecoin. No accounts and no personal details.</p></div>
-    <div class="c rv"><div class="ic">⏱️</div><h3>Reserved amount</h3><p>Your exact LTC amount is held for 30 minutes while you pay.</p></div>
-    <div class="c rv"><div class="ic">🧾</div><h3>Order history</h3><p>Every completed order is saved in My orders on your device.</p></div>
-  </div>
-</div></section>
+  <section id="features"><div class="wrap">
+    <h2 class="rv">Features</h2><p class="lead rv">Everything is built to be quick and clear.</p>
+    <div class="grid">
+      <div class="c rv"><div class="ic">⚡</div><h3>Automatic delivery</h3><p>Orders start as soon as your payment is confirmed.</p></div>
+      <div class="c rv"><div class="ic">🔎</div><h3>Server preview</h3><p>See your server's logo, banner and member count before you pay.</p></div>
+      <div class="c rv"><div class="ic">🎚️</div><h3>Pick your amount</h3><p>Choose any even number of boosts from 2 to 30.</p></div>
+      <div class="c rv"><div class="ic">🔒</div><h3>Private checkout</h3><p>Pay with Litecoin. No accounts and no personal details.</p></div>
+      <div class="c rv"><div class="ic">⏱️</div><h3>Reserved amount</h3><p>Your exact LTC amount is held for 30 minutes while you pay.</p></div>
+      <div class="c rv"><div class="ic">🧾</div><h3>Order history</h3><p>Every completed order is saved in My orders on your device.</p></div>
+    </div>
+  </div></section>
 
-<section id="products"><div class="wrap">
-  <h2 class="rv">Products</h2><p class="lead rv">Two boost plans, priced per 2 boosts.</p>
-  <div class="grid">
-    <div class="c rv"><div class="ic">🚀</div><h3>1 Month Server Boosts</h3><p>Boosts that stay active for 1 month. Great for unlocking a level on a budget. Starts at $0.27 per 2 boosts.</p></div>
-    <div class="c rv"><div class="ic">💎</div><h3>3 Month Server Boosts</h3><p>Boosts that stay active for 3 months. Built for communities that want lasting perks. Starts at $0.88 per 2 boosts.</p></div>
-  </div>
-</div></section>
+  <section id="products"><div class="wrap">
+    <h2 class="rv">Products</h2><p class="lead rv">Two boost plans, priced per 2 boosts.</p>
+    <div class="grid">
+      <div class="c rv"><div class="ic">🚀</div><h3>1 Month Server Boosts</h3><p>Boosts that stay active for 1 month. Great for unlocking a level on a budget. Starts at $0.27 per 2 boosts.</p></div>
+      <div class="c rv"><div class="ic">💎</div><h3>3 Month Server Boosts</h3><p>Boosts that stay active for 3 months. Built for communities that want lasting perks. Starts at $0.88 per 2 boosts.</p></div>
+    </div>
+  </div></section>
 
-<section id="why"><div class="wrap">
-  <h2 class="rv">Why choose us</h2><p class="lead rv">Fair prices, fast delivery, and support when you need it.</p>
-  <div class="grid">
-    <div class="c rv"><h3>Low prices</h3><p>Boosts from $0.27, with no hidden fees at checkout.</p></div>
-    <div class="c rv"><h3>Fast starts</h3><p>Delivery begins right after your payment is confirmed.</p></div>
-    <div class="c rv"><h3>Clear checkout</h3><p>You see the server, quantity and total before you pay.</p></div>
-    <div class="c rv"><h3>Trusted by thousands</h3><p>Thousands of servers have been boosted through Orion.</p></div>
-  </div>
-</div></section>
+  <section id="why"><div class="wrap">
+    <h2 class="rv">Why choose us</h2><p class="lead rv">Fair prices, fast delivery, and support when you need it.</p>
+    <div class="grid">
+      <div class="c rv"><h3>Low prices</h3><p>Boosts from $0.27, with no hidden fees at checkout.</p></div>
+      <div class="c rv"><h3>Fast starts</h3><p>Delivery begins right after your payment is confirmed.</p></div>
+      <div class="c rv"><h3>Clear checkout</h3><p>You see the server, quantity and total before you pay.</p></div>
+      <div class="c rv"><h3>Trusted by thousands</h3><p>Thousands of servers have been boosted through Orion.</p></div>
+    </div>
+  </div></section>
 
-<section id="levels"><div class="wrap">
-  <h2 class="rv">Boost levels</h2><p class="lead rv">More boosts unlock more perks. Perks are set by Discord and can change.</p>
-  <div class="grid">
-    <div class="c rv"><div class="ic">1</div><h3>Level 1 · 2 boosts</h3><p>Animated server icon, more emoji slots and better audio quality.</p></div>
-    <div class="c rv"><div class="ic">2</div><h3>Level 2 · 7 boosts</h3><p>Server banner, higher stream quality and bigger file uploads.</p></div>
-    <div class="c rv" style="grid-column:1/-1"><div class="ic">3</div><h3>Level 3 · 14 boosts</h3><p>Vanity invite URL, the best audio quality and the largest upload limit.</p></div>
-  </div>
-</div></section>
+  <section id="levels"><div class="wrap">
+    <h2 class="rv">Boost levels</h2><p class="lead rv">More boosts unlock more perks. Perks are set by Discord and can change.</p>
+    <div class="grid">
+      <div class="c rv"><div class="ic">1</div><h3>Level 1 · 2 boosts</h3><p>Animated server icon, more emoji slots and better audio quality.</p></div>
+      <div class="c rv"><div class="ic">2</div><h3>Level 2 · 7 boosts</h3><p>Server banner, higher stream quality and bigger file uploads.</p></div>
+      <div class="c rv" style="grid-column:1/-1"><div class="ic">3</div><h3>Level 3 · 14 boosts</h3><p>Vanity invite URL, the best audio quality and the largest upload limit.</p></div>
+    </div>
+  </div></section>
 
-<section id="how"><div class="wrap stp">
-  <h2 class="rv">How it works</h2><p class="lead rv">Four steps from product to boosted server.</p>
-  <div class="grid">
-    <div class="c rv"><div class="ic">1</div><h3>Pick a plan</h3><p>Choose 1M or 3M boosts and slide to the amount you want.</p></div>
-    <div class="c rv"><div class="ic">2</div><h3>Add your server</h3><p>Paste your invite link and check the server preview.</p></div>
-    <div class="c rv"><div class="ic">3</div><h3>Pay in Litecoin</h3><p>Scan the QR code or copy the address and exact amount.</p></div>
-    <div class="c rv"><div class="ic">4</div><h3>Get boosted</h3><p>Submit your transaction ID and delivery starts once it is confirmed.</p></div>
-  </div>
-</div></section>
+  <section id="how"><div class="wrap stp">
+    <h2 class="rv">How it works</h2><p class="lead rv">Four steps from product to boosted server.</p>
+    <div class="grid">
+      <div class="c rv"><div class="ic">1</div><h3>Pick a plan</h3><p>Choose 1M or 3M boosts and slide to the amount you want.</p></div>
+      <div class="c rv"><div class="ic">2</div><h3>Add your server</h3><p>Paste your invite link and check the server preview.</p></div>
+      <div class="c rv"><div class="ic">3</div><h3>Pay in Litecoin</h3><p>Scan the QR code or copy the address and exact amount.</p></div>
+      <div class="c rv"><div class="ic">4</div><h3>Get boosted</h3><p>Submit your transaction ID and delivery starts once it is confirmed.</p></div>
+    </div>
+  </div></section>
 
-<section id="reviews"><div class="wrap rev">
-  <h2 class="rv">Reviews</h2><p class="lead rv">What our customers say.</p>
-  <div class="grid">
-    <div class="c rv"><div class="stars">★★★★★</div><p>Boosts showed up in minutes. Level 2 unlocked the same hour.</p><small>Kairo, gaming server</small></div>
-    <div class="c rv"><div class="stars">★★★★★</div><p>Checkout was simple and the price was the lowest I found.</p><small>Mina, art community</small></div>
-        <div class="c rv"><div class="stars">★★★★★</div><p>Third order here. Every one was delivered without any problems.</p><small>Sol, music server</small></div>
-  </div>
-</div></section>
+  <section id="reviews"><div class="wrap rev">
+    <h2 class="rv">Reviews</h2><p class="lead rv">What our customers say.</p>
+    <div class="grid">
+      <div class="c rv"><div class="stars">★★★★★</div><p>Boosts showed up in minutes. Level 2 unlocked the same hour.</p><small>Kairo, gaming server</small></div>
+      <div class="c rv"><div class="stars">★★★★★</div><p>Checkout was simple and the price was the lowest I found.</p><small>Mina, art community</small></div>
+      <div class="c rv"><div class="stars">★★★★★</div><p>Seeing my server preview before paying gave me confidence.</p><small>Draven, dev hub</small></div>
+      <div class="c rv"><div class="stars">★★★★★</div><p>Third order here. Every one was delivered without any problems.</p><small>Sol, music server</small></div>
+    </div>
+  </div></section>
 
-<section id="faq"><div class="wrap">
-  <h2 class="rv">Questions</h2><p class="lead rv">Quick answers before you buy.</p>
-  <details class="rv"><summary>Why only even numbers of boosts?</summary><p>Boosts are sold in pairs, so you can pick any even amount from 2 to 30.</p></details>
-  <details class="rv"><summary>What is the difference between 1M and 3M?</summary><p>1M boosts last 1 month and 3M boosts last 3 months. 1M costs $0.27 and 3M costs $0.88 per 2 boosts.</p></details>
-  <details class="rv"><summary>Do you need my Discord password?</summary><p>Never. We only need your server invite link.</p></details>
-  <details class="rv"><summary>How do I pay?</summary><p>Pay in Litecoin (LTC). Send the exact amount shown at checkout, then enter your transaction ID.</p></details>
-  <details class="rv"><summary>When does delivery start?</summary><p>As soon as your payment is confirmed on the network.</p></details>
-</div></section>
+  <section id="faq"><div class="wrap">
+    <h2 class="rv">Questions</h2><p class="lead rv">Quick answers before you buy.</p>
+    <details class="rv"><summary>Why only even numbers of boosts?</summary><p>Boosts are sold in pairs, so you can pick any even amount from 2 to 30.</p></details>
+    <details class="rv"><summary>What is the difference between 1M and 3M?</summary><p>1M boosts last 1 month and 3M boosts last 3 months. 1M costs $0.27 and 3M costs $0.88 per 2 boosts.</p></details>
+    <details class="rv"><summary>Do you need my Discord password?</summary><p>Never. We only need your server invite link.</p></details>
+    <details class="rv"><summary>How do I pay?</summary><p>Pay in Litecoin (LTC). Send the exact amount shown at checkout, then enter your transaction ID.</p></details>
+    <details class="rv"><summary>When does delivery start?</summary><p>As soon as your payment is confirmed on the network.</p></details>
+  </div></section>
 
-<footer><div class="wrap">
-  <div class="logo" style="justify-content:center"><img src="1000056901.gif" alt="Logo" class="brand-logo">Orion Boosts</div>
-  <div class="fl"><a href="#features">Features</a><a href="#products">Products</a><a href="#why">Why us</a><a href="#reviews">Reviews</a></div>
-  <button onclick="openOrders()" style="text-decoration:underline;color:var(--ink);font-size:13px">My orders</button><br>Not affiliated with Discord Inc.<br>© 2026 Orion Boosts. All rights reserved.
-</div></footer>
+  <footer><div class="wrap">
+    <div class="logo" style="justify-content:center"><img src="1000056901.gif" alt="Logo" class="brand-logo">Orion Boosts</div>
+    <div class="fl"><a href="#features">Features</a><a href="#products">Products</a><a href="#why">Why us</a><a href="#reviews">Reviews</a></div>
+    <button onclick="openOrders()" style="text-decoration:underline;color:var(--ink);font-size:13px">My orders</button><br>Not affiliated with Discord Inc.<br>© 2026 Orion Boosts. All rights reserved.
+  </div></footer>
+</div> <!-- End of main-wrap -->
 
 <!-- Browse -->
 <div class="ov" id="ovB" onclick="if(event.target===this)closeAll()"><div class="sheet">
@@ -380,6 +390,38 @@ function claim(){
   $("te").textContent="";tries=0;busy=true;go(5);
   const run=async()=>{$("chk").textContent="Last checked "+new Date().toLocaleTimeString();if(await checkPayment(t)){clearInterval(poll);busy=false;done(t)}};
   run();poll=setInterval(run,30000);
+}
+
+/* Scroll Motion Blur */
+const blurAmt = $("mblur"), blurWrap = $("main-wrap");
+let vel = 0, lastY = window.scrollY, lastT = performance.now();
+function applyBlur(t) {
+  const dt = t - lastT;
+  const y = window.scrollY;
+  const curVel = Math.abs(y - lastY) / (dt || 16);
+  
+  // Smooth the velocity so the blur ramps up/down cleanly
+  vel += (curVel - vel) * 0.12; 
+  
+  // Multiply velocity for heavy effect. Cap at 40px blur
+  const b = Math.min(vel * 12, 40); 
+  
+  if (b > 0.5) {
+    blurAmt.setAttribute("stdDeviation", `0,${b.toFixed(1)}`);
+    if(blurWrap.style.filter !== 'url(#scroll-blur)') blurWrap.style.filter = 'url(#scroll-blur)';
+  } else {
+    blurAmt.setAttribute("stdDeviation", "0,0");
+    blurWrap.style.filter = 'none';
+  }
+  
+  lastY = y; 
+  lastT = t;
+  requestAnimationFrame(applyBlur);
+}
+
+// Ensure it only runs if the user hasn't requested reduced motion on their OS
+if(!window.matchMedia('(prefers-reduced-motion: reduce)').matches){
+  requestAnimationFrame(applyBlur);
 }
 </script>
 </body>
