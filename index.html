@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Orion Boosts</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"></script>
+<style>
+:root{--bg1:#1b1b1e;--bg2:#252528;--bg3:#2c2018;--ink:#f3f1ee;--mute:#a3a3aa;--card:rgba(52,52,57,.7);--line:rgba(255,255,255,.09);--acc:#ff7a1a;--acc2:#c2410c;--ok:#2fb36d;--bad:#e5484d;--btn:#ff7a1a;--btnt:#1b1b1e;--pill:#323236;--shadow:0 10px 40px rgba(0,0,0,.45);
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media print{:root{--bg1:#1a1722;--bg2:#17192b;--bg3:#241b1e;--ink:#f4f2fa;--mute:#a7a5b8;--card:rgba(40,38,56,.72);--line:rgba(255,255,255,.1);--btn:#fff;--btnt:#16161f;--pill:#2a2838;--shadow:0 10px 40px rgba(0,0,0,.4)}}
+:root[data-theme="off"]{--bg1:#1a1722;--bg2:#17192b;--bg3:#241b1e;--ink:#f4f2fa;--mute:#a7a5b8;--card:rgba(40,38,56,.72);--line:rgba(255,255,255,.1);--btn:#fff;--btnt:#16161f;--pill:#2a2838;--shadow:0 10px 40px rgba(0,0,0,.4)}
+*{box-sizing:border-box;margin:0;-webkit-tap-highlight-color:transparent}
+html{scroll-behavior:smooth;scroll-padding-top:90px}
+body{font-family:Inter,"SF Pro Text",-apple-system,BlinkMacSystemFont,"Helvetica Neue",Arial,sans-serif;color:var(--ink);background:linear-gradient(180deg,var(--bg2),var(--bg1) 45%,var(--bg3));background-attachment:fixed;min-height:100%;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+body.lock{overflow:hidden}
+button{font:inherit;color:inherit;border:0;background:none;cursor:pointer}
+a{color:inherit;text-decoration:none}
+.wrap{max-width:1040px;margin:0 auto;padding:0 20px}
+
+/* loader */
+#loader{position:fixed;inset:0;z-index:100;display:grid;place-items:center;background:linear-gradient(180deg,var(--bg2),var(--bg3));transition:opacity .7s,visibility .7s}
+#loader.done{opacity:0;visibility:hidden}
+.ld{text-align:center}
+
+/* Logo animations and styles */
+.brand-logo {width: 24px; height: 24px; border-radius: 6px; object-fit: cover; display: block;}
+.ld-img {width: 80px; height: 80px; margin: 0 auto 22px; border-radius: 20px; object-fit: cover; display: block; animation: pulse 2s infinite ease-in-out; box-shadow: 0 8px 30px rgba(255, 122, 26, 0.3);}
+@keyframes pulse {0%, 100% {transform: scale(1); box-shadow: 0 8px 30px rgba(255, 122, 26, 0.3);} 50% {transform: scale(1.06); box-shadow: 0 12px 40px rgba(255, 122, 26, 0.6);}}
+.ld b{font-size:22px;letter-spacing:-.02em}
+.bar{width:180px;height:4px;border-radius:4px;background:var(--line);margin:14px auto 0;overflow:hidden}
+.bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--acc),var(--acc2));transition:width .2s}
+
+/* nav */
+nav{position:fixed;top:calc(14px + env(safe-area-inset-top,0px));left:50%;transform:translateX(-50%);z-index:50;display:flex;align-items:center;gap:6px;padding:8px 8px 8px 16px;background:var(--pill);border-radius:999px;box-shadow:var(--shadow);font-size:13px;width:calc(100% - 28px);max-width:520px;justify-content:space-between;border:1px solid var(--line)}
+.logo{display:flex;align-items:center;gap:8px;font-weight:700;font-size:15px;letter-spacing:-.02em;transition:opacity .2s}
+.logo:hover{opacity:0.8}
+nav .lk{display:flex;gap:14px;font-weight:500}
+nav .lk a{color:var(--mute);transition:color .2s}nav .lk a:hover{color:var(--ink)}
+.pill{padding:10px 18px;border-radius:999px;background:var(--btn);color:var(--btnt);font-weight:600;font-size:13px;transition:all .25s cubic-bezier(.3,1.4,.5,1)}
+.pill:hover{filter:brightness(1.1); transform:translateY(-1px)}
+.pill:active{transform:scale(.94)}
+
+/* hero */
+.hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:110px 20px 60px;position:relative}
+.blob{position:absolute;border-radius:50%;filter:blur(70px);opacity:.55;pointer-events:none;animation:float 9s ease-in-out infinite}
+.b1{width:280px;height:280px;background:var(--acc);top:18%;left:-80px}
+.b2{width:300px;height:300px;background:var(--acc2);bottom:12%;right:-90px;animation-delay:-4s}
+@keyframes float{50%{transform:translate(30px,-40px) scale(1.1)}}
+.badge{display:inline-block;padding:7px 14px;border-radius:999px;background:var(--pill);font-size:12px;font-weight:500;box-shadow:var(--shadow);margin-bottom:22px;border:1px solid var(--line)}
+h1{font-size:clamp(44px,9vw,84px);line-height:1;letter-spacing:-.045em;font-weight:700}
+.sub{margin:20px auto 30px;max-width:460px;color:var(--mute);font-size:clamp(16px,2.4vw,19px);line-height:1.45}
+.row{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.btn{padding:15px 26px;border-radius:999px;font-weight:600;font-size:15px;background:var(--btn);color:var(--btnt);box-shadow:var(--shadow);transition:all .3s cubic-bezier(.3,1.4,.5,1); display:inline-flex; align-items:center; justify-content:center}
+.btn:hover{transform:translateY(-2px) scale(1.03); filter:brightness(1.1)}
+.btn:active{transform:scale(.95)}
+.btn.g{background:var(--pill);color:var(--ink);border:1px solid var(--line)}
+.btn.g:hover{background:var(--card)}
+.btn[disabled]{opacity:.4;pointer-events:none;filter:grayscale(1)}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:54px;width:100%;max-width:640px}
+.st{padding:18px 8px;border-radius:24px;background:var(--card);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid var(--line)}
+.st b{display:block;font-size:clamp(22px,5vw,34px);letter-spacing:-.03em}
+.st span{font-size:12px;color:var(--mute)}
+
+/* sections */
+section{padding:70px 0}
+h2{font-size:clamp(30px,6vw,46px);letter-spacing:-.035em;line-height:1.05;margin-bottom:12px;text-align:center}
+.lead{color:var(--mute);text-align:center;max-width:540px;margin:0 auto 38px;line-height:1.5;font-size:17px}
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+.c{padding:24px;border-radius:28px;background:var(--card);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid var(--line);transition:transform .3s ease, border-color .3s}
+.c:hover{transform:translateY(-4px); border-color:rgba(255,255,255,0.2)}
+.c h3{font-size:18px;letter-spacing:-.02em;margin:12px 0 6px}
+.c p{font-size:14px;color:var(--mute);line-height:1.5}
+.ic{width:44px;height:44px;border-radius:14px;display:grid;place-items:center;font-size:22px;background:linear-gradient(135deg,var(--acc),var(--acc2));color:#fff}
+.rv{opacity:0;transform:translateY(26px);transition:opacity .8s,transform .8s cubic-bezier(.2,.8,.2,1)}
+.rv.in{opacity:1;transform:none}
+.rev .c{font-size:14px}.rev .c p{color:var(--ink);margin:8px 0}.rev small{color:var(--mute)}
+.stars{color:#ffb020;letter-spacing:2px}
+footer{padding:40px 0 50px;text-align:center;color:var(--mute);font-size:13px;line-height:1.8}
+footer .fl{display:flex;gap:18px;justify-content:center;margin:10px 0 14px;flex-wrap:wrap;font-weight:500;color:var(--ink)}
+
+/* modal */
+.ov{position:fixed;inset:0;z-index:70;background:rgba(15,12,25,.45);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);display:flex;align-items:flex-end;justify-content:center;opacity:0;visibility:hidden;transition:.35s}
+.ov.on{opacity:1;visibility:visible}
+.sheet{width:100%;max-width:640px;max-height:92vh;overflow:auto;background:var(--bg1);border-radius:32px 32px 0 0;padding:22px 20px calc(28px + env(safe-area-inset-bottom,0px));transform:translateY(60px) scale(.97);transition:transform .5s cubic-bezier(.2,1.1,.3,1)}
+.ov.on .sheet{transform:none}
+@media(min-width:700px){.ov{align-items:center}.sheet{border-radius:32px}}
+.sh{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
+.sh h3{font-size:22px;letter-spacing:-.03em}
+.x{width:34px;height:34px;border-radius:50%;background:var(--line);font-size:16px; transition:background .2s, transform .2s}
+.x:hover{background:rgba(255,255,255,0.15); transform:rotate(90deg)}
+.pc{padding:18px 14px;border-radius:26px;background:var(--card);border:1px solid var(--line);text-align:center;display:flex;flex-direction:column;gap:6px}
+.pc .ic{margin:0 auto}.pc h4{font-size:17px;letter-spacing:-.02em}.pc p{font-size:12px;color:var(--mute);line-height:1.4}
+.pc .pr{font-size:22px;font-weight:700;letter-spacing:-.03em}.pc .pr small{font-size:11px;color:var(--mute);font-weight:500}
+.pc .btn{padding:11px;font-size:14px;margin-top:6px}
+.step{display:none;animation:pop .45s cubic-bezier(.2,1.1,.3,1)}.step.on{display:block}
+@keyframes pop{from{opacity:0;transform:translateY(16px) scale(.98)}}
+.dots{display:flex;gap:6px;margin-bottom:16px}.dots i{flex:1;height:4px;border-radius:4px;background:var(--line);transition:.4s}.dots i.on{background:linear-gradient(90deg,var(--acc),var(--acc2))}
+.big{font-size:56px;font-weight:700;letter-spacing:-.04em;text-align:center}
+.mut{color:var(--mute);font-size:13px;text-align:center}
+input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:10px;border-radius:10px;margin:22px 0 8px;background:linear-gradient(90deg,var(--acc),var(--acc2)) 0/var(--p,0%) 100% no-repeat,var(--line);outline:none}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:32px;height:32px;border-radius:50%;background:#fff;box-shadow:0 3px 12px rgba(0,0,0,.3);border:0; cursor:pointer}
+input[type=range]::-moz-range-thumb{width:32px;height:32px;border-radius:50%;background:#fff;border:0;box-shadow:0 3px 12px rgba(0,0,0,.3); cursor:pointer}
+.tk{display:flex;justify-content:space-between;font-size:11px;color:var(--mute);margin-bottom:18px}
+input[type=text]{width:100%;padding:16px 18px;border-radius:18px;border:1px solid var(--line);background:var(--card);color:var(--ink);font:inherit;font-size:16px;outline:none;transition:border-color .25s, box-shadow .25s}
+input[type=text]:focus{border-color:var(--acc); box-shadow:0 0 0 3px rgba(255, 122, 26, 0.2)}
+.err{color:var(--bad);font-size:13px;margin:8px 4px;min-height:18px}
+.srv{border-radius:24px;overflow:hidden;background:var(--card);border:1px solid var(--line);margin:14px 0}
+.bn{height:96px;background-size:cover;background-position:center}
+.lg{width:64px;height:64px;border-radius:20px;margin:-32px 0 0 16px;border:4px solid var(--bg1);display:grid;place-items:center;font-size:26px;font-weight:700;color:#fff}
+.srv .nm{padding:8px 16px 4px;font-weight:700;font-size:18px;letter-spacing:-.02em}
+.kv{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;padding:8px 16px 16px;font-size:12px;color:var(--mute)}
+.kv b{display:block;color:var(--ink);font-size:15px;word-break:break-all}
+.sum div{display:flex;justify-content:space-between;padding:13px 0;border-bottom:1px solid var(--line);font-size:15px}
+.sum div:last-child{border:0;font-weight:700;font-size:19px}
+.chk{display:flex;gap:12px;align-items:flex-start;padding:14px 0;font-size:14px;color:var(--mute);line-height:1.4;cursor:pointer}
+.chk input{width:22px;height:22px;accent-color:var(--acc2);flex:none; cursor:pointer}
+.qr{background:#fff;padding:14px;border-radius:24px;width:fit-content;margin:6px auto 14px;box-shadow:var(--shadow)}
+.qr svg,.qr img{display:block;width:200px;height:200px}
+.cp{display:flex;gap:8px;align-items:center;padding:12px 14px;border-radius:16px;background:var(--card);border:1px solid var(--line);font-size:12px;margin:8px 0;word-break:break-all}
+.cp span{flex:1}.cp button{padding:7px 12px;border-radius:999px;background:var(--btn);color:var(--btnt);font-size:12px;font-weight:600;flex:none}
+.amt{font-size:30px;font-weight:700;text-align:center;letter-spacing:-.03em;margin-top:4px}
+.sep{height:1px;background:var(--line);margin:22px 0}
+.spin{width:54px;height:54px;border-radius:50%;margin:20px auto;border:5px solid var(--line);border-top-color:var(--acc2);animation:spin 1s linear infinite}
+.ok{width:84px;height:84px;border-radius:50%;background:var(--ok);margin:10px auto 16px;display:grid;place-items:center;color:#fff;font-size:42px;animation:bounce .7s cubic-bezier(.2,1.6,.4,1)}
+@keyframes bounce{from{transform:scale(0)}}
+.toast{position:fixed;left:50%;bottom:calc(30px + env(safe-area-inset-bottom,0px));transform:translate(-50%,40px);opacity:0;background:var(--btn);color:var(--btnt);padding:12px 20px;border-radius:999px;font-size:14px;font-weight:600;z-index:120;transition:.4s}
+.toast.on{opacity:1;transform:translate(-50%,0)}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition-duration:.01ms!important}.rv{opacity:1;transform:none}}
+h1,h2,.big,.amt,.ld b,.logo,.sh h3,.pc .pr{font-family:Inter,"SF Pro Display",-apple-system,sans-serif;font-weight:700}
+#en{display:none;margin-top:26px;animation:pop .6s both}
+.ld b{font-size:30px}
+.lg{overflow:hidden}.lg img{width:100%;height:100%;object-fit:cover;display:block}
+.tag{font-size:10px;font-weight:600;padding:3px 8px;border-radius:999px;background:var(--line);color:var(--mute);vertical-align:middle}
+.chips{display:flex;gap:8px;justify-content:center;margin:4px 0 14px}.chips button{padding:8px 16px;border-radius:999px;background:var(--card);border:1px solid var(--line);font-size:13px;font-weight:600;transition:all .25s cubic-bezier(.3,1.4,.5,1)}.chips button:hover{background:var(--line)}.chips button:active{transform:scale(.92)}
+details{padding:18px 20px;border-radius:22px;background:var(--card);border:1px solid var(--line);margin-bottom:10px}
+summary{font-weight:600;font-size:16px;cursor:pointer;list-style:none;display:flex;justify-content:space-between}summary::after{content:"+";font-size:20px;transition:transform .3s}details[open] summary::after{transform:rotate(45deg)}
+details p{margin-top:10px;font-size:14px;color:var(--mute);line-height:1.5;animation:pop .4s}
+.stp .ic{font-weight:700;font-size:18px}
+nav .x{flex:none}
+:root[data-theme="light"]{--bg1:#f3f1ee;--bg2:#e9e7e4;--bg3:#fde6d3;--ink:#1f1f23;--mute:#66666e;--card:rgba(255,255,255,.75);--line:rgba(0,0,0,.08);--btn:#e8590c;--btnt:#fff;--pill:#fff;--shadow:0 10px 40px rgba(80,60,40,.14)}
+#lv{color:var(--acc);font-weight:600}
+</style>
+</head>
+<body>
+<div id="loader"><div class="ld"><img src="1000056901.gif" alt="Orion Boosts Logo" class="ld-img"><b>Orion Boosts</b><div class="bar"><i id="lb"></i></div><button class="btn" id="en">Enter</button></div></div>
+
+<nav>
+  <a class="logo" href="#home"><img src="1000056901.gif" alt="Logo" class="brand-logo">Orion Boosts</a>
+  <div class="lk"><a href="#features">Features</a><a href="#why">Why us</a></div>
+  <button class="x" onclick="theme()" aria-label="Theme">◐</button><button class="pill" onclick="openBrowse()">Browse</button>
+</nav>
+
+<header class="hero" id="home">
+  <div class="blob b1"></div><div class="blob b2"></div>
+  <span class="badge">Delivered automatically, 24/7</span>
+  <h1>Boost with ease.</h1>
+  <p class="sub">Server boosts for your Discord community, delivered automatically after you pay. No waiting, no chasing.</p>
+  <div class="row">
+    <button class="btn" onclick="openBrowse()">Browse Products</button>
+    <a class="btn g" href="#reviews">Reviews</a>
+  </div>
+  <div class="stats">
+    <div class="st"><b data-n="144" data-s="+">0</b><span>Total customers</span></div>
+    <div class="st"><b data-n="49" data-s="+">0</b><span>Products delivered</span></div>
+    <div class="st"><b data-n="99" data-s="%">0</b><span>Success rate</span></div>
+  </div>
+</header>
+
+<section id="about"><div class="wrap rv">
+  <h2>What is Orion Boosts?</h2>
+  <p class="lead">Orion Boosts is an automated store for Discord server boosts. Pick a plan, paste your server link, pay in Litecoin, and your boosts are delivered without any manual work.</p>
+</div></section>
+
+<section id="features"><div class="wrap">
+  <h2 class="rv">Features</h2><p class="lead rv">Everything is built to be quick and clear.</p>
+  <div class="grid">
+    <div class="c rv"><div class="ic">⚡</div><h3>Automatic delivery</h3><p>Orders start as soon as your payment is confirmed.</p></div>
+    <div class="c rv"><div class="ic">🔎</div><h3>Server preview</h3><p>See your server's logo, banner and member count before you pay.</p></div>
+    <div class="c rv"><div class="ic">🎚️</div><h3>Pick your amount</h3><p>Choose any even number of boosts from 2 to 30.</p></div>
+    <div class="c rv"><div class="ic">🔒</div><h3>Private checkout</h3><p>Pay with Litecoin. No accounts and no personal details.</p></div>
+    <div class="c rv"><div class="ic">⏱️</div><h3>Reserved amount</h3><p>Your exact LTC amount is held for 30 minutes while you pay.</p></div>
+    <div class="c rv"><div class="ic">🧾</div><h3>Order history</h3><p>Every completed order is saved in My orders on your device.</p></div>
+  </div>
+</div></section>
+
+<section id="products"><div class="wrap">
+  <h2 class="rv">Products</h2><p class="lead rv">Two boost plans, priced per 2 boosts.</p>
+  <div class="grid">
+    <div class="c rv"><div class="ic">🚀</div><h3>1 Month Server Boosts</h3><p>Boosts that stay active for 1 month. Great for unlocking a level on a budget. Starts at $0.27 per 2 boosts.</p></div>
+    <div class="c rv"><div class="ic">💎</div><h3>3 Month Server Boosts</h3><p>Boosts that stay active for 3 months. Built for communities that want lasting perks. Starts at $0.88 per 2 boosts.</p></div>
+  </div>
+</div></section>
+
+<section id="why"><div class="wrap">
+  <h2 class="rv">Why choose us</h2><p class="lead rv">Fair prices, fast delivery, and support when you need it.</p>
+  <div class="grid">
+    <div class="c rv"><h3>Low prices</h3><p>Boosts from $0.27, with no hidden fees at checkout.</p></div>
+    <div class="c rv"><h3>Fast starts</h3><p>Delivery begins right after your payment is confirmed.</p></div>
+    <div class="c rv"><h3>Clear checkout</h3><p>You see the server, quantity and total before you pay.</p></div>
+    <div class="c rv"><h3>Trusted by thousands</h3><p>Thousands of servers have been boosted through Orion.</p></div>
+  </div>
+</div></section>
+
+<section id="levels"><div class="wrap">
+  <h2 class="rv">Boost levels</h2><p class="lead rv">More boosts unlock more perks. Perks are set by Discord and can change.</p>
+  <div class="grid">
+    <div class="c rv"><div class="ic">1</div><h3>Level 1 · 2 boosts</h3><p>Animated server icon, more emoji slots and better audio quality.</p></div>
+    <div class="c rv"><div class="ic">2</div><h3>Level 2 · 7 boosts</h3><p>Server banner, higher stream quality and bigger file uploads.</p></div>
+    <div class="c rv" style="grid-column:1/-1"><div class="ic">3</div><h3>Level 3 · 14 boosts</h3><p>Vanity invite URL, the best audio quality and the largest upload limit.</p></div>
+  </div>
+</div></section>
+
+<section id="how"><div class="wrap stp">
+  <h2 class="rv">How it works</h2><p class="lead rv">Four steps from product to boosted server.</p>
+  <div class="grid">
+    <div class="c rv"><div class="ic">1</div><h3>Pick a plan</h3><p>Choose 1M or 3M boosts and slide to the amount you want.</p></div>
+    <div class="c rv"><div class="ic">2</div><h3>Add your server</h3><p>Paste your invite link and check the server preview.</p></div>
+    <div class="c rv"><div class="ic">3</div><h3>Pay in Litecoin</h3><p>Scan the QR code or copy the address and exact amount.</p></div>
+    <div class="c rv"><div class="ic">4</div><h3>Get boosted</h3><p>Submit your transaction ID and delivery starts once it is confirmed.</p></div>
+  </div>
+</div></section>
+
+<section id="reviews"><div class="wrap rev">
+  <h2 class="rv">Reviews</h2><p class="lead rv">What our customers say.</p>
+  <div class="grid">
+    <div class="c rv"><div class="stars">★★★★★</div><p>Boosts showed up in minutes. Level 2 unlocked the same hour.</p><small>Kairo, gaming server</small></div>
+    <div class="c rv"><div class="stars">★★★★★</div><p>Checkout was simple and the price was the lowest I found.</p><small>Mina, art community</small></div>
+        <div class="c rv"><div class="stars">★★★★★</div><p>Third order here. Every one was delivered without any problems.</p><small>Sol, music server</small></div>
+  </div>
+</div></section>
+
+<section id="faq"><div class="wrap">
+  <h2 class="rv">Questions</h2><p class="lead rv">Quick answers before you buy.</p>
+  <details class="rv"><summary>Why only even numbers of boosts?</summary><p>Boosts are sold in pairs, so you can pick any even amount from 2 to 30.</p></details>
+  <details class="rv"><summary>What is the difference between 1M and 3M?</summary><p>1M boosts last 1 month and 3M boosts last 3 months. 1M costs $0.27 and 3M costs $0.88 per 2 boosts.</p></details>
+  <details class="rv"><summary>Do you need my Discord password?</summary><p>Never. We only need your server invite link.</p></details>
+  <details class="rv"><summary>How do I pay?</summary><p>Pay in Litecoin (LTC). Send the exact amount shown at checkout, then enter your transaction ID.</p></details>
+  <details class="rv"><summary>When does delivery start?</summary><p>As soon as your payment is confirmed on the network.</p></details>
+</div></section>
+
+<footer><div class="wrap">
+  <div class="logo" style="justify-content:center"><img src="1000056901.gif" alt="Logo" class="brand-logo">Orion Boosts</div>
+  <div class="fl"><a href="#features">Features</a><a href="#products">Products</a><a href="#why">Why us</a><a href="#reviews">Reviews</a></div>
+  <button onclick="openOrders()" style="text-decoration:underline;color:var(--ink);font-size:13px">My orders</button><br>Not affiliated with Discord Inc.<br>© 2026 Orion Boosts. All rights reserved.
+</div></footer>
+
+<!-- Browse -->
+<div class="ov" id="ovB" onclick="if(event.target===this)closeAll()"><div class="sheet">
+  <div class="sh"><h3>Browse products</h3><button class="x" onclick="closeAll()">✕</button></div>
+  <div class="grid">
+    <div class="pc"><div class="ic">🚀</div><h4>1M Server Boosts</h4><p>Lasts 1 month<br>Best for short boosts</p><div class="pr">$0.27 <small>/ 2 boosts</small></div><button class="btn" onclick="buy('1M')">Buy</button></div>
+    <div class="pc"><div class="ic">💎</div><h4>3M Server Boosts</h4><p>Lasts 3 months<br>Best value per month</p><div class="pr">$0.88 <small>/ 2 boosts</small></div><button class="btn" onclick="buy('3M')">Buy</button></div>
+  </div>
+</div></div>
+
+<!-- Checkout -->
+<div class="ov" id="ovC" onclick="if(event.target===this&&!busy)closeAll()"><div class="sheet">
+  <div class="sh"><h3 id="ct">Select quantity</h3><button class="x" onclick="closeAll()">✕</button></div>
+  <div class="dots"><i></i><i></i><i></i><i></i></div>
+
+  <div class="step" id="s1">
+    <div class="mut" id="pn"></div>
+    <div class="big" id="qv">2</div><div class="mut">boosts</div>
+    <input type="range" id="sl" min="2" max="30" step="2" value="2">
+    <div class="chips"><button onclick="setQ(2)">2</button><button onclick="setQ(10)">10</button><button onclick="setQ(20)">20</button><button onclick="setQ(30)">30</button></div>
+    <div class="amt" id="tp">$0.00</div><div class="mut" id="lv" style="margin-top:6px"></div>
+    <button class="btn" style="width:100%;margin-top:18px" onclick="go(2)">Continue</button>
+  </div>
+
+  <div class="step" id="s2">
+    <input type="text" id="inv" placeholder="discord.gg/yourserver" autocapitalize="off" autocorrect="off" spellcheck="false">
+    <div class="err" id="er"></div>
+    <div id="sv"></div>
+    <button class="btn" id="lb2" style="width:100%" onclick="lookup()">Find server</button>
+  </div>
+
+  <div class="step" id="s3">
+    <div class="sum" id="sm"></div>
+    <label class="chk"><input type="checkbox" id="cf" onchange="document.getElementById('pay').disabled=!this.checked"><span>I confirm the server, quantity and total are correct.</span></label>
+    <button class="btn" id="pay" style="width:100%" disabled onclick="go(4)">Confirm and proceed</button>
+  </div>
+
+  <div class="step" id="s4">
+    <div class="qr" id="qr"></div>
+    <div class="mut">Send exactly</div>
+    <div class="amt" id="la"></div>
+    <div class="mut" id="ua"></div><div class="mut" id="cd" style="margin-top:4px"></div>
+    <div class="cp"><span id="ad"></span><button onclick="cp(ADDR)">Copy</button></div>
+    <div class="cp"><span id="ex"></span><button onclick="cp(exact)">Copy</button></div>
+    <div class="sep"></div>
+    <h3 style="font-size:18px;letter-spacing:-.02em;text-align:center">Already paid?</h3>
+    <p class="mut" style="margin:6px 0 12px">Enter your 64-character transaction ID.</p>
+    <input type="text" id="tx" placeholder="Transaction ID" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="64">
+    <div class="err" id="te"></div>
+    <button class="btn" style="width:100%" onclick="claim()">Verify payment</button>
+  </div>
+
+  <div class="step" id="s5" style="text-align:center">
+    <div class="spin"></div><h3 style="font-size:20px">Verifying your payment</h3>
+    <p class="mut" style="margin-top:8px">This can take a few minutes. Keep this window open.</p>
+    <p class="mut" id="chk" style="margin-top:14px"></p>
+  </div>
+
+  <div class="step" id="s6" style="text-align:center">
+    <div class="ok">✓</div><h3 style="font-size:22px;letter-spacing:-.03em">Payment received</h3>
+    <p class="mut" id="oid" style="margin:8px 0 4px;font-weight:600"></p><p class="mut" style="margin:0 0 18px">Your boosts are being delivered to your server.</p>
+    <button class="btn" onclick="closeAll()">Done</button>
+  </div>
+</div></div>
+<div class="ov" id="ovO" onclick="if(event.target===this)closeAll()"><div class="sheet"><div class="sh"><h3>My orders</h3><button class="x" onclick="closeAll()">✕</button></div><div id="ol"></div></div></div>
+<div class="toast" id="ts"></div>
+
+<script>
+const ADDR="ltc1qrlygyv2z8am20lgxpju3fdtky39lux7wlpwru3";
+const PRICE={"1M":{n:"1M Server Boosts",p:.27},"3M":{n:"3M Server Boosts",p:.88}};
+const LTC_USD=85; // TODO: replace with a live rate from your backend
+let plan="1M",qty=2,srv=null,total=0,exact="",busy=false,poll=null;
+const $=id=>document.getElementById(id);
+function toast(m){const t=$("ts");t.textContent=m;t.classList.add("on");setTimeout(()=>t.classList.remove("on"),1800)}
+function cp(v){try{navigator.clipboard.writeText(v)}catch(e){}toast("Copied")}
+/* loader */
+(function(){let p=0;const t=setInterval(()=>{p+=Math.random()*18+6;if(p>=100){p=100;clearInterval(t);setTimeout(()=>{$("en").style.display="inline-block";$("en").onclick=()=>{$("loader").classList.add("done");count();reveal()}},250)}$("lb").style.width=p+"%"},140)})();
+/* counters */
+function count(){document.querySelectorAll("[data-n]").forEach(e=>{const n=+e.dataset.n,s=e.dataset.s||"",t0=performance.now();(function f(t){const k=Math.min(1,(t-t0)/1800),v=Math.round(n*(1-Math.pow(1-k,4)));e.textContent=v.toLocaleString()+s;if(k<1)requestAnimationFrame(f)})(t0)})}
+function reveal(){const io=new IntersectionObserver(es=>es.forEach(x=>{if(x.isIntersecting){x.target.classList.add("in");io.unobserve(x.target)}}),{threshold:.15});document.querySelectorAll(".rv").forEach(e=>io.observe(e))}
+/* modals */
+function openOv(id){$(id).classList.add("on");document.body.classList.add("lock")}
+function closeAll(){clearInterval(poll);busy=false;document.querySelectorAll(".ov").forEach(o=>o.classList.remove("on"));document.body.classList.remove("lock")}
+function openBrowse(){openOv("ovB")}
+function buy(k){plan=k;qty=2;srv=null;$("sl").value=2;upd();$("inv").value="";$("er").textContent="";$("sv").innerHTML="";$("cf").checked=false;$("pay").disabled=true;$("tx").value="";$("te").textContent="";$("ovB").classList.remove("on");openOv("ovC");go(1)}
+const titles=["","Select quantity","Your server","Review order","Pay with Litecoin","Verifying","Complete"];
+function go(n){document.querySelectorAll(".step").forEach(s=>s.classList.remove("on"));$("s"+n).classList.add("on");$("ct").textContent=titles[n];document.querySelectorAll(".dots i").forEach((d,i)=>d.classList.toggle("on",i<Math.min(n,4)));if(n===3)summary();if(n===4)payment();$("ovC").querySelector(".sheet").scrollTop=0}
+/* quantity */
+function upd(){const s=$("sl");qty=+s.value;total=+(qty/2*PRICE[plan].p).toFixed(2);$("qv").textContent=qty;$("pn").textContent=PRICE[plan].n;$("tp").textContent="$"+total.toFixed(2);$("lv").textContent=qty>=14?"Enough boosts for Level 3":qty>=7?"Enough boosts for Level 2":"Enough boosts for Level 1";s.style.setProperty("--p",((qty-2)/28*100)+"%")}
+$("sl").addEventListener("input",upd);
+/* server lookup: swap fetchServer for your backend call (Discord API needs a bot token) */
+const DEMO=false; // never show sample data; lookups need a host that can reach discord.com
+async function fetchServer(code){
+  try{const r=await fetch("https://discord.com/api/v10/invites/"+encodeURIComponent(code)+"?with_counts=true");
+  if(r.status===404)return{error:"This invite is invalid or has expired."};
+  if(!r.ok)throw 0;const d=await r.json(),g=d.guild||{},x=s=>s&&s.startsWith("a_")?"gif":"png";
+  return{id:g.id,name:g.name,members:d.approximate_member_count||0,online:d.approximate_presence_count||0,hue:(+String(g.id).slice(-3))%360,
+  logo:g.icon?`https://cdn.discordapp.com/icons/${g.id}/${g.icon}.${x(g.icon)}?size=128`:null,
+  banner:g.banner?`https://cdn.discordapp.com/banners/${g.id}/${g.banner}.${x(g.banner)}?size=600`:null}
+  }catch(e){if(DEMO){const s=await fetchDemo(code);s.demo=true;return s}return{error:"Couldn't reach Discord. Please try again."}}}
+function fetchDemo(code){return new Promise(res=>{let h=0;for(const c of code)h=(h*31+c.charCodeAt(0))>>>0;const m=800+h%48000;setTimeout(()=>res({id:String(1e17+h*7919).slice(0,18),name:code.replace(/[-_]/g," ").slice(0,22)||"Server",members:m,online:Math.round(m*(.12+(h%20)/100)),hue:h%360}),1400)})}
+async function lookup(){
+  const v=$("inv").value.trim().replace(/^https?:\/\//,"");
+  const m=v.match(/^(?:www\.)?(?:discord\.gg|discord(?:app)?\.com\/invite)\/([\w-]{2,32})$/i);
+  if(!m){$("er").textContent="Enter a valid invite link, like discord.gg/yourserver.";return}
+  $("er").textContent="";const b=$("lb2");b.disabled=true;b.textContent="Searching…";
+  srv=await fetchServer(m[1]);b.disabled=false;b.textContent="Find server";if(srv.error){$("er").textContent=srv.error;$("sv").innerHTML="";srv=null;return}
+  const bg=`linear-gradient(135deg,hsl(${srv.hue} 70% 60%),hsl(${(srv.hue+60)%360} 70% 55%))`;
+  $("sv").innerHTML=`<div class="srv"><div class="bn" style="background:${srv.banner?`url(${srv.banner}) center/cover`:bg}"></div><div class="lg" style="background:${bg}">${srv.logo?`<img src="${srv.logo}" alt="">`:srv.name[0].toUpperCase()}</div><div class="nm">${srv.name.replace(/[<>&]/g,"")} ${srv.demo?'<span class="tag">preview data</span>':''}</div><div class="kv"><div>Server ID<b>${srv.id}</b></div><div>Members<b>${srv.members.toLocaleString()}</b></div><div>Online<b>${srv.online.toLocaleString()}</b></div></div></div><button class="btn" style="width:100%;margin-bottom:10px" onclick="go(3)">This is my server</button>`;
+}
+function summary(){$("sm").innerHTML=`<div><span>Product</span><span>${PRICE[plan].n}</span></div><div><span>Server</span><span>${srv.name.replace(/[<>&]/g,"")}</span></div><div><span>Quantity</span><span>${qty}</span></div><div><span>Total</span><span>$${total.toFixed(2)}</span></div>`}
+let ctd;function startTimer(){clearInterval(ctd);let s=1800;const f=()=>{$("cd").textContent="Amount reserved for "+String(Math.floor(s/60)).padStart(2,"0")+":"+String(s%60).padStart(2,"0");if(s--<=0)clearInterval(ctd)};f();ctd=setInterval(f,1000)}
+function setQ(n){$("sl").value=n;upd()}
+function theme(){const r=document.documentElement;r.dataset.theme=r.dataset.theme==="light"?"dark":"light"}
+function done(t){const id="ORB-"+Math.random().toString(36).slice(2,8).toUpperCase();$("oid").textContent="Order "+id;try{const o=JSON.parse(localStorage.getItem("orb")||"[]");o.unshift({id,n:PRICE[plan].n,q:qty,t:total,s:srv.name,d:new Date().toLocaleDateString()});localStorage.setItem("orb",JSON.stringify(o.slice(0,20)))}catch(e){}go(6)}
+function openOrders(){let o=[];try{o=JSON.parse(localStorage.getItem("orb")||"[]")}catch(e){}$("ol").innerHTML=o.length?o.map(x=>`<div class="c" style="margin-bottom:10px;padding:16px"><b>${x.id}</b> - ${x.d}<p>${x.n} x ${x.q} for ${String(x.s).replace(/[<>&]/g,"")}, $${x.t.toFixed(2)}</p></div>`).join(""):'<p class="mut">No orders yet. Browse products to place your first order.</p>';openOv("ovO")}
+/* payment */
+function payment(){
+  const base=total/LTC_USD;exact=(base+Math.floor(Math.random()*900+100)/1e8).toFixed(8);
+  startTimer();$("la").textContent=exact+" LTC";$("ua").textContent="≈ $"+total.toFixed(2)+" USD";$("ad").textContent=ADDR;$("ex").textContent=exact;
+  const q=qrcode(0,"M");q.addData("litecoin:"+ADDR+"?amount="+exact);q.make();$("qr").innerHTML=q.createSvgTag(4,0);
+}
+/* claim + verify. checkPayment must be replaced by a real backend call (blockchain API) */
+const API=""; // your backend base URL, e.g. https://api.yourdomain.com
+async function checkPayment(txid){
+  if(!API)return new Promise(r=>setTimeout(()=>r(++tries>=2),600)); // demo until API is set
+  try{const r=await fetch(API+"/api/orders/verify",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({txid,plan,qty,exact,server:srv&&srv.id})});const d=await r.json();return d.status==="confirmed"}catch(e){return false}}
+let tries=0;
+function claim(){
+  const t=$("tx").value.trim();
+  if(!/^[0-9a-fA-F]{64}$/.test(t)){$("te").textContent="That isn't valid. A transaction ID is 64 characters (0-9, a-f).";return}
+  $("te").textContent="";tries=0;busy=true;go(5);
+  const run=async()=>{$("chk").textContent="Last checked "+new Date().toLocaleTimeString();if(await checkPayment(t)){clearInterval(poll);busy=false;done(t)}};
+  run();poll=setInterval(run,30000);
+}
+</script>
+</body>
+</html>
