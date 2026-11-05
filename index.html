@@ -2,1143 +2,624 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-<title>Orion Boosts — Liquid Discord Boosting</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Orion Boosts — Premium Discord Services</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"></script>
 
 <style>
-/* ==========================================
-   GLOBAL VARIABLES & THEME
-   ========================================== */
+/* QUANTUM UI DESIGN SYSTEM */
 :root {
-  --bg1: #07070a; 
-  --bg2: #101017; 
-  --bg3: #180d09;
-  --ink: #f7f6f2; 
-  --mute: #9494a0; 
-  --card: rgba(255, 255, 255, 0.035); 
-  --card-hover: rgba(255, 255, 255, 0.07);
-  --glass-heavy: rgba(16, 16, 22, 0.78);
-  --line: rgba(255, 255, 255, 0.08); 
-  --line-glow: rgba(255, 122, 26, 0.4);
-  --acc: #ff7a1a; 
-  --acc2: #dc143c; 
-  --cy: #00f0ff; 
-  --ok: #00e676; 
-  --bad: #ff3b5c;
-  --btn: linear-gradient(135deg, #ff7a1a, #e03e00); 
-  --btnt: #ffffff;
-  --pill: rgba(20, 20, 28, 0.72);
-  --shadow: 0 24px 60px rgba(0, 0, 0, 0.65), inset 0 1px 0 rgba(255, 255, 255, 0.12);
+  --bg-core: #050507;
+  --bg-surface: #0a0a0e;
+  --bg-elevated: rgba(255, 255, 255, 0.03);
+  --text-primary: #ffffff;
+  --text-secondary: #8b8b99;
+  --accent: #ff7a1a;
+  --accent-glow: rgba(255, 122, 26, 0.4);
+  --success: #00e676;
+  --error: #ff3b5c;
+  --cyan: #00f0ff;
+  --border: rgba(255, 255, 255, 0.08);
+  --border-focus: rgba(255, 122, 26, 0.5);
+  box-sizing: border-box;
 }
 
-:root[data-theme="light"] {
-  --bg1: #f4f2ee; 
-  --bg2: #e8e5df; 
-  --bg3: #ffe8d6;
-  --ink: #141419; 
-  --mute: #5c5c66;
-  --card: rgba(255, 255, 255, 0.65); 
-  --card-hover: rgba(255, 255, 255, 0.92);
-  --glass-heavy: rgba(255, 255, 255, 0.88);
-  --line: rgba(0, 0, 0, 0.08); 
-  --line-glow: rgba(255, 122, 26, 0.35);
-  --btn: linear-gradient(135deg, #ff7a1a, #d9480f); 
-  --btnt: #ffffff;
-  --pill: rgba(255, 255, 255, 0.82);
-  --shadow: 0 20px 50px rgba(60, 45, 30, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.9);
-}
-
-* { 
-  box-sizing: border-box; 
-  margin: 0; 
-  padding: 0; 
-  -webkit-tap-highlight-color: transparent; 
-}
-
-html { 
-  scroll-behavior: smooth; 
-  scroll-padding-top: 100px; 
-  max-width: 100vw; 
-  overflow-x: hidden; 
-}
-
-body {
-  font-family: Inter, -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif;
-  color: var(--ink); 
-  background: linear-gradient(135deg, var(--bg2), var(--bg1) 50%, var(--bg3));
-  background-attachment: fixed; 
+* { box-sizing: inherit; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+html { scroll-behavior: smooth; }
+body { 
+  font-family: 'Inter', sans-serif; 
+  background-color: var(--bg-core); 
+  color: var(--text-primary); 
   min-height: 100vh; 
   overflow-x: hidden; 
-  -webkit-font-smoothing: antialiased;
 }
-
 body.lock { overflow: hidden; }
-button { font: inherit; color: inherit; border: 0; background: none; cursor: pointer; }
-a { color: inherit; text-decoration: none; }
-.wrap { max-width: 1100px; margin: 0 auto; padding: 0 22px; position: relative; z-index: 2; }
-#main-wrap { will-change: filter, transform; transform: translate3d(0,0,0); backface-visibility: hidden; }
 
-/* ==========================================
-   PARTICLES & BACKGROUND
-   ========================================== */
-#particles-canvas {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  z-index: 0;
-  pointer-events: none;
-  opacity: 0.6;
+/* AMBIENT BACKGROUND */
+.ambient {
+  position: fixed; inset: 0; z-index: -1; pointer-events: none;
+  background: 
+    radial-gradient(circle at 15% 50%, rgba(255,122,26,0.08), transparent 40%),
+    radial-gradient(circle at 85% 30%, rgba(0,240,255,0.05), transparent 40%);
 }
 
-/* ==========================================
-   TOP TELEMETRY BAR
-   ========================================== */
-.topbar {
-  position: fixed; 
-  top: 0; 
-  left: 0; 
-  right: 0; 
-  height: 32px; 
-  background: rgba(8, 8, 12, 0.85); 
-  backdrop-filter: blur(16px);
-  border-bottom: 1px solid var(--line); 
-  z-index: 60; 
-  display: flex; 
-  align-items: center; 
-  justify-content: center; 
-  gap: 24px;
-  font-size: 11px; 
-  color: var(--mute); 
-  letter-spacing: 0.04em; 
-  overflow: hidden;
-}
-.t-item { display: inline-flex; align-items: center; gap: 6px; white-space: nowrap; }
-.t-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--ok); box-shadow: 0 0 8px var(--ok); animation: blink 2s infinite; }
-@keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.35; } }
-.t-item b { color: var(--ink); font-weight: 600; font-variant-numeric: tabular-nums; }
+.wrap { max-width: 1000px; margin: 0 auto; padding: 0 20px; }
 
-/* ==========================================
-   LOADER UI
-   ========================================== */
-#loader { 
-  position: fixed; inset: 0; z-index: 200; display: grid; place-items: center; 
-  background: rgba(7, 7, 10, 0.92); backdrop-filter: blur(45px); -webkit-backdrop-filter: blur(45px); 
-  transition: opacity .65s ease, visibility .65s; 
-}
-#loader.done { opacity: 0; visibility: hidden; pointer-events: none; }
-.ld { text-align: center; padding: 30px; }
-.ld-img { width: 84px; height: 84px; margin: 0 auto 22px; border-radius: 24px; object-fit: contain; display: block; animation: pulseGlow 2.4s infinite ease-in-out; box-shadow: 0 12px 45px rgba(255, 122, 26, 0.45); }
-@keyframes pulseGlow { 0%, 100% { transform: scale(1); box-shadow: 0 12px 40px rgba(255, 122, 26, 0.35); } 50% { transform: scale(1.07); box-shadow: 0 16px 55px rgba(255, 122, 26, 0.7); } }
-.ld b { font-size: 28px; font-weight: 300; letter-spacing: -0.03em; display: block; }
-.ld span { font-size: 12px; color: var(--mute); text-transform: uppercase; letter-spacing: 0.16em; margin-top: 6px; display: block; }
-.bar { width: 200px; height: 3px; border-radius: 4px; background: var(--line); margin: 20px auto 0; overflow: hidden; }
-.bar i { display: block; height: 100%; width: 0; background: linear-gradient(90deg, var(--acc), var(--cy)); transition: width .18s; }
-#en { display: none; margin-top: 26px; }
-
-/* ==========================================
-   MAIN NAVIGATION
-   ========================================== */
+/* NAVIGATION */
 nav {
-  position: fixed; 
-  top: 44px; 
-  left: 50%; 
-  transform: translateX(-50%); 
-  z-index: 55; 
-  display: flex; 
-  align-items: center; 
-  gap: 8px;
-  padding: 8px 10px 8px 18px; 
-  background: var(--pill); 
-  backdrop-filter: blur(28px) saturate(180%); 
-  -webkit-backdrop-filter: blur(28px) saturate(180%);
-  border-radius: 999px; 
-  box-shadow: var(--shadow); 
-  font-size: 13px; 
-  width: calc(100% - 28px); 
-  max-width: 680px; 
-  justify-content: space-between; 
-  border: 1px solid var(--line);
+  position: fixed; top: 20px; left: 50%; transform: translateX(-50%); z-index: 50;
+  display: flex; justify-content: space-between; align-items: center;
+  background: rgba(15,15,20,0.8); backdrop-filter: blur(20px);
+  padding: 10px 15px; border-radius: 99px; border: 1px solid var(--border);
+  width: calc(100% - 40px); max-width: 700px; box-shadow: 0 10px 30px rgba(0,0,0,0.5);
 }
-.logo { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 15px; letter-spacing: -.02em; }
-.brand-logo { width: 26px; height: 26px; border-radius: 7px; object-fit: contain; }
-nav .lk { display: flex; gap: 16px; font-weight: 400; }
-nav .lk a { color: var(--mute); transition: color .2s; }
-nav .lk a:hover { color: var(--ink); }
-.nav-actions { display: flex; align-items: center; gap: 6px; }
-.pill { padding: 9px 18px; border-radius: 999px; background: var(--btn); color: var(--btnt); font-weight: 600; font-size: 13px; box-shadow: 0 4px 20px rgba(255, 122, 26, 0.35); transition: all .25s; }
-.pill:hover { transform: translateY(-1px); filter: brightness(1.1); }
-.icon-btn { width: 34px; height: 34px; border-radius: 50%; background: var(--card); border: 1px solid var(--line); display: grid; place-items: center; transition: all .2s; }
-.icon-btn:hover { border-color: var(--acc); background: var(--card-hover); }
+.brand { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 16px; }
+.brand img { width: 28px; height: 28px; border-radius: 8px; }
+.nav-links { display: flex; gap: 20px; }
+.nav-links a { color: var(--text-secondary); text-decoration: none; font-size: 14px; transition: 0.2s; }
+.nav-links a:hover { color: var(--text-primary); }
+.btn-primary { 
+  background: linear-gradient(135deg, var(--accent), #e03e00); 
+  color: #fff; padding: 10px 20px; border-radius: 99px; border: none; 
+  font-weight: 600; font-size: 14px; cursor: pointer; transition: 0.2s; 
+  box-shadow: 0 5px 15px var(--accent-glow);
+}
+.btn-primary:hover { transform: translateY(-2px); filter: brightness(1.1); }
+.btn-primary:disabled { opacity: 0.5; pointer-events: none; }
+.btn-secondary {
+  background: var(--bg-elevated); color: var(--text-primary); border: 1px solid var(--border);
+  padding: 10px 20px; border-radius: 99px; font-weight: 600; font-size: 14px; cursor: pointer; transition: 0.2s;
+}
+.btn-secondary:hover { background: rgba(255,255,255,0.08); }
 
-/* ==========================================
-   HERO SECTION
-   ========================================== */
-.hero { min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 140px 20px 70px; position: relative; overflow: hidden; }
-.blob { position: absolute; border-radius: 50%; filter: blur(95px); opacity: .42; pointer-events: none; animation: floatOrb 11s ease-in-out infinite; }
-.b1 { width: 340px; height: 340px; background: var(--acc); top: 14%; left: -110px; }
-.b2 { width: 360px; height: 360px; background: var(--acc2); bottom: 10%; right: -110px; animation-delay: -5s; }
-.b3 { width: 240px; height: 240px; background: var(--cy); top: 40%; right: 18%; opacity: 0.18; animation-delay: -2.5s; }
-@keyframes floatOrb { 50% { transform: translate(35px, -45px) scale(1.12); } }
+/* HERO SECTION */
+.hero { padding: 160px 0 80px; text-align: center; }
+.hero h1 { font-size: clamp(40px, 8vw, 70px); font-weight: 800; line-height: 1.1; margin-bottom: 20px; letter-spacing: -0.03em; }
+.hero p { font-size: 18px; color: var(--text-secondary); max-width: 600px; margin: 0 auto 30px; line-height: 1.6; }
+.hero-btns { display: flex; gap: 15px; justify-content: center; }
 
-.badge { display: inline-flex; align-items: center; gap: 8px; padding: 8px 16px; border-radius: 999px; background: var(--card); backdrop-filter: blur(20px); font-size: 12px; font-weight: 500; box-shadow: var(--shadow); margin-bottom: 24px; border: 1px solid var(--line); color: var(--ink); }
-h1 { font-size: clamp(42px, 8.5vw, 84px); line-height: 0.98; letter-spacing: -0.045em; font-weight: 700; background: linear-gradient(180deg, var(--ink) 40%, var(--mute)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-.sub { margin: 22px auto 34px; max-width: 520px; color: var(--mute); font-size: clamp(16px, 2.2vw, 18px); line-height: 1.55; font-weight: 300; }
-.row { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+/* METRICS */
+.metrics { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-top: 60px; }
+.metric-card { background: var(--bg-elevated); border: 1px solid var(--border); padding: 25px; border-radius: 20px; text-align: center; }
+.metric-card b { font-size: 32px; font-weight: 700; color: var(--text-primary); display: block; }
+.metric-card span { font-size: 13px; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 1px; }
 
-.btn { padding: 15px 28px; border-radius: 999px; font-weight: 600; font-size: 15px; background: var(--btn); color: var(--btnt); box-shadow: 0 10px 30px rgba(255, 122, 26, 0.35); transition: all .3s; display: inline-flex; align-items: center; justify-content: center; gap: 8px; }
-.btn:hover { transform: translateY(-2px) scale(1.02); filter: brightness(1.08); }
-.btn:active { transform: scale(.96); }
-.btn.g { background: var(--card); color: var(--ink); border: 1px solid var(--line); box-shadow: var(--shadow); }
-.btn.g:hover { background: var(--card-hover); border-color: var(--line-glow); }
-.btn.cy { background: linear-gradient(135deg, var(--cy), #00a2ff); box-shadow: 0 10px 30px rgba(0, 240, 255, 0.35); }
-.btn[disabled] { opacity: .4; pointer-events: none; filter: grayscale(1); }
+/* CARDS GRID */
+.section-title { text-align: center; font-size: 36px; margin: 80px 0 40px; font-weight: 700; }
+.grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
+.card { background: var(--bg-elevated); border: 1px solid var(--border); padding: 30px; border-radius: 24px; transition: 0.3s; }
+.card:hover { transform: translateY(-5px); border-color: var(--border-focus); }
+.card h3 { font-size: 20px; margin-bottom: 10px; }
+.card p { font-size: 15px; color: var(--text-secondary); line-height: 1.6; }
+.card-icon { width: 50px; height: 50px; background: rgba(255,122,26,0.1); border: 1px solid var(--accent-glow); border-radius: 14px; display: grid; place-items: center; margin-bottom: 20px; color: var(--accent); font-size: 24px; font-weight: bold; }
 
-.stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-top: 58px; width: 100%; max-width: 900px; }
-.st { padding: 22px 12px; border-radius: 26px; background: var(--card); backdrop-filter: blur(30px); border: 1px solid var(--line); box-shadow: var(--shadow); transition: all .3s ease; }
-.st:hover { transform: translateY(-4px); border-color: var(--line-glow); }
-.st b { display: block; font-size: clamp(20px, 4vw, 30px); letter-spacing: -.03em; font-weight: 600; color: var(--ink); }
-.st span { font-size: 12px; color: var(--mute); font-weight: 300; margin-top: 4px; display: block; }
+/* MODALS */
+.overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.8); backdrop-filter: blur(10px); z-index: 100; display: flex; align-items: center; justify-content: center; opacity: 0; visibility: hidden; transition: 0.3s; }
+.overlay.active { opacity: 1; visibility: visible; }
+.modal { background: var(--bg-surface); border: 1px solid var(--border); width: 100%; max-width: 550px; max-height: 90vh; overflow-y: auto; border-radius: 24px; padding: 30px; transform: scale(0.95); transition: 0.3s; }
+.overlay.active .modal { transform: scale(1); }
+.modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; }
+.modal-header h2 { font-size: 22px; }
+.close-btn { background: var(--bg-elevated); border: 1px solid var(--border); width: 32px; height: 32px; border-radius: 50%; color: #fff; cursor: pointer; transition: 0.2s; }
+.close-btn:hover { background: var(--error); border-color: var(--error); }
 
-/* ==========================================
-   SECTIONS & GRIDS
-   ========================================== */
-section { padding: 80px 0; position: relative; }
-h2 { font-size: clamp(28px, 5.5vw, 44px); letter-spacing: -.035em; line-height: 1.08; margin-bottom: 12px; text-align: center; font-weight: 600; }
-.lead { color: var(--mute); text-align: center; max-width: 560px; margin: 0 auto 44px; line-height: 1.55; font-size: 16px; font-weight: 300; }
-.grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px; }
-.grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+/* WIZARD STEPS */
+.step { display: none; animation: fadeIn 0.4s; }
+.step.active { display: block; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-.c { padding: 28px; border-radius: 30px; background: var(--card); backdrop-filter: blur(30px); border: 1px solid var(--line); box-shadow: var(--shadow); transition: all .35s; position: relative; overflow: hidden; }
-.c:hover { transform: translateY(-5px); background: var(--card-hover); border-color: var(--line-glow); }
-.c h3 { font-size: 19px; letter-spacing: -.02em; margin: 16px 0 8px; font-weight: 600; }
-.c p { font-size: 14px; color: var(--mute); line-height: 1.6; font-weight: 300; }
+/* FORM ELEMENTS */
+input[type="text"], input[type="number"] { width: 100%; padding: 15px 20px; background: var(--bg-core); border: 1px solid var(--border); border-radius: 16px; color: #fff; font-size: 16px; outline: none; transition: 0.2s; margin-bottom: 15px; }
+input:focus { border-color: var(--accent); }
+.slider-container { margin: 20px 0; }
+input[type="range"] { -webkit-appearance: none; width: 100%; height: 8px; border-radius: 4px; background: var(--bg-elevated); outline: none; }
+input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 24px; height: 24px; border-radius: 50%; background: #fff; border: 2px solid var(--accent); cursor: pointer; }
 
-.ic { width: 48px; height: 48px; border-radius: 16px; display: grid; place-items: center; background: linear-gradient(135deg, rgba(255,122,26,0.2), rgba(220,20,60,0.2)); border: 1px solid rgba(255,122,26,0.35); color: var(--acc); box-shadow: 0 8px 24px rgba(255, 122, 26, 0.18); }
-.ic svg { width: 22px; height: 22px; stroke: var(--acc); stroke-width: 2; fill: none; }
-
-/* ==========================================
-   CALCULATOR UI
-   ========================================== */
-.calc-box { padding: 36px; border-radius: 34px; background: var(--card); backdrop-filter: blur(35px); border: 1px solid var(--line); box-shadow: var(--shadow); max-width: 820px; margin: 0 auto; }
-.calc-top { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 14px; margin-bottom: 24px; }
-.calc-toggle { display: inline-flex; background: rgba(0,0,0,0.3); padding: 4px; border-radius: 999px; border: 1px solid var(--line); }
-.calc-toggle button { padding: 8px 18px; border-radius: 999px; font-size: 13px; font-weight: 600; color: var(--mute); transition: .25s; }
-.calc-toggle button.active { background: var(--btn); color: #fff; }
-.calc-perks { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-top: 22px; }
-.perk-pill { padding: 14px; border-radius: 20px; background: rgba(255,255,255,0.02); border: 1px solid var(--line); text-align: center; }
-.perk-pill b { display: block; font-size: 16px; color: var(--ink); margin-bottom: 4px; }
-.perk-pill span { font-size: 11px; color: var(--mute); }
-
-/* ==========================================
-   MODALS / SHEETS
-   ========================================== */
-.ov { position: fixed; inset: 0; z-index: 90; background: rgba(6, 6, 10, 0.72); backdrop-filter: blur(28px); display: flex; align-items: flex-end; justify-content: center; opacity: 0; visibility: hidden; transition: .35s ease; }
-.ov.on { opacity: 1; visibility: visible; }
-.sheet { width: 100%; max-width: 650px; max-height: 92dvh; overflow-y: auto; background: var(--glass-heavy); backdrop-filter: blur(45px); border: 1px solid var(--line); border-radius: 36px 36px 0 0; padding: 26px 24px calc(32px + env(safe-area-inset-bottom,0px)); transform: translateY(50px) scale(.97); transition: transform .45s; box-shadow: 0 -20px 80px rgba(0,0,0,0.8), inset 0 1px 0 rgba(255,255,255,0.12); }
-.ov.on .sheet { transform: none; }
-@media(min-width: 700px) { .ov { align-items: center; } .sheet { border-radius: 36px; } }
-
-.sh { display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; }
-.sh h3 { font-size: 21px; letter-spacing: -.03em; font-weight: 600; }
-.x { width: 36px; height: 36px; border-radius: 50%; background: var(--card); border: 1px solid var(--line); display: grid; place-items: center; transition: .2s; }
-.x:hover { background: var(--card-hover); transform: rotate(90deg); }
-
-.step { display: none; animation: pop .4s cubic-bezier(.2,1.1,.3,1); }
-.step.on { display: block; }
-@keyframes pop { from { opacity: 0; transform: translateY(14px) scale(.98); } }
-
-/* Inputs and Sliders */
-.dots { display: flex; gap: 6px; margin-bottom: 20px; }
-.dots i { flex: 1; height: 4px; border-radius: 4px; background: var(--line); transition: .4s; }
-.dots i.on { background: linear-gradient(90deg, var(--acc), var(--cy)); }
-
-.d-dots { display: flex; gap: 6px; margin-bottom: 20px; }
-.d-dots i { flex: 1; height: 4px; border-radius: 4px; background: var(--line); transition: .4s; }
-.d-dots i.on { background: linear-gradient(90deg, var(--cy), #00a2ff); }
-
-.big { font-size: 58px; font-weight: 700; letter-spacing: -.04em; text-align: center; line-height: 1; }
-.mut { color: var(--mute); font-size: 13px; text-align: center; font-weight: 300; }
-.amt { font-size: 32px; font-weight: 700; text-align: center; letter-spacing: -.03em; margin-top: 6px; }
-
-input[type=range] { -webkit-appearance: none; appearance: none; width: 100%; height: 10px; border-radius: 10px; margin: 22px 0 10px; background: linear-gradient(90deg, var(--acc), var(--acc2)) 0/var(--p,0%) 100% no-repeat, var(--card); border: 1px solid var(--line); outline: none; }
-input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 30px; height: 30px; border-radius: 50%; background: #fff; box-shadow: 0 4px 14px rgba(0,0,0,0.45); border: 2px solid var(--acc); cursor: pointer; }
-input[type=number], input[type=text] { width: 100%; padding: 15px 18px; border-radius: 18px; border: 1px solid var(--line); background: var(--card); color: var(--ink); font: inherit; font-size: 15px; outline: none; transition: .25s; }
-input[type=number]:focus, input[type=text]:focus { border-color: var(--acc); box-shadow: 0 0 0 3px rgba(255,122,26,0.18); }
-
-.chips { display: flex; gap: 8px; justify-content: center; margin: 8px 0 16px; flex-wrap: wrap; }
-.chips button { padding: 8px 16px; border-radius: 999px; background: var(--card); border: 1px solid var(--line); font-size: 13px; font-weight: 600; transition: .2s; }
-.chips button:hover { border-color: var(--acc); background: var(--card-hover); }
-
-/* Elements inside forms */
-.srv { border-radius: 26px; overflow: hidden; background: var(--card); border: 1px solid var(--line); margin: 14px 0; }
-.bn { height: 96px; background-size: cover; background-position: center; }
-.lg { width: 66px; height: 66px; border-radius: 20px; margin: -33px 0 0 18px; border: 4px solid var(--bg1); display: grid; place-items: center; font-size: 24px; font-weight: 700; color: #fff; overflow: hidden; }
-.lg img { width: 100%; height: 100%; object-fit: cover; }
-.srv .nm { padding: 10px 18px 4px; font-weight: 600; font-size: 18px; }
-.kv { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; padding: 8px 18px 18px; font-size: 12px; color: var(--mute); }
-.kv b { display: block; color: var(--ink); font-size: 14px; margin-top: 2px; word-break: break-all; }
-
-.sum div { display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid var(--line); font-size: 14px; }
-.sum div:last-child { border: 0; font-weight: 700; font-size: 19px; color: var(--acc); }
-
-.method-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 12px 0 16px; }
-.m-card { padding: 16px; border-radius: 22px; background: var(--card); border: 2px solid var(--line); text-align: left; cursor: pointer; transition: .25s; }
-.m-card.active { border-color: var(--acc); background: rgba(255, 122, 26, 0.09); }
-.m-card h4 { font-size: 15px; font-weight: 600; display: flex; align-items: center; gap: 8px; margin-bottom: 4px; }
-.m-card p { font-size: 12px; color: var(--mute); line-height: 1.4; }
-
-.qr { background: #fff; padding: 16px; border-radius: 26px; width: fit-content; margin: 8px auto 14px; box-shadow: 0 14px 40px rgba(0,0,0,0.4); }
-.qr svg, .qr img { display: block; width: 190px; height: 190px; }
-
-.cp { display: flex; gap: 10px; align-items: center; padding: 12px 16px; border-radius: 16px; background: var(--card); border: 1px solid var(--line); font-size: 12px; margin: 8px 0; word-break: break-all; }
-.cp span { flex: 1; font-family: monospace; font-size: 13px; }
-.cp button { padding: 7px 14px; border-radius: 999px; background: var(--btn); color: #fff; font-size: 12px; font-weight: 600; flex: none; }
-
-.warn-box { display: flex; gap: 12px; align-items: flex-start; background: rgba(255, 59, 92, 0.09); border: 1px solid var(--bad); padding: 14px 16px; border-radius: 18px; margin: 16px 0; text-align: left; font-size: 12px; line-height: 1.5; }
-.info-box { display: flex; gap: 12px; align-items: flex-start; background: rgba(0, 240, 255, 0.07); border: 1px solid rgba(0, 240, 255, 0.3); padding: 13px 15px; border-radius: 18px; margin: 12px 0; text-align: left; font-size: 12px; line-height: 1.45; color: var(--ink); }
-
-.spin { width: 54px; height: 54px; border-radius: 50%; margin: 18px auto; border: 4px solid var(--line); border-top-color: var(--acc); animation: spin 1s linear infinite; }
+/* UTILS */
+.info-box { background: rgba(0,240,255,0.05); border: 1px solid rgba(0,240,255,0.2); padding: 15px; border-radius: 16px; font-size: 13px; color: var(--cyan); line-height: 1.5; margin-bottom: 20px; }
+.warn-box { background: rgba(255,59,92,0.05); border: 1px solid rgba(255,59,92,0.2); padding: 15px; border-radius: 16px; font-size: 13px; color: var(--error); line-height: 1.5; margin-bottom: 20px; }
+.qr-code { background: #fff; padding: 15px; border-radius: 20px; width: fit-content; margin: 0 auto 20px; }
+.qr-code svg, .qr-code img { width: 180px; height: 180px; display: block; }
+.copy-row { display: flex; align-items: center; justify-content: space-between; background: var(--bg-core); padding: 12px 15px; border-radius: 12px; border: 1px solid var(--border); margin-bottom: 10px; font-size: 13px; }
+.copy-row button { background: var(--bg-elevated); border: 1px solid var(--border); color: #fff; padding: 6px 12px; border-radius: 6px; font-size: 12px; cursor: pointer; }
+.spinner { width: 50px; height: 50px; border: 4px solid var(--border); border-top-color: var(--accent); border-radius: 50%; animation: spin 1s linear infinite; margin: 20px auto; }
 @keyframes spin { to { transform: rotate(360deg); } }
+.toast { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%) translateY(20px); background: var(--accent); color: #fff; padding: 12px 25px; border-radius: 99px; font-weight: 600; opacity: 0; visibility: hidden; transition: 0.3s; z-index: 1000; box-shadow: 0 10px 30px var(--accent-glow); }
+.toast.show { opacity: 1; visibility: visible; transform: translateX(-50%) translateY(0); }
 
-.ok-badge { width: 84px; height: 84px; border-radius: 50%; background: linear-gradient(135deg, var(--ok), #00b248); margin: 6px auto 16px; display: grid; place-items: center; color: #fff; box-shadow: 0 12px 35px rgba(0, 230, 118, 0.4); animation: bounce .6s cubic-bezier(.2,1.6,.4,1); }
-@keyframes bounce { from { transform: scale(0); } }
-
-details { padding: 18px 22px; border-radius: 22px; background: var(--card); border: 1px solid var(--line); margin-bottom: 10px; }
-summary { font-weight: 600; font-size: 15px; cursor: pointer; list-style: none; display: flex; justify-content: space-between; align-items: center; }
-summary::after { content: "+"; font-size: 20px; color: var(--acc); transition: transform .3s; }
-details[open] summary::after { transform: rotate(45deg); }
-details p { margin-top: 10px; font-size: 14px; color: var(--mute); line-height: 1.6; }
-
-/* Live Recent Purchase Ticker */
-.recent-toast-container {
-  position: fixed;
-  bottom: 20px;
-  left: 20px;
-  z-index: 150;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  pointer-events: none;
-}
-.rt-toast {
-  background: var(--glass-heavy);
-  backdrop-filter: blur(20px);
-  border: 1px solid var(--line);
-  padding: 12px 18px;
-  border-radius: 16px;
-  box-shadow: var(--shadow);
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  animation: slideInUp 0.5s cubic-bezier(0.2, 1.1, 0.3, 1) forwards, fadeOut 0.5s ease 4s forwards;
-}
-.rt-icon {
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  background: linear-gradient(135deg, var(--ok), var(--cy));
-  display: grid;
-  place-items: center;
-  color: #fff;
-}
-.rt-text { font-size: 13px; line-height: 1.4; }
-.rt-text b { color: var(--ink); font-weight: 600; }
-@keyframes slideInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-@keyframes fadeOut { to { opacity: 0; transform: translateY(-10px); } }
-
-.toast { position: fixed; left: 50%; bottom: 30px; transform: translate(-50%, 40px); opacity: 0; background: var(--btn); color: #fff; padding: 12px 24px; border-radius: 999px; font-size: 13px; font-weight: 600; z-index: 250; box-shadow: 0 10px 30px rgba(255,122,26,0.45); transition: .35s; pointer-events: none; }
-.toast.on { opacity: 1; transform: translate(-50%, 0); }
-
-/* Footer */
-footer { padding: 50px 0 60px; text-align: center; color: var(--mute); font-size: 13px; line-height: 1.8; border-top: 1px solid var(--line); }
-footer .fl { display: flex; gap: 20px; justify-content: center; margin: 12px 0 16px; flex-wrap: wrap; color: var(--ink); font-weight: 500; }
-
-@media (max-width: 720px) {
-  .grid, .grid-3, .method-cards, .calc-perks { grid-template-columns: 1fr; }
-  .stats { grid-template-columns: repeat(2, 1fr); }
-  .topbar { gap: 12px; font-size: 10px; }
-  nav .lk { display: none; }
-}
+@media (max-width: 600px) { .nav-links { display: none; } .hero h1 { font-size: 36px; } }
 </style>
 </head>
 <body>
 
-<canvas id="particles-canvas"></canvas>
-<div class="ambient-grid"></div>
+<div class="ambient"></div>
 
-<!-- Live Telemetry Bar -->
-<div class="topbar">
-  <div class="t-item"><span class="t-dot"></span><span>API: <b id="tb-status">ONLINE</b></span></div>
-  <div class="t-item"><span>LTC/USD: <b id="tb-ltc">$85.00</b></span></div>
-  <div class="t-item"><span>TOLERANCE: <b>$0.04 MAX</b></span></div>
-</div>
-
-<!-- Loader -->
-<div id="loader">
-  <div class="ld">
-    <img src="1000056901.gif" alt="Orion Boosts" class="ld-img" onerror="this.style.display='none'">
-    <b>Orion Boosts</b>
-    <span>Liquid Platform v5.0</span>
-    <div class="bar"><i id="lb"></i></div>
-    <button class="btn" id="en">Enter Store</button>
-  </div>
-</div>
-
-<!-- Navigation -->
 <nav>
-  <a class="logo" href="#home">
-    <img src="1000056901.gif" alt="Logo" class="brand-logo" onerror="this.style.display='none'">
-    <span>Orion Boosts</span>
-  </a>
-  <div class="lk">
-    <a href="#calculator">Calculator</a>
-    <a href="#features">Features</a>
-    <a href="#leaderboard">Leaderboard</a>
+  <div class="brand">
+    <img src="1000056901.gif" alt="Logo" onerror="this.style.display='none'">
+    Orion Boosts
   </div>
-  <div class="nav-actions">
-    <button class="icon-btn" onclick="openDonation()" title="Support Us (Donate)">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
-    </button>
-    <button class="icon-btn" onclick="openOrders()" title="Order Explorer">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
-    </button>
-    <button class="pill" onclick="openBrowse()">Boost Now</button>
+  <div class="nav-links">
+    <a href="#plans">Boost Plans</a>
+    <a href="#features">Features</a>
+  </div>
+  <div style="display:flex; gap:10px;">
+    <button class="btn-secondary" onclick="openModal('mod-donate')">Donate</button>
+    <button class="btn-primary" onclick="openModal('mod-browse')">Boost Server</button>
   </div>
 </nav>
 
-<div id="main-wrap">
-  <!-- Hero Section -->
-  <header class="hero" id="home">
-    <div class="blob b1"></div>
-    <div class="blob b2"></div>
-    <div class="blob b3"></div>
-    <div class="badge">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#ff7a1a" stroke-width="2.5"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
-      <span>Dual-Mode Auto-Tracking & Instant Delivery</span>
+<div class="wrap">
+  <div class="hero">
+    <h1>Automated Discord Server Boosting.</h1>
+    <p>Advanced Litecoin payment detection with zero TXID hassle, instant mempool radar, and automated community level-ups starting at just $0.27.</p>
+    <div class="hero-btns">
+      <button class="btn-primary" style="padding:15px 30px; font-size:16px;" onclick="openModal('mod-browse')">View Boost Plans</button>
+      <button class="btn-secondary" style="padding:15px 30px; font-size:16px;" onclick="openModal('mod-track')">Track Order</button>
     </div>
-    <h1>Automated Server Boosting.</h1>
-    <p class="sub">Advanced Litecoin payment detection with zero TXID hassle, 0/2 mempool radar, and instant Discord community level-ups starting at $0.27.</p>
-    <div class="row">
-      <button class="btn" onclick="openBrowse()">
-        <span>Browse Boost Plans</span>
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
-      </button>
-      <button class="btn g" onclick="openDonation()">Support Us (Donate)</button>
+    <div class="metrics">
+      <div class="metric-card"><b id="m-boosts">1,840+</b><span>Boosts Delivered</span></div>
+      <div class="metric-card"><b id="m-speed">15s</b><span>Mempool Radar</span></div>
+      <div class="metric-card"><b id="m-donations">$0.00</b><span>Community Support</span></div>
     </div>
+  </div>
 
-    <div class="stats">
-      <div class="st"><b data-n="2540" data-s="+">0</b><span>Boosts Deployed</span></div>
-      <div class="st"><b id="stat-donations">$0.00</b><span>Total Donations</span></div>
-      <div class="st"><b data-n="15" data-s="s">0</b><span>Mempool Scan Speed</span></div>
-      <div class="st"><b data-n="100" data-s="%">0</b><span>Fingerprint Accuracy</span></div>
+  <h2 class="section-title" id="features">Engineered for Perfection</h2>
+  <div class="grid" style="margin-bottom: 100px;">
+    <div class="card">
+      <div class="card-icon">⚡</div>
+      <h3>30-Min Auto-Radar</h3>
+      <p>Our backend monitors the Litecoin blockchain every 15 seconds. The moment you pay, we detect it instantly.</p>
     </div>
-  </header>
-
-  <!-- Interactive Calculator -->
-  <section id="calculator">
-    <div class="wrap">
-      <h2>Interactive Boost Estimator</h2>
-      <p class="lead">Slide to preview exact pricing, Litecoin conversion, and unlocked Discord server perks before you buy.</p>
-      <div class="calc-box">
-        <div class="calc-top">
-          <div>
-            <span class="mut" style="text-align:left;display:block">Selected Boosts</span>
-            <div style="font-size:38px;font-weight:700;letter-spacing:-.03em" id="hc-qty">14 Boosts</div>
-          </div>
-          <div class="calc-toggle">
-            <button id="hc-1m" class="active" onclick="setHomeCalcPlan('1M')">1 Month</button>
-            <button id="hc-3m" onclick="setHomeCalcPlan('3M')">3 Months</button>
-            <button id="hc-12m" onclick="setHomeCalcPlan('12M')">12 Months</button>
-          </div>
-          <div style="text-align:right">
-            <span class="mut" style="display:block">Estimated Total</span>
-            <div style="font-size:34px;font-weight:700;color:var(--acc)" id="hc-usd">$1.89</div>
-            <span class="mut" id="hc-ltc">≈ 0.000000 LTC</span>
-          </div>
-        </div>
-        <input type="range" id="hc-slider" min="2" max="30" step="2" value="14" oninput="updateHomeCalc()">
-        <div class="calc-perks">
-          <div class="perk-pill"><b id="hc-lvl">Level 3 Unlocked</b><span>Server Tier Status</span></div>
-          <div class="perk-pill"><b id="hc-audio">384 Kbps</b><span>Voice Channel Audio</span></div>
-          <div class="perk-pill"><b id="hc-upload">100 MB</b><span>Member Upload Limit</span></div>
-          <div class="perk-pill"><b id="hc-vanity">Vanity URL + Banner</b><span>Custom Perks</span></div>
-        </div>
-        <button class="btn" style="width:100%;margin-top:22px" onclick="launchFromCalc()">Launch Checkout With This Configuration</button>
-      </div>
+    <div class="card">
+      <div class="card-icon">🛡️</div>
+      <h3>$0.04 Tolerance Shield</h3>
+      <p>Minor wallet network fee fluctuations up to $0.04 USD are automatically absorbed to prevent stuck transactions.</p>
     </div>
-  </section>
-
-  <!-- Top Donators Leaderboard -->
-  <section id="leaderboard" style="padding-top:20px">
-    <div class="wrap">
-      <h2>Top Supporters</h2>
-      <p class="lead">A huge thank you to the amazing people helping keep Orion Boosts online and ad-free.</p>
-      <div class="c" style="max-width:600px;margin:0 auto;padding:0;overflow:hidden">
-        <div id="lb-list">
-          <div style="padding:20px;text-align:center;color:var(--mute)">Loading leaderboard...</div>
-        </div>
-      </div>
-      <div style="text-align:center;margin-top:24px">
-        <button class="btn cy" onclick="openDonation()">Join the Leaderboard</button>
-      </div>
+    <div class="card">
+      <div class="card-icon">🎟️</div>
+      <h3>Dual Delivery Modes</h3>
+      <p>Choose between fully automated API delivery or Manual Ticket mode for maximum control.</p>
     </div>
-  </section>
-
-  <!-- Features Grid -->
-  <section id="features">
-    <div class="wrap">
-      <h2>Engineered for Zero Friction</h2>
-      <p class="lead">Every order is protected by cryptographic fractional fingerprinting and dual-mode fulfillment.</p>
-      <div class="grid-3">
-        <div class="c">
-          <div class="ic"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
-          <h3>30-Min Auto-Radar</h3>
-          <p>As soon as your QR code generates, our backend monitors the Litecoin mempool every 15 seconds for 30 minutes automatically.</p>
-        </div>
-        <div class="c">
-          <div class="ic"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
-          <h3>$0.04 Tolerance Shield</h3>
-          <p>Minor wallet network fee fluctuations up to $0.04 USD are automatically absorbed so your transaction never gets stuck.</p>
-        </div>
-        <div class="c">
-          <div class="ic"><svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
-          <h3>Dual Delivery Modes</h3>
-          <p>Choose between fully automated server delivery or Manual Ticket mode with an instant redeemable Secret Key.</p>
-        </div>
-        <div class="c">
-          <div class="ic"><svg viewBox="0 0 24 24"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg></div>
-          <h3>0/2 Mempool Detection</h3>
-          <p>You don't even need to paste a TXID. The moment your wallet broadcasts the payment, the screen updates to 0/2 detected.</p>
-        </div>
-        <div class="c">
-          <div class="ic"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
-          <h3>Live Server Preview</h3>
-          <p>Paste your Discord invite link to verify your server banner, icon, member count, and guild ID before sending a single Litoshi.</p>
-        </div>
-        <div class="c">
-          <div class="ic"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
-          <h3>Instant TXID Fallback</h3>
-          <p>If public nodes ever experience high traffic, expand the manual TXID box to force an immediate on-demand blockchain lookup.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- FAQ -->
-  <section id="faq">
-    <div class="wrap">
-      <h2>Frequently Asked Questions</h2>
-      <p class="lead">Everything you need to know about our payment detection and fulfillment.</p>
-      <details><summary>Do I need to enter my TXID after paying?</summary><p>No! Our backend automatically monitors the Litecoin blockchain every 15 seconds for 30 minutes and matches your unique fractional LTC amount automatically. The manual TXID input is only there as a backup option.</p></details>
-      <details><summary>What happens if my wallet deducts a tiny network fee?</summary><p>Our verification engine includes a built-in $0.04 USD tolerance threshold. As long as your payment is within $0.04 of the requested amount, it will be accepted automatically.</p></details>
-      <details><summary>How does Manual Ticket delivery work?</summary><p>When you choose Manual mode, once your payment hits 1/2 confirmation, the screen gives you a Secret Key (Orion-Shop-67SixSeven) and instructions to join discord.gg/tdUkxYJmZP to redeem it in the Redeem Panel.</p></details>
-      <details><summary>Do you have any active promo codes?</summary><p>Yes! Try entering ORION10 for 10% off or VIPBOOST for 15% off during Step 3 of checkout.</p></details>
-    </div>
-  </section>
-
-  <footer>
-    <div class="wrap">
-      <div class="logo" style="justify-content:center"><img src="1000056901.gif" alt="Logo" class="brand-logo" onerror="this.style.display='none'"><span>Orion Boosts</span></div>
-      <div class="fl">
-        <a href="#calculator">Calculator</a>
-        <a href="#features">Features</a>
-        <button onclick="openOv('ovTOS')" style="font-weight:500;font-size:13px">Terms of Service</button>
-        <button onclick="openOv('ovSettings')" style="font-weight:500;font-size:13px">Settings</button>
-        <a href="https://discord.gg/tdUkxYJmZP" target="_blank">Discord Support</a>
-      </div>
-      <button onclick="openOrders()" style="text-decoration:underline;color:var(--acc);font-weight:600">Open Order Explorer & Saved Receipts</button><br><br>
-      <div style="font-size:11px;color:var(--mute)">Not affiliated with Discord Inc. · © 2026 Orion Boosts OS. All rights reserved.</div>
-    </div>
-  </footer>
+  </div>
 </div>
 
 <!-- ==========================================
      MODALS
      ========================================== -->
 
-<!-- Browse Modal -->
-<div class="ov" id="ovB" onclick="if(event.target===this)closeAll()">
-  <div class="sheet">
-    <div class="sh">
-      <h3>Select Boost Plan</h3>
-      <button class="x" onclick="closeAll()">✕</button>
+<!-- BROWSE PLANS -->
+<div class="overlay" id="mod-browse" onclick="closeOnBg(event, this)">
+  <div class="modal">
+    <div class="modal-header">
+      <h2>Select Boost Plan</h2>
+      <button class="close-btn" onclick="closeModal('mod-browse')">✕</button>
     </div>
-    <div class="grid-3">
-      <div class="c" style="text-align:center;padding:20px">
-        <div class="ic" style="margin:0 auto"><svg viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></div>
-        <h3 style="font-size:16px">1 Month</h3>
-        <p style="font-size:12px">Active for 30 days.</p>
-        <div style="font-size:22px;font-weight:700;margin:10px 0">$0.27 <small style="font-size:11px;color:var(--mute);font-weight:400">/ 2</small></div>
-        <button class="btn" style="width:100%;padding:10px" onclick="buy('1M')">Select</button>
+    <div style="display:flex; flex-direction:column; gap:15px;">
+      <div class="card" style="padding:20px; cursor:pointer; border:2px solid var(--border);" onclick="initBuy('1M')">
+        <h3>1 Month Server Boosts</h3>
+        <p style="margin-bottom:15px">Active for 30 days.</p>
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+          <b style="font-size:24px">$0.27 <span style="font-size:14px;color:var(--text-secondary)">/ 2 boosts</span></b>
+          <button class="btn-primary">Select</button>
+        </div>
       </div>
-      <div class="c" style="text-align:center;padding:20px">
-        <div class="ic" style="margin:0 auto"><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div>
-        <h3 style="font-size:16px">3 Months</h3>
-        <p style="font-size:12px">Active for 90 days.</p>
-        <div style="font-size:22px;font-weight:700;margin:10px 0">$0.88 <small style="font-size:11px;color:var(--mute);font-weight:400">/ 2</small></div>
-        <button class="btn" style="width:100%;padding:10px" onclick="buy('3M')">Select</button>
+      <div class="card" style="padding:20px; cursor:pointer; border:2px solid var(--border);" onclick="initBuy('3M')">
+        <h3>3 Month Server Boosts</h3>
+        <p style="margin-bottom:15px">Active for 90 days.</p>
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+          <b style="font-size:24px">$0.88 <span style="font-size:14px;color:var(--text-secondary)">/ 2 boosts</span></b>
+          <button class="btn-primary">Select</button>
+        </div>
       </div>
-      <div class="c" style="text-align:center;padding:20px;border-color:var(--acc);background:rgba(255,122,26,0.05)">
-        <div class="badge" style="position:absolute;top:10px;right:10px;padding:4px 8px;font-size:10px;background:var(--acc);color:#fff">VIP</div>
-        <div class="ic" style="margin:0 auto;background:var(--acc);color:#fff"><svg viewBox="0 0 24 24" style="stroke:#fff"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg></div>
-        <h3 style="font-size:16px">1 Year</h3>
-        <p style="font-size:12px">Active 365 days.</p>
-        <div style="font-size:22px;font-weight:700;margin:10px 0">$2.99 <small style="font-size:11px;color:var(--mute);font-weight:400">/ 2</small></div>
-        <button class="btn" style="width:100%;padding:10px" onclick="buy('12M')">Select</button>
+      <div class="card" style="padding:20px; cursor:pointer; border:2px solid var(--accent);" onclick="initBuy('12M')">
+        <h3 style="color:var(--accent)">1 Year VIP Boosts</h3>
+        <p style="margin-bottom:15px">Active for 365 days.</p>
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+          <b style="font-size:24px">$2.99 <span style="font-size:14px;color:var(--text-secondary)">/ 2 boosts</span></b>
+          <button class="btn-primary">Select</button>
+        </div>
       </div>
     </div>
   </div>
 </div>
 
-<!-- Checkout Modal (Boosts) -->
-<div class="ov" id="ovC" onclick="if(event.target===this&&!busy)closeAll()">
-  <div class="sheet">
-    <div class="sh">
-      <h3 id="ct">Select Quantity</h3>
-      <button class="x" onclick="closeAll()">✕</button>
+<!-- CHECKOUT WIZARD -->
+<div class="overlay" id="mod-checkout" onclick="closeOnBg(event, this)">
+  <div class="modal">
+    <div class="modal-header">
+      <h2 id="co-title">Configure Order</h2>
+      <button class="close-btn" onclick="closeModal('mod-checkout')">✕</button>
     </div>
-    <div class="dots"><i></i><i></i><i></i><i></i><i></i></div>
 
-    <!-- Step 1 -->
-    <div class="step" id="s1">
-      <div class="mut" id="pn"></div>
-      <div class="big" id="qv" style="margin-top:8px">2</div>
-      <div class="mut">Server Boosts</div>
-      <input type="range" id="sl" min="2" max="30" step="2" value="2">
-      <div class="chips">
-        <button onclick="setQ(2)">2</button>
-        <button onclick="setQ(8)">8 (Lvl 2)</button>
-        <button onclick="setQ(14)">14 (Lvl 3)</button>
-        <button onclick="setQ(30)">Max (30)</button>
+    <!-- Step 1: Quantity -->
+    <div class="step active" id="co-s1">
+      <div style="text-align:center; margin-bottom:30px;">
+        <h3 id="co-plan-name" style="color:var(--text-secondary); margin-bottom:10px;">Plan</h3>
+        <b style="font-size:48px;" id="co-qty">2</b>
+        <span style="color:var(--text-secondary); display:block;">Server Boosts</span>
       </div>
-      <div class="amt" id="tp">$0.27</div>
-      <div class="mut" id="lv" style="color:var(--acc);font-weight:600;margin-top:6px"></div>
-      <button class="btn" style="width:100%;margin-top:20px" onclick="go(2)">Continue to Server Lookup</button>
+      <input type="range" id="co-slider" min="2" max="30" step="2" value="2" oninput="updateQty()">
+      <div style="display:flex; justify-content:space-between; margin-bottom:30px; font-size:13px; color:var(--text-secondary);">
+        <span>2</span><span>14 (Lvl 3)</span><span>30</span>
+      </div>
+      <div style="background:var(--bg-core); padding:15px; border-radius:12px; border:1px solid var(--border); display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
+        <span>Total Price:</span>
+        <b style="font-size:24px; color:var(--accent);" id="co-price">$0.27</b>
+      </div>
+      <button class="btn-primary" style="width:100%; padding:15px;" onclick="goToStep(2)">Continue to Server Lookup</button>
     </div>
 
-    <!-- Step 2 -->
-    <div class="step" id="s2">
-      <input type="text" id="inv" placeholder="Paste invite: discord.gg/yourserver" autocapitalize="off" autocorrect="off" spellcheck="false">
-      <div style="color:var(--bad);font-size:13px;margin:8px 4px;min-height:18px" id="er"></div>
-      <div id="sv"></div>
-      <button class="btn" id="lb2" style="width:100%" onclick="lookup()">Verify & Preview Server</button>
+    <!-- Step 2: Server Info -->
+    <div class="step" id="co-s2">
+      <input type="text" id="co-invite" placeholder="Paste Discord Invite Link">
+      <div id="co-err" style="color:var(--error); font-size:13px; margin-bottom:15px;"></div>
+      <div id="co-server-card" style="display:none; background:var(--bg-core); border:1px solid var(--border); border-radius:16px; padding:20px; margin-bottom:20px; text-align:center;">
+        <h3 id="co-s-name" style="margin-bottom:10px;">Server Name</h3>
+        <p style="font-size:13px; color:var(--text-secondary);">ID: <span id="co-s-id"></span></p>
+      </div>
+      <button class="btn-primary" style="width:100%; padding:15px;" id="btn-lookup" onclick="lookupServer()">Verify Server</button>
     </div>
 
-    <!-- Step 3 -->
-    <div class="step" id="s3">
-      <div class="sum" id="sm"></div>
-      <div style="margin-top:16px;font-weight:600;font-size:14px">Choose Fulfillment Mode:</div>
-      <div class="method-cards">
-        <div class="m-card active" id="mc-auto" onclick="setMethod('auto')">
-          <h4><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ff7a1a" stroke-width="2.5"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg> Automatic Mode</h4>
-          <p>System auto-detects payment and generates your confirmed Invoice ID automatically.</p>
+    <!-- Step 3: Confirmation -->
+    <div class="step" id="co-s3">
+      <div class="info-box">Select Automatic delivery for instant processing, or Manual Ticket to receive a redeemable Secret Key.</div>
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:20px;">
+        <div id="meth-auto" class="card" style="padding:15px; cursor:pointer; border-color:var(--accent);" onclick="setMethod('auto')">
+          <b style="display:block; margin-bottom:5px;">⚡ Automatic</b>
+          <span style="font-size:12px; color:var(--text-secondary);">Instant API Delivery</span>
         </div>
-        <div class="m-card" id="mc-man" onclick="setMethod('manual')">
-          <h4><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#00f0ff" stroke-width="2.5"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg> Manual Ticket Mode</h4>
-          <p>Issues a Secret Key after payment confirmation to redeem in our Discord ticket panel.</p>
-        </div>
-      </div>
-      <div style="display:flex;gap:8px;margin-bottom:12px">
-        <input type="text" id="promo-in" placeholder="Promo code (e.g. ORION10)" style="padding:11px 14px;font-size:13px">
-        <button class="btn g" style="padding:11px 18px;font-size:13px;white-space:nowrap" onclick="applyPromo()">Apply</button>
-      </div>
-      <div id="promo-msg" style="font-size:12px;margin-bottom:10px"></div>
-      <div class="info-box">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#00f0ff" stroke-width="2" style="flex:none"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
-        <div><b>Delivery Notice:</b> Full step-by-step redemption instructions and your invoice credentials will be displayed immediately after your payment is detected and confirmed online.</div>
-      </div>
-      <label style="display:flex;gap:10px;align-items:center;font-size:13px;color:var(--mute);margin:14px 0;cursor:pointer">
-        <input type="checkbox" id="cf" style="width:20px;height:20px;accent-color:var(--acc)" onchange="document.getElementById('pay').disabled=!this.checked">
-        <span>I confirm the server, boost amount, and delivery method are accurate.</span>
-      </label>
-      <button class="btn" id="pay" style="width:100%" disabled onclick="initiateCheckout()">Generate QR & Start Auto-Monitor</button>
-    </div>
-
-    <!-- Step 4 -->
-    <div class="step" id="s4">
-      <div class="qr" id="qr"></div>
-      <div class="mut">Send Exact Fractional Amount</div>
-      <div class="amt" id="la">0.00000000 LTC</div>
-      <div class="mut" id="ua">≈ $0.00 USD</div>
-      <div class="mut" id="cd" style="color:var(--acc);font-weight:600;margin-top:4px"></div>
-      
-      <div class="warn-box">
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#ff3b5c" stroke-width="2.2" style="flex:none;margin-top:1px"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
-        <div><b>Important:</b> Send the exact amount shown above. Underpayment beyond $0.04 tolerance will result in a failed transaction.</div>
-      </div>
-
-      <div class="cp"><span id="ad"></span><button onclick="cp(ADDR)">Copy Address</button></div>
-      <div class="cp"><span id="ex"></span><button onclick="cp(exact)">Copy Exact LTC</button></div>
-      
-      <div style="display:flex;align-items:center;justify-content:center;gap:10px;margin:18px 0;padding:12px;border-radius:16px;background:rgba(255,122,26,0.08);border:1px solid rgba(255,122,26,0.25)">
-        <div class="spin" style="width:18px;height:18px;margin:0;border-width:2.5px"></div>
-        <span style="font-size:13px;color:var(--acc);font-weight:600" id="scan-txt">Auto-monitoring blockchain (every 15s)...</span>
-      </div>
-      
-      <details style="margin-top:10px">
-        <summary style="font-size:13px;color:var(--mute)">Auto-tracking slow? Submit TXID manually</summary>
-        <div style="margin-top:12px">
-          <input type="text" id="manual-tx" placeholder="Paste 64-character Litecoin TXID" maxlength="64" style="font-size:13px;padding:12px">
-          <div id="tx-err" style="color:var(--bad);font-size:12px;margin:6px 0"></div>
-          <button class="btn" style="width:100%;padding:12px;font-size:13px" onclick="submitManualTx()">Verify TXID Instantly</button>
-        </div>
-      </details>
-    </div>
-
-    <!-- Step 5 -->
-    <div class="step" id="s5" style="text-align:center;padding:20px 0">
-      <div class="spin" style="border-top-color:var(--ok);width:64px;height:64px"></div>
-      <div class="badge" style="margin-top:10px;border-color:var(--ok);color:var(--ok)">Confirmation Status: 0/2</div>
-      <h3 style="font-size:24px;color:var(--ink);margin-top:8px">Payment Transaction Detected!</h3>
-      <p class="mut" style="max-width:440px;margin:12px auto 0;line-height:1.6;font-size:14px">We have detected a payment transaction from you, kindly wait until the confirmation <b>0/2</b> reaches <b>1/2</b> on the Litecoin network.</p>
-      <div class="cp" style="margin-top:20px"><span class="mut" style="flex:none">Detected TXID:</span><span id="det-tx">Scanning mempool...</span></div>
-    </div>
-
-    <!-- Step 6 -->
-    <div class="step" id="s6" style="text-align:center">
-      <div class="ok-badge"><svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div>
-      <div class="badge" style="border-color:var(--ok);color:var(--ok);margin-bottom:8px">Confirmation 1/2 Reached</div>
-      <h3 style="font-size:26px;letter-spacing:-.03em;margin-bottom:16px">Order Successfully Confirmed</h3>
-      
-      <div class="cp" style="background:rgba(0,230,118,0.08);border-color:var(--ok);margin-bottom:16px">
-        <span style="color:var(--mute);flex:none">Order ID:</span>
-        <span id="r-oid" style="font-weight:700;color:var(--ink);font-size:15px"></span>
-        <button onclick="cp(currentOrderId)">Copy Order ID</button>
-      </div>
-
-      <div class="c" style="text-align:left;padding:20px;margin-bottom:16px">
-        <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--line)"><span class="mut">Product Name</span><b id="r-prod"></b></div>
-        <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--line)"><span class="mut">Amount Paid (USD)</span><b id="r-usd" style="color:var(--ok)"></b></div>
-        <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--line)"><span class="mut">Target Server</span><b id="r-srv"></b></div>
-        <div style="display:flex;justify-content:space-between;padding:8px 0"><span class="mut">Confirmed Time</span><b id="r-time" style="font-size:12px"></b></div>
-      </div>
-
-      <div id="manual-instructions" style="display:none;text-align:left;background:rgba(255,122,26,0.1);border:1px solid var(--acc);padding:20px;border-radius:24px;margin-bottom:16px">
-        <h4 style="color:var(--acc);font-size:16px;margin-bottom:10px;display:flex;align-items:center;gap:8px">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"/></svg>
-          <span>Manual Redemption Instructions</span>
-        </h4>
-        <div style="font-size:13px;line-height:1.7;color:var(--ink);margin-bottom:12px">
-          1. First of all join <a href="https://discord.gg/tdUkxYJmZP" target="_blank" style="color:var(--acc);font-weight:700;text-decoration:underline">https://discord.gg/tdUkxYJmZP</a><br>
-          2. Then go to <b>Redeem Panel</b> and redeem your Secret Key given below.<br>
-          3. <b style="color:var(--bad)">*Don't Leak Your Key*</b><br>
-          4. Put your secret key there & a ticket will be made.<br>
-          5. Now you just have to wait for your boosts to be done (Because already paid).<br>
-          6. If you didn't get boosts under 24 hours, type <code>.support</code> and our staff will resolve your problem as soon as possible.
-        </div>
-        <div class="cp" style="background:var(--bg1);border-color:var(--acc)">
-          <span style="flex:none;color:var(--mute)">Secret Key:</span>
-          <span style="font-weight:700;color:var(--acc);font-size:14px">Orion-Shop-67SixSeven</span>
-          <button onclick="cp('Orion-Shop-67SixSeven')">Copy Key</button>
+        <div id="meth-man" class="card" style="padding:15px; cursor:pointer; padding:15px;" onclick="setMethod('manual')">
+          <b style="display:block; margin-bottom:5px;">🎟️ Manual Ticket</b>
+          <span style="font-size:12px; color:var(--text-secondary);">Secret Key Issued</span>
         </div>
       </div>
-      <div style="display:flex;gap:10px">
-        <button class="btn g" style="flex:1" onclick="downloadReceipt()">Download .TXT Receipt</button>
-        <button class="btn" style="flex:1" onclick="closeAll()">Done</button>
+      <input type="text" id="co-promo" placeholder="Promo Code (Optional)">
+      <button class="btn-primary" style="width:100%; padding:15px;" id="btn-checkout" onclick="startCheckout()">Generate Secure Payment Link</button>
+    </div>
+
+    <!-- Step 4: Payment -->
+    <div class="step" id="co-s4">
+      <div class="warn-box">Send the EXACT Litecoin amount shown below. Even a 0.0001 LTC difference will cause the automated system to ignore your payment.</div>
+      <div style="text-align:center;">
+        <div class="qr-code" id="co-qr"></div>
+        <b style="font-size:32px; display:block; margin-bottom:5px;" id="co-ltc-amt">0.00 LTC</b>
+        <span style="color:var(--text-secondary); display:block; margin-bottom:20px;" id="co-usd-amt">≈ $0.00</span>
       </div>
+      <div class="copy-row">
+        <span id="co-addr-txt" style="font-family:monospace;">...</span>
+        <button onclick="copyToClip('co-addr-txt')">Copy Address</button>
+      </div>
+      <div class="copy-row">
+        <span id="co-exact-txt" style="font-family:monospace; color:var(--accent); font-weight:bold;">...</span>
+        <button onclick="copyToClip('co-exact-txt')">Copy Amount</button>
+      </div>
+      <div style="text-align:center; margin-top:20px; color:var(--accent); font-size:14px; font-weight:600;">
+        <div class="spinner" style="width:24px; height:24px; border-width:2px; display:inline-block; vertical-align:middle; margin:0 10px 0 0;"></div>
+        Scanning Mempool... (<span id="co-timer">30:00</span>)
+      </div>
+      <div style="margin-top:20px; border-top:1px solid var(--border); padding-top:20px;">
+        <p style="font-size:12px; color:var(--text-secondary); margin-bottom:10px;">Manual Fallback (If tracker is stuck):</p>
+        <div style="display:flex; gap:10px;">
+          <input type="text" id="co-manual-tx" placeholder="64-Char TXID" style="margin:0;">
+          <button class="btn-secondary" onclick="verifyManualTx()">Verify</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 5: Detected -->
+    <div class="step" id="co-s5" style="text-align:center; padding:40px 0;">
+      <div class="spinner" style="border-top-color:var(--success);"></div>
+      <h2 style="color:var(--success); margin-bottom:10px;">Payment Detected (0/2)</h2>
+      <p style="color:var(--text-secondary); font-size:14px;">Your transaction is in the Litecoin mempool. Awaiting 1 miner confirmation.</p>
+    </div>
+
+    <!-- Step 6: Success -->
+    <div class="step" id="co-s6" style="text-align:center;">
+      <div style="width:80px; height:80px; background:var(--success); border-radius:50%; display:grid; place-items:center; font-size:40px; margin:0 auto 20px;">✓</div>
+      <h2 style="margin-bottom:20px;">Order Confirmed!</h2>
+      <div class="copy-row" style="background:rgba(0,230,118,0.1); border-color:var(--success);">
+        <span style="color:var(--success); font-weight:bold;">Order ID:</span>
+        <b id="success-oid" style="font-family:monospace;">...</b>
+        <button onclick="copyToClip('success-oid')" style="background:var(--success);">Copy</button>
+      </div>
+      <div id="manual-key-box" style="display:none; background:rgba(255,122,26,0.1); border:1px solid var(--accent); padding:20px; border-radius:16px; margin-bottom:20px; text-align:left;">
+        <h3 style="color:var(--accent); margin-bottom:10px; font-size:16px;">🎟️ Your Secret Key</h3>
+        <p style="font-size:13px; margin-bottom:15px; line-height:1.5;">Join <b>discord.gg/tdUkxYJmZP</b>, go to the Redeem Panel, and submit this key in a ticket to claim your boosts.</p>
+        <div class="copy-row" style="margin:0; border-color:var(--accent);">
+          <b id="success-key" style="color:var(--accent); font-family:monospace;">Orion-Shop-67SixSeven</b>
+          <button onclick="copyToClip('success-key')">Copy Key</button>
+        </div>
+      </div>
+      <button class="btn-primary" style="width:100%; padding:15px;" onclick="closeModal('mod-checkout')">Done</button>
     </div>
   </div>
 </div>
 
 <!-- DONATION MODAL -->
-<div class="ov" id="ovD" onclick="if(event.target===this&&!donBusy)closeAll()">
-  <div class="sheet">
-    <div class="sh">
-      <h3 id="dct">Support Us</h3>
-      <button class="x" onclick="closeAll()">✕</button>
+<div class="overlay" id="mod-donate" onclick="closeOnBg(event, this)">
+  <div class="modal">
+    <div class="modal-header">
+      <h2>Support Orion</h2>
+      <button class="close-btn" onclick="closeModal('mod-donate')">✕</button>
     </div>
-    <div class="d-dots"><i id="dd1"></i><i id="dd2"></i><i id="dd3"></i><i id="dd4"></i></div>
-
-    <div class="step" id="ds1">
-      <div style="text-align:center;margin-bottom:24px">
-        <div class="ic" style="margin:0 auto 12px;background:linear-gradient(135deg, rgba(0,240,255,0.2), rgba(0,162,255,0.2));border-color:var(--cy)"><svg viewBox="0 0 24 24" style="stroke:var(--cy)"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></div>
-        <h3 style="font-size:22px">Make a Donation</h3>
-        <p class="mut" style="margin-top:6px">Support our development. Enter an amount between $0.50 and $100.00 USD.</p>
-      </div>
-      
-      <input type="text" id="don-name" placeholder="Display Name (optional)" style="margin-bottom:12px">
-      
-      <div style="display:flex;align-items:center;background:var(--card);border:2px solid var(--cy);border-radius:20px;padding:8px 18px;margin-bottom:16px;box-shadow:0 0 20px rgba(0,240,255,0.1)">
-        <span style="font-size:28px;color:var(--mute);margin-right:8px">$</span>
-        <input type="number" id="don-in" min="0.5" max="100" step="0.5" value="1.00" style="background:transparent;border:none;font-size:28px;font-weight:700;color:var(--ink);width:100%;outline:none;padding:0" oninput="limitDonation(this)">
-      </div>
-      <div class="chips">
-        <button onclick="setDon(1.00)">$1.00</button>
-        <button onclick="setDon(5.00)">$5.00</button>
-        <button onclick="setDon(10.00)">$10.00</button>
-        <button onclick="setDon(20.00)">$20.00</button>
-      </div>
-      <button class="btn cy" style="width:100%;margin-top:16px" id="don-btn" onclick="initiateDonation()">Donate with Litecoin</button>
+    <div class="step active" id="don-s1">
+      <p style="color:var(--text-secondary); margin-bottom:20px; font-size:14px;">Enter an amount between $0.50 and $100.00 USD to help keep our servers running.</p>
+      <input type="number" id="don-amt" min="0.5" max="100" step="0.5" value="5.00" style="font-size:24px; font-weight:bold; text-align:center; padding:20px;">
+      <button class="btn-primary" style="width:100%; padding:15px;" id="btn-donate" onclick="startDonation()">Donate with Litecoin</button>
     </div>
-
-    <div class="step" id="ds2">
-      <div class="qr" id="d-qr"></div>
-      <div class="mut">Send Exact Fractional Amount</div>
-      <div class="amt" id="d-la">0.00000000 LTC</div>
-      <div class="mut" id="d-ua">≈ $0.00 USD</div>
-      <div class="mut" id="d-cd" style="color:var(--cy);font-weight:600;margin-top:4px"></div>
-      
-      <div class="cp"><span id="d-ad"></span><button onclick="cp(ADDR)" style="background:var(--cy);color:#000">Copy Address</button></div>
-      <div class="cp"><span id="d-ex"></span><button onclick="cp(donExact)" style="background:var(--cy);color:#000">Copy Exact LTC</button></div>
-      
-      <div style="display:flex;align-items:center;justify-content:center;gap:10px;margin:18px 0;padding:12px;border-radius:16px;background:rgba(0,240,255,0.08);border:1px solid rgba(0,240,255,0.25)">
-        <div class="spin" style="width:18px;height:18px;margin:0;border-width:2.5px;border-top-color:var(--cy)"></div>
-        <span style="font-size:13px;color:var(--cy);font-weight:600">Auto-monitoring for donation...</span>
-      </div>
+    <div class="step" id="don-s2">
+      <div class="qr-code" id="don-qr"></div>
+      <b style="font-size:24px; display:block; text-align:center; margin-bottom:5px;" id="don-ltc-amt">0.00 LTC</b>
+      <div class="copy-row"><span id="don-addr-txt">...</span><button onclick="copyToClip('don-addr-txt')">Copy</button></div>
+      <div class="copy-row"><span id="don-exact-txt">...</span><button onclick="copyToClip('don-exact-txt')">Copy</button></div>
+      <div style="text-align:center; margin-top:20px; color:var(--cyan); font-size:14px;"><div class="spinner" style="width:20px;height:20px;border-width:2px;display:inline-block;vertical-align:middle;margin:0 10px 0 0;border-top-color:var(--cyan);"></div> Scanning...</div>
     </div>
-
-    <div class="step" id="ds3" style="text-align:center;padding:20px 0">
-      <div class="spin" style="border-top-color:var(--ok);width:64px;height:64px"></div>
-      <div class="badge" style="margin-top:10px;border-color:var(--ok);color:var(--ok)">Confirmation Status: 0/2</div>
-      <h3 style="font-size:24px;color:var(--ink);margin-top:8px">Donation Detected!</h3>
-      <p class="mut" style="max-width:440px;margin:12px auto 0;line-height:1.6;font-size:14px">We have spotted your donation on the network. Kindly wait for 1 network confirmation.</p>
-    </div>
-
-    <div class="step" id="ds4" style="text-align:center">
-      <div class="ok-badge" style="background:linear-gradient(135deg, var(--cy), #0088ff);box-shadow:0 12px 35px rgba(0, 240, 255, 0.4)"><svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div>
-      <h3 style="font-size:26px;letter-spacing:-.03em;margin-bottom:12px">Support Confirmed!</h3>
-      <p style="font-size:16px;line-height:1.6;margin-bottom:24px;color:var(--mute)">Thanks for showing Support! We successfully received your generous <b id="d-r-usd" style="color:var(--ink)"></b> donation.</p>
-      
-      <div class="c" style="text-align:left;padding:20px;margin-bottom:16px;background:rgba(0,240,255,0.06);border-color:var(--cy)">
-        <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--line)"><span class="mut">Donation ID</span><b id="d-r-oid"></b></div>
-        <div style="display:flex;justify-content:space-between;padding:8px 0"><span class="mut">Timestamp</span><b id="d-r-time" style="font-size:12px"></b></div>
-      </div>
-      <button class="btn cy" style="width:100%" onclick="closeAll()">You're Welcome!</button>
+    <div class="step" id="don-s3" style="text-align:center;">
+      <div style="width:80px; height:80px; background:var(--cyan); border-radius:50%; display:grid; place-items:center; font-size:40px; margin:0 auto 20px; color:#000;">✓</div>
+      <h2>Donation Confirmed!</h2>
+      <p style="color:var(--text-secondary); margin-top:10px;">Thank you for supporting Orion Boosts!</p>
     </div>
   </div>
 </div>
 
-<!-- Order Explorer Modal -->
-<div class="ov" id="ovO" onclick="if(event.target===this)closeAll()">
-  <div class="sheet">
-    <div class="sh">
-      <h3>Order Explorer & Receipts</h3>
-      <button class="x" onclick="closeAll()">✕</button>
+<!-- TRACKING MODAL -->
+<div class="overlay" id="mod-track" onclick="closeOnBg(event, this)">
+  <div class="modal">
+    <div class="modal-header">
+      <h2>Order Explorer</h2>
+      <button class="close-btn" onclick="closeModal('mod-track')">✕</button>
     </div>
-    <div style="display:flex;gap:8px;margin-bottom:18px">
-      <input type="text" id="lookup-id" placeholder="Enter Order ID (e.g. ORB-...)" style="padding:12px 14px;font-size:13px">
-      <button class="btn" style="padding:12px 18px;font-size:13px;white-space:nowrap" onclick="lookupOrderLive()">Search Live</button>
+    <div style="display:flex; gap:10px; margin-bottom:20px;">
+      <input type="text" id="track-id" placeholder="ORB-..." style="margin:0;">
+      <button class="btn-primary" onclick="trackOrder()">Search</button>
     </div>
-    <div id="lookup-res" style="margin-bottom:16px"></div>
-    <h4 style="font-size:14px;color:var(--mute);margin-bottom:10px">Saved Device Orders</h4>
-    <div id="ol"></div>
+    <div id="track-res"></div>
   </div>
 </div>
 
-<!-- Settings Modal -->
-<div class="ov" id="ovSettings" onclick="if(event.target===this)closeAll()">
-  <div class="sheet" style="max-width:500px">
-    <div class="sh">
-      <h3>Preferences</h3>
-      <button class="x" onclick="closeAll()">✕</button>
-    </div>
-    <div class="c" style="padding:20px">
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px">
-        <div>
-          <b style="display:block;font-size:15px">Background Particles</b>
-          <span style="font-size:12px;color:var(--mute)">Toggle animated canvas elements (improves performance).</span>
-        </div>
-        <button class="btn g" style="padding:8px 16px;font-size:12px" onclick="toggleParticles()">Toggle</button>
-      </div>
-      <div style="display:flex;justify-content:space-between;align-items:center">
-        <div>
-          <b style="display:block;font-size:15px">Theme Mode</b>
-          <span style="font-size:12px;color:var(--mute)">Switch between Light and Dark interface.</span>
-        </div>
-        <button class="btn g" style="padding:8px 16px;font-size:12px" onclick="toggleTheme()">Switch</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- Terms of Service Modal -->
-<div class="ov" id="ovTOS" onclick="if(event.target===this)closeAll()">
-  <div class="sheet">
-    <div class="sh">
-      <h3>Terms of Service</h3>
-      <button class="x" onclick="closeAll()">✕</button>
-    </div>
-    <div style="color:var(--mute);font-size:13px;line-height:1.7;padding:10px 0;max-height:50vh;overflow-y:auto">
-      <p style="margin-bottom:12px"><b>1. Acceptance of Terms</b><br>By accessing and using Orion Boosts, you accept and agree to be bound by the terms and provision of this agreement.</p>
-      <p style="margin-bottom:12px"><b>2. Cryptocurrency Payments</b><br>All transactions are conducted in Litecoin (LTC). Due to the nature of cryptocurrency, all payments are final and irreversible. We utilize a $0.04 USD tolerance system to account for minor network fee deductions. Underpayments beyond this tolerance may result in a failed confirmation.</p>
-      <p style="margin-bottom:12px"><b>3. Delivery & Fulfillment</b><br>Boosts are delivered automatically upon 1 network confirmation. In the event of network delays, users must retain their Order ID and Transaction Hash (TXID) for support inquiries. Manual ticket orders require the user to redeem their provided Secret Key within our Discord server.</p>
-      <p><b>4. Disclaimers</b><br>Orion Boosts is an independent service and is not affiliated with, endorsed by, or sponsored by Discord Inc. Boosts are valid for the duration specified at checkout (1 Month, 3 Months, or 12 Months).</p>
-    </div>
-  </div>
-</div>
-
-<div class="recent-toast-container" id="rtc"></div>
-<div class="toast" id="ts"></div>
+<div class="toast" id="toast-msg">Notification</div>
 
 <script>
 // ==========================================
-// CORE JAVASCRIPT LOGIC
+// CORE LOGIC & STATE
 // ==========================================
 const API_URL = "https://orionboosts.onrender.com";
 const ADDR = "ltc1qrlygyv2z8am20lgxpju3fdtky39lux7wlpwru3";
-const PRICE = { 
-  "1M": { n: "1M Server Boosts", p: 0.27 }, 
-  "3M": { n: "3M Server Boosts", p: 0.88 },
-  "12M": { n: "1Y VIP Boosts", p: 2.99 }
-};
+const PRICES = { "1M": 0.27, "3M": 0.88, "12M": 2.99 };
+const NAMES = { "1M": "1 Month Boosts", "3M": "3 Month Boosts", "12M": "1 Year VIP Boosts" };
 
-let LTC_USD = 85.00;
-let plan = "1M", qty = 2, srv = null, total = 0, exact = "", busy = false;
-let statusInterval = null, ctd = null, currentOrderId = null;
-let selectedMethod = "auto", activePromo = null, discountRate = 0, homeCalcPlan = "1M";
-
-// Donation specific vars
-let donBusy = false, donInterval = null, donCtd = null, donOrderId = null, donExact = "", donTotal = 0;
+let cPlan = "1M", cQty = 2, cSrv = null, cTotal = 0.27, cMethod = "auto";
+let activeOrderId = null, trackInterval = null, timerInterval = null, isBusy = false;
 
 const $ = id => document.getElementById(id);
-function toast(m) { const t = $("ts"); t.textContent = m; t.classList.add("on"); setTimeout(() => t.classList.remove("on"), 2000); }
-function cp(v) { try { navigator.clipboard.writeText(v); } catch(e) {} toast("Copied to clipboard"); }
-
-/* ==========================================
-   PARTICLE ENGINE
-   ========================================== */
-const canvas = document.getElementById("particles-canvas");
-const ctx = canvas.getContext("2d");
-let particlesArray = [];
-let particlesEnabled = true;
-
-function resizeCanvas() {
-  canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight;
+function showToast(msg) {
+  const t = $("toast-msg");
+  t.textContent = msg;
+  t.classList.add("show");
+  setTimeout(() => t.classList.remove("show"), 3000);
 }
-window.addEventListener("resize", resizeCanvas);
-resizeCanvas();
-
-class Particle {
-  constructor() {
-    this.x = Math.random() * canvas.width;
-    this.y = Math.random() * canvas.height;
-    this.size = Math.random() * 2;
-    this.speedX = Math.random() * 1 - 0.5;
-    this.speedY = Math.random() * 1 - 0.5;
-  }
-  update() {
-    this.x += this.speedX;
-    this.y += this.speedY;
-    if (this.x < 0 || this.x > canvas.width) this.speedX *= -1;
-    if (this.y < 0 || this.y > canvas.height) this.speedY *= -1;
-  }
-  draw() {
-    ctx.fillStyle = "rgba(255, 122, 26, 0.5)";
-    ctx.beginPath();
-    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-    ctx.fill();
-  }
-}
-function initParticles() {
-  particlesArray = [];
-  let numberOfParticles = (canvas.width * canvas.height) / 15000;
-  for (let i = 0; i < numberOfParticles; i++) {
-    particlesArray.push(new Particle());
-  }
-}
-function animateParticles() {
-  if (!particlesEnabled) {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    requestAnimationFrame(animateParticles);
-    return;
-  }
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-  for (let i = 0; i < particlesArray.length; i++) {
-    particlesArray[i].update();
-    particlesArray[i].draw();
-    for (let j = i; j < particlesArray.length; j++) {
-      const dx = particlesArray[i].x - particlesArray[j].x;
-      const dy = particlesArray[i].y - particlesArray[j].y;
-      const distance = Math.sqrt(dx * dx + dy * dy);
-      if (distance < 100) {
-        ctx.beginPath();
-        ctx.strokeStyle = `rgba(255, 122, 26, ${0.15 - distance / 1000})`;
-        ctx.lineWidth = 0.5;
-        ctx.moveTo(particlesArray[i].x, particlesArray[i].y);
-        ctx.lineTo(particlesArray[j].x, particlesArray[j].y);
-        ctx.stroke();
-      }
-    }
-  }
-  requestAnimationFrame(animateParticles);
-}
-initParticles();
-animateParticles();
-
-function toggleParticles() {
-  particlesEnabled = !particlesEnabled;
-  toast(particlesEnabled ? "Particles Enabled" : "Particles Disabled");
+function copyToClip(id) {
+  navigator.clipboard.writeText($(id).textContent).catch(()=>{});
+  showToast("Copied to clipboard!");
 }
 
-/* ==========================================
-   LIVE PURCHASE TICKER SIMULATOR
-   ========================================== */
-const names = ["Alex", "Sniper", "DarkLord", "Kairo", "Mina", "Draven", "Sol", "Ghost", "Admin"];
-function spawnLivePurchase() {
-  if (Math.random() > 0.6) return; // 40% chance every interval
-  const container = $("rtc");
-  const t = document.createElement("div");
-  t.className = "rt-toast";
-  const name = names[Math.floor(Math.random() * names.length)] + "***";
-  const bQty = [2, 8, 14, 30][Math.floor(Math.random() * 4)];
-  const bPlan = ["1 Month", "3 Months", "1 Year"][Math.floor(Math.random() * 3)];
-  t.innerHTML = `
-    <div class="rt-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg></div>
-    <div class="rt-text"><b>${name}</b> just purchased<br>${bQty}x ${bPlan} Boosts</div>
-  `;
-  container.appendChild(t);
-  setTimeout(() => { if (container.contains(t)) container.removeChild(t); }, 4500);
+// ==========================================
+// MODAL MANAGEMENT
+// ==========================================
+function openModal(id) { $(id).classList.add('active'); document.body.classList.add('lock'); }
+function closeModal(id) { 
+  if(isBusy) return;
+  $(id).classList.remove('active'); 
+  document.body.classList.remove('lock'); 
+  clearInterval(trackInterval); clearInterval(timerInterval);
 }
-setInterval(spawnLivePurchase, 12000);
+function closeOnBg(e, el) { if(e.target === el) closeModal(el.id); }
 
-/* ==========================================
-   TELEMETRY & LEADERBOARD SYNC
-   ========================================== */
-async function syncTelemetry() {
+function goToStep(n, prefix = 'co-') {
+  document.querySelectorAll(`[id^="${prefix}s"]`).forEach(el => el.classList.remove('active'));
+  $(`${prefix}s${n}`).classList.add('active');
+}
+
+// ==========================================
+// TELEMETRY SYNC
+// ==========================================
+async function syncData() {
   try {
-    const r = await fetch(`${API_URL}/api/metrics`);
-    const d = await r.json();
-    if (d.ltcUsd) {
-      LTC_USD = d.ltcUsd;
-      $("tb-ltc").textContent = "$" + LTC_USD.toFixed(2);
-      $("stat-donations").textContent = "$" + d.totalDonations.toFixed(2);
-      updateHomeCalc();
+    const res = await fetch(`${API_URL}/api/metrics`);
+    if(res.ok) {
+      const d = await res.json();
+      $("m-donations").textContent = "$" + d.donations.toFixed(2);
     }
-    
-    // Sync Leaderboard
-    const lbRes = await fetch(`${API_URL}/api/leaderboard`);
-    const lbData = await lbRes.json();
-    if (lbData && lbData.length > 0) {
-      $("lb-list").innerHTML = lbData.map((d, i) => `
-        <div style="display:flex;justify-content:space-between;align-items:center;padding:16px 20px;border-bottom:1px solid var(--line);background:${i===0?'rgba(255,122,26,0.05)':'transparent'}">
-          <div style="display:flex;align-items:center;gap:12px">
-            <b style="font-size:18px;color:${i===0?'var(--acc)':'var(--mute)'}">#${i+1}</b>
-            <span style="font-weight:600;font-size:15px">${d.name}</span>
-          </div>
-          <b style="color:var(--ok);font-size:16px">$${d.amount.toFixed(2)}</b>
-        </div>
-      `).join("");
-    }
-  } catch (e) {}
+  } catch(e) {}
 }
-syncTelemetry();
-setInterval(syncTelemetry, 30000);
+syncData();
 
-/* ==========================================
-   CALCULATOR LOGIC
-   ========================================== */
-function setHomeCalcPlan(p) { 
-  homeCalcPlan = p; 
-  $("hc-1m").classList.toggle("active", p === "1M"); 
-  $("hc-3m").classList.toggle("active", p === "3M"); 
-  $("hc-12m").classList.toggle("active", p === "12M"); 
-  updateHomeCalc(); 
-}
-function updateHomeCalc() { 
-  const q = +$("hc-slider").value, usd = (q / 2) * PRICE[homeCalcPlan].p, ltc = usd / LTC_USD; 
-  $("hc-qty").textContent = q + " Boosts"; 
-  $("hc-usd").textContent = "$" + usd.toFixed(2); 
-  $("hc-ltc").textContent = "≈ " + ltc.toFixed(6) + " LTC"; 
-  $("hc-slider").style.setProperty("--p", ((q - 2) / 28 * 100) + "%"); 
-  if (q >= 14) { $("hc-lvl").textContent = "Level 3 (Max)"; $("hc-audio").textContent = "384 Kbps"; $("hc-upload").textContent = "100 MB"; $("hc-vanity").textContent = "Vanity URL + Banner"; } 
-  else if (q >= 7) { $("hc-lvl").textContent = "Level 2 Unlocked"; $("hc-audio").textContent = "256 Kbps"; $("hc-upload").textContent = "50 MB"; $("hc-vanity").textContent = "Server Banner + 1080p"; } 
-  else { $("hc-lvl").textContent = "Level 1 Unlocked"; $("hc-audio").textContent = "128 Kbps"; $("hc-upload").textContent = "8 MB (Standard)"; $("hc-vanity").textContent = "Animated Icon + Emojis"; } 
-}
-updateHomeCalc();
-function launchFromCalc() { const q = +$("hc-slider").value; buy(homeCalcPlan); setQ(q); }
-
-/* ==========================================
-   MODAL MANAGEMENT
-   ========================================== */
-function openOv(id) { $(id).classList.add("on"); document.body.classList.add("lock"); }
-function closeAll() { 
-  clearInterval(statusInterval); clearInterval(ctd); clearInterval(donInterval); clearInterval(donCtd); 
-  busy = false; donBusy = false; 
-  document.querySelectorAll(".ov").forEach(o => o.classList.remove("on")); 
-  document.body.classList.remove("lock"); 
-}
-function openBrowse() { openOv("ovB"); }
-function openDonation() { openOv("ovD"); goDon(1); }
-
-function buy(k) { 
-  plan = k; qty = 2; srv = null; activePromo = null; discountRate = 0; 
-  $("sl").value = 2; $("promo-in").value = ""; $("promo-msg").textContent = ""; upd(); 
-  $("inv").value = ""; $("er").textContent = ""; $("sv").innerHTML = ""; 
-  $("cf").checked = false; $("pay").disabled = true; $("pay").textContent = "Generate QR & Start Auto-Monitor"; 
-  $("ovB").classList.remove("on"); openOv("ovC"); go(1); 
+// ==========================================
+// CHECKOUT FLOW
+// ==========================================
+function initBuy(planCode) {
+  cPlan = planCode; cQty = 2; cSrv = null; cMethod = "auto";
+  $("co-slider").value = 2;
+  $("co-invite").value = "";
+  $("co-promo").value = "";
+  $("co-server-card").style.display = "none";
+  setMethod("auto");
+  updateQty();
+  closeModal('mod-browse');
+  openModal('mod-checkout');
+  goToStep(1);
 }
 
-const titles = ["", "Select Quantity", "Verify Discord Server", "Fulfillment & Review", "Awaiting LTC Payment", "Mempool Radar (0/2)", "Order Confirmed (1/2)"];
-function go(n) { document.querySelectorAll("#ovC .step").forEach(s => s.classList.remove("on")); $("s" + n).classList.add("on"); $("ct").textContent = titles[n]; document.querySelectorAll("#ovC .dots i").forEach((d, i) => d.classList.toggle("on", i < n)); if (n === 3) summary(); $("ovC").querySelector(".sheet").scrollTop = 0; }
+function updateQty() {
+  cQty = parseInt($("co-slider").value);
+  cTotal = (cQty / 2) * PRICES[cPlan];
+  $("co-plan-name").textContent = NAMES[cPlan];
+  $("co-qty").textContent = cQty;
+  $("co-price").textContent = "$" + cTotal.toFixed(2);
+}
 
-function setQ(v) { $("sl").value = v; upd(); }
-function upd() { const s = $("sl"); qty = +s.value; const raw = (qty / 2) * PRICE[plan].p; total = +(raw * (1 - discountRate)).toFixed(2); $("qv").textContent = qty; $("pn").textContent = PRICE[plan].n; $("tp").textContent = "$" + total.toFixed(2); $("lv").textContent = qty >= 14 ? "Unlocks Level 3 Perks" : qty >= 7 ? "Unlocks Level 2 Perks" : "Unlocks Level 1 Perks"; s.style.setProperty("--p", ((qty - 2) / 28 * 100) + "%"); }
-$("sl").addEventListener("input", upd);
-function setMethod(m) { selectedMethod = m; $("mc-auto").classList.toggle("active", m === "auto"); $("mc-man").classList.toggle("active", m === "manual"); }
+function setMethod(m) {
+  cMethod = m;
+  $("meth-auto").style.borderColor = m === "auto" ? "var(--accent)" : "var(--border)";
+  $("meth-man").style.borderColor = m === "manual" ? "var(--accent)" : "var(--border)";
+}
 
-async function applyPromo() { const code = $("promo-in").value.trim(); if (!code) return; try { const r = await fetch(`${API_URL}/api/validate-promo`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ code }) }); const d = await r.json(); if (d.valid) { activePromo = d.code; discountRate = d.discount; upd(); summary(); $("promo-msg").style.color = "var(--ok)"; $("promo-msg").textContent = "✓ Applied: " + d.desc; } else { $("promo-msg").style.color = "var(--bad)"; $("promo-msg").textContent = d.error || "Invalid promo code."; } } catch (e) { $("promo-msg").style.color = "var(--bad)"; $("promo-msg").textContent = "Could not verify promo code."; } }
-
-/* ==========================================
-   DISCORD LOOKUP
-   ========================================== */
-async function fetchServer(code) { try { const r = await fetch("https://discord.com/api/v10/invites/" + encodeURIComponent(code) + "?with_counts=true"); if (r.status === 404) return { error: "Invite invalid or expired." }; if (!r.ok) throw 0; const d = await r.json(), g = d.guild || {}, x = s => s && s.startsWith("a_") ? "gif" : "png"; return { id: g.id, name: g.name, members: d.approximate_member_count || 0, online: d.approximate_presence_count || 0, hue: (+String(g.id).slice(-3)) % 360, logo: g.icon ? `https://cdn.discordapp.com/icons/${g.id}/${g.icon}.${x(g.icon)}?size=128` : null, banner: g.banner ? `https://cdn.discordapp.com/banners/${g.id}/${g.banner}.${x(g.banner)}?size=600` : null }; } catch (e) { return { error: "Couldn't reach Discord API." }; } }
-async function lookup() { const v = $("inv").value.trim().replace(/^https?:\/\//, ""); const m = v.match(/^(?:www\.)?(?:discord\.gg|discord(?:app)?\.com\/invite)\/([\w-]{2,32})$/i) || v.match(/^([\w-]{2,32})$/); if (!m) { $("er").textContent = "Enter a valid invite link."; return; } $("er").textContent = ""; const b = $("lb2"); b.disabled = true; b.textContent = "Querying Discord API..."; srv = await fetchServer(m[1]); b.disabled = false; b.textContent = "Verify & Preview Server"; if (srv.error) { $("er").textContent = srv.error; $("sv").innerHTML = ""; srv = null; return; } const bg = `linear-gradient(135deg,hsl(${srv.hue} 70% 55%),hsl(${(srv.hue+60)%360} 70% 45%))`; $("sv").innerHTML = ` <div class="srv"> <div class="bn" style="background:${srv.banner ? `url(${srv.banner}) center/cover` : bg}"></div> <div class="lg" style="background:${bg}">${srv.logo ? `<img src="${srv.logo}" alt="">` : srv.name[0].toUpperCase()}</div> <div class="nm">${srv.name.replace(/[<>&]/g, "")}</div> <div class="kv"> <div>ID<b>${srv.id}</b></div> <div>Members<b>${srv.members.toLocaleString()}</b></div> <div>Online<b>${srv.online.toLocaleString()}</b></div> </div> </div> <button class="btn" style="width:100%;margin-bottom:10px" onclick="go(3)">Confirm This Server</button>`; }
-function summary() { $("sm").innerHTML = ` <div><span>Plan</span><span>${PRICE[plan].n}</span></div> <div><span>Server</span><span>${srv ? srv.name.replace(/[<>&]/g, "") : "Verified"}</span></div> <div><span>Quantity</span><span>${qty} Boosts</span></div> ${activePromo ? `<div><span>Promo (${activePromo})</span><span style="color:var(--ok)">-${discountRate*100}%</span></div>` : ""} <div><span>Total Due</span><span>$${total.toFixed(2)} USD</span></div>`; }
-function startTimer() { clearInterval(ctd); let s = 1800; const f = () => { $("cd").textContent = "30m Auto-Monitor Window: " + String(Math.floor(s / 60)).padStart(2, "0") + ":" + String(s % 60).padStart(2, "0"); if (s-- <= 0) { clearInterval(ctd); closeAll(); alert("Payment window expired."); } }; f(); ctd = setInterval(f, 1000); }
-
-/* ==========================================
-   CHECKOUT LOGIC
-   ========================================== */
-async function initiateCheckout() { const btn = $("pay"); btn.disabled = true; btn.textContent = "Allocating Unique LTC Fingerprint..."; busy = true; try { const res = await fetch(`${API_URL}/api/checkout`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ plan, qty, serverId: srv.id, serverName: srv.name, method: selectedMethod, promoCode: activePromo }) }); const data = await res.json(); currentOrderId = data.orderId; exact = Number(data.exactLtc).toFixed(8); total = Number(data.usd); $("la").textContent = exact + " LTC"; $("ua").textContent = "≈ $" + total.toFixed(2) + " USD"; $("ad").textContent = ADDR; $("ex").textContent = exact; const q = qrcode(0, "M"); q.addData("litecoin:" + ADDR + "?amount=" + exact); q.make(); $("qr").innerHTML = q.createSvgTag(4, 0); go(4); startTimer(); statusInterval = setInterval(checkStatus, 10000); } catch (e) { alert("Could not reach backend."); btn.disabled = false; btn.textContent = "Generate QR & Start Auto-Monitor"; busy = false; } }
-async function checkStatus() { if (!currentOrderId) return; try { const res = await fetch(`${API_URL}/api/status/${currentOrderId}`); const data = await res.json(); if (data.status === "detected") { if (data.txid) $("det-tx").textContent = data.txid.slice(0, 18) + "..."; if ($("s4").classList.contains("on")) go(5); } else if (data.status === "confirmed") { clearInterval(statusInterval); clearInterval(ctd); busy = false; completeOrder(currentOrderId, data.usd); } else if (data.status === "expired") { clearInterval(statusInterval); clearInterval(ctd); busy = false; alert("Order expired."); closeAll(); } } catch (e) {} }
-async function submitManualTx() { const txid = $("manual-tx").value.trim(); $("tx-err").textContent = ""; if (!/^[0-9a-fA-F]{64}$/.test(txid)) { $("tx-err").textContent = "Enter valid 64-char TXID."; return; } try { const res = await fetch(`${API_URL}/api/verify-txid`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ orderId: currentOrderId, txid }) }); const data = await res.json(); if (data.success) { if (data.status === "detected") { $("det-tx").textContent = txid.slice(0, 18) + "..."; go(5); } else { clearInterval(statusInterval); clearInterval(ctd); busy = false; completeOrder(currentOrderId, total); } } else { $("tx-err").textContent = data.error || "Verification failed."; } } catch (e) { $("tx-err").textContent = "Network error."; } }
-
-function completeOrder(finalOrderId, usdAmount) { const nowStr = new Date().toLocaleString("en-US", { dateStyle: "medium", timeStyle: "medium" }); $("r-oid").textContent = finalOrderId; $("r-prod").textContent = `${PRICE[plan].n} (${qty}x)`; $("r-usd").textContent = "$" + parseFloat(usdAmount).toFixed(2) + " USD"; $("r-srv").textContent = srv ? srv.name : "Verified Community"; $("r-time").textContent = nowStr; $("manual-instructions").style.display = selectedMethod === "manual" ? "block" : "none"; try { const o = JSON.parse(localStorage.getItem("orb") || "[]"); o.unshift({ id: finalOrderId, n: PRICE[plan].n, q: qty, t: parseFloat(usdAmount), s: srv ? srv.name : "Server", m: selectedMethod, d: nowStr }); localStorage.setItem("orb", JSON.stringify(o.slice(0, 25))); } catch (e) {} go(6); }
-
-function downloadReceipt() { const text = [ "==========================================", "       ORION BOOSTS OFFICIAL RECEIPT      ", "==========================================", "Order ID      : " + currentOrderId, "Product       : " + PRICE[plan].n + " x" + qty, "Amount Paid   : $" + total.toFixed(2) + " USD (" + exact + " LTC)", "Target Server : " + (srv ? srv.name : "N/A"), "Delivery Mode : " + selectedMethod.toUpperCase(), selectedMethod === "manual" ? "Secret Key    : Orion-Shop-67SixSeven" : "", "Timestamp     : " + $("r-time").textContent, "Support       : https://discord.gg/tdUkxYJmZP", "==========================================" ].filter(Boolean).join("\n"); const blob = new Blob([text], { type: "text/plain" }); const a = document.createElement("a"); a.href = URL.createObjectURL(blob); a.download = `${currentOrderId}-Receipt.txt`; a.click(); }
-
-/* ==========================================
-   DONATION LOGIC
-   ========================================== */
-const donTitles = ["", "Donation Amount", "Awaiting LTC Payment", "Mempool Radar (0/2)", "Support Confirmed!"];
-function goDon(n) { document.querySelectorAll("#ovD .step").forEach(s => s.classList.remove("on")); $("ds" + n).classList.add("on"); $("dct").textContent = donTitles[n]; document.querySelectorAll("#ovD .d-dots i").forEach((d, i) => d.classList.toggle("on", i < n)); }
-function limitDonation(el) { let v = parseFloat(el.value); if (v < 0.5) el.value = 0.5; if (v > 100) el.value = 100; }
-function setDon(amt) { $("don-in").value = amt.toFixed(2); }
-function startDonTimer() { clearInterval(donCtd); let s = 1800; const f = () => { $("d-cd").textContent = "30m Monitor Window: " + String(Math.floor(s / 60)).padStart(2, "0") + ":" + String(s % 60).padStart(2, "0"); if (s-- <= 0) { clearInterval(donCtd); closeAll(); alert("Window expired."); } }; f(); donCtd = setInterval(f, 1000); }
-
-async function initiateDonation() {
-  const amt = parseFloat($("don-in").value);
-  const dName = $("don-name").value.trim();
-  if (isNaN(amt) || amt < 0.5 || amt > 100) { alert("Enter amount between $0.50 and $100.00"); return; }
-  donTotal = amt; $("don-btn").disabled = true; $("don-btn").textContent = "Generating Link..."; donBusy = true;
+async function lookupServer() {
+  const code = $("co-invite").value.trim().split('/').pop();
+  if(!code) return showToast("Enter a valid invite code.");
+  $("btn-lookup").disabled = true; $("btn-lookup").textContent = "Checking...";
   try {
-    const res = await fetch(`${API_URL}/api/checkout`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ type: "donation", donateAmount: amt, donorName: dName }) });
+    const res = await fetch(`https://discord.com/api/v10/invites/${code}`);
     const data = await res.json();
-    donOrderId = data.orderId; donExact = Number(data.exactLtc).toFixed(8);
-    $("d-la").textContent = donExact + " LTC"; $("d-ua").textContent = "≈ $" + donTotal.toFixed(2) + " USD"; $("d-ad").textContent = ADDR; $("d-ex").textContent = donExact;
-    const q = qrcode(0, "M"); q.addData("litecoin:" + ADDR + "?amount=" + donExact); q.make(); $("d-qr").innerHTML = q.createSvgTag(4, 0);
-    goDon(2); startDonTimer(); donInterval = setInterval(checkDonStatus, 10000);
-  } catch (e) { alert("Server error."); $("don-btn").disabled = false; $("don-btn").textContent = "Donate with Litecoin"; donBusy = false; }
+    if(data.guild) {
+      cSrv = { id: data.guild.id, name: data.guild.name };
+      $("co-s-name").textContent = cSrv.name;
+      $("co-s-id").textContent = cSrv.id;
+      $("co-server-card").style.display = "block";
+      $("co-err").textContent = "";
+      setTimeout(() => goToStep(3), 1500);
+    } else {
+      $("co-err").textContent = "Invalid or expired invite.";
+    }
+  } catch(e) { $("co-err").textContent = "API Error. Try again."; }
+  $("btn-lookup").disabled = false; $("btn-lookup").textContent = "Verify Server";
 }
-async function checkDonStatus() { if (!donOrderId) return; try { const res = await fetch(`${API_URL}/api/status/${donOrderId}`); const data = await res.json(); if (data.status === "detected") { if ($("ds2").classList.contains("on")) goDon(3); } else if (data.status === "confirmed") { clearInterval(donInterval); clearInterval(donCtd); donBusy = false; completeDonation(donOrderId, data.usd); } else if (data.status === "expired") { clearInterval(donInterval); clearInterval(donCtd); donBusy = false; closeAll(); } } catch (e) {} }
-function completeDonation(id, usdAmount) { $("d-r-oid").textContent = id; $("d-r-usd").textContent = "$" + parseFloat(usdAmount).toFixed(2); $("d-r-time").textContent = new Date().toLocaleString("en-US", { dateStyle: "medium", timeStyle: "medium" }); syncTelemetry(); goDon(4); }
 
-/* ==========================================
-   EXPLORER
-   ========================================== */
-function openOrders() { let o = []; try { o = JSON.parse(localStorage.getItem("orb") || "[]"); } catch (e) {} $("ol").innerHTML = o.length ? o.map(x => ` <div class="c" style="margin-bottom:10px;padding:16px"> <div style="display:flex;justify-content:space-between;align-items:center"> <b style="color:var(--acc)">${x.id}</b> <span style="font-size:11px;color:var(--mute)">${x.d}</span> </div> <p style="margin-top:6px;font-size:13px">${x.n} (${x.q}x) for <b>${String(x.s).replace(/[<>&]/g, "")}</b> — $${Number(x.t).toFixed(2)} USD</p> </div>`).join("") : '<p class="mut">No saved orders on this device.</p>'; openOv("ovO"); }
-async function lookupOrderLive() { const id = $("lookup-id").value.trim().toUpperCase(); if (!id) return; $("lookup-res").innerHTML = '<p class="mut">Searching backend...</p>'; try { const r = await fetch(`${API_URL}/api/status/${id}`); if (!r.ok) throw 0; const d = await r.json(); $("lookup-res").innerHTML = ` <div class="c" style="padding:16px;border-color:var(--acc)"> <div style="display:flex;justify-content:space-between"><b>${d.orderId}</b><span style="color:var(--ok);font-weight:700">${d.status.toUpperCase()} (${d.confirmations}/2)</span></div> <p style="font-size:13px;margin-top:6px">${d.productName} ${d.type==='boost'?`(${d.qty}x)`:''} — $${Number(d.usd).toFixed(2)} USD</p> </div>`; } catch (e) { $("lookup-res").innerHTML = '<p style="color:var(--bad);font-size:13px">Order ID not found.</p>'; } }
+async function startCheckout() {
+  if(!cSrv) return showToast("Server not verified.");
+  isBusy = true;
+  $("btn-checkout").disabled = true; $("btn-checkout").textContent = "Generating...";
+  
+  try {
+    const res = await fetch(`${API_URL}/api/checkout`, {
+      method: 'POST', headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({ plan: cPlan, qty: cQty, serverId: cSrv.id, serverName: cSrv.name, method: cMethod, promoCode: $("co-promo").value })
+    });
+    const data = await res.json();
+    activeOrderId = data.orderId;
+    
+    $("co-addr-txt").textContent = ADDR;
+    $("co-exact-txt").textContent = data.exactLtc.toFixed(8);
+    $("co-ltc-amt").textContent = data.exactLtc.toFixed(8) + " LTC";
+    $("co-usd-amt").textContent = "≈ $" + data.usd.toFixed(2) + " USD";
+    
+    const qr = qrcode(0, "M");
+    qr.addData(`litecoin:${ADDR}?amount=${data.exactLtc.toFixed(8)}`);
+    qr.make();
+    $("co-qr").innerHTML = qr.createSvgTag(4, 0);
+    
+    goToStep(4);
+    startTracker(activeOrderId, 'boost');
+    
+  } catch(e) { showToast("Connection error."); }
+  isBusy = false;
+  $("btn-checkout").disabled = false; $("btn-checkout").textContent = "Generate Secure Payment Link";
+}
 
-const blurAmt = $("mblur"), blurWrap = $("main-wrap"); let vel = 0, lastY = window.scrollY, lastT = performance.now();
-function applyBlur(t) { const dt = t - lastT; const y = window.scrollY; const curVel = Math.abs(y - lastY) / (dt || 16); vel += (curVel - vel) * 0.15; const b = Math.min(vel * 10, 20); if (b > 0.8) { blurAmt.setAttribute("stdDeviation", `0,${b.toFixed(1)}`); if(blurWrap.style.filter !== 'url(#scroll-blur)') blurWrap.style.filter = 'url(#scroll-blur)'; } else { blurAmt.setAttribute("stdDeviation", "0,0"); blurWrap.style.filter = 'none'; } lastY = y; lastT = t; requestAnimationFrame(applyBlur); }
-if(!window.matchMedia('(prefers-reduced-motion: reduce)').matches) { requestAnimationFrame(applyBlur); }
+// ==========================================
+// DONATION FLOW
+// ==========================================
+async function startDonation() {
+  const amt = parseFloat($("don-amt").value);
+  if(isNaN(amt) || amt < 0.5) return showToast("Min donation is $0.50");
+  isBusy = true;
+  $("btn-donate").disabled = true; $("btn-donate").textContent = "Processing...";
+  
+  try {
+    const res = await fetch(`${API_URL}/api/checkout`, {
+      method: 'POST', headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({ type: 'donation', donateAmount: amt })
+    });
+    const data = await res.json();
+    activeOrderId = data.orderId;
+    
+    $("don-addr-txt").textContent = ADDR;
+    $("don-exact-txt").textContent = data.exactLtc.toFixed(8);
+    $("don-ltc-amt").textContent = data.exactLtc.toFixed(8) + " LTC";
+    
+    const qr = qrcode(0, "M");
+    qr.addData(`litecoin:${ADDR}?amount=${data.exactLtc.toFixed(8)}`);
+    qr.make();
+    $("don-qr").innerHTML = qr.createSvgTag(4, 0);
+    
+    goToStep(2, 'don-');
+    startTracker(activeOrderId, 'donation');
+  } catch(e) { showToast("Error connecting."); }
+  isBusy = false;
+  $("btn-donate").disabled = false; $("btn-donate").textContent = "Donate with Litecoin";
+}
+
+// ==========================================
+// TRACKER ENGINE
+// ==========================================
+function startTracker(id, type) {
+  let timeLeft = 1800;
+  timerInterval = setInterval(() => {
+    timeLeft--;
+    const m = String(Math.floor(timeLeft / 60)).padStart(2, '0');
+    const s = String(timeLeft % 60).padStart(2, '0');
+    if(type === 'boost') $("co-timer").textContent = `${m}:${s}`;
+    if(timeLeft <= 0) { clearInterval(timerInterval); clearInterval(trackInterval); showToast("Session Expired."); }
+  }, 1000);
+
+  trackInterval = setInterval(async () => {
+    try {
+      const res = await fetch(`${API_URL}/api/status/${id}`);
+      const data = await res.json();
+      
+      if(type === 'boost') {
+        if(data.status === 'detected' && !$("co-s5").classList.contains("active")) goToStep(5);
+        if(data.status === 'confirmed') {
+          clearInterval(trackInterval); clearInterval(timerInterval);
+          $("success-oid").textContent = data.orderId;
+          $("manual-key-box").style.display = data.method === 'manual' ? 'block' : 'none';
+          goToStep(6);
+        }
+      } else {
+        if(data.status === 'confirmed') {
+          clearInterval(trackInterval); clearInterval(timerInterval);
+          goToStep(3, 'don-');
+          syncData();
+        }
+      }
+    } catch(e) {}
+  }, 10000);
+}
+
+async function verifyManualTx() {
+  const tx = $("co-manual-tx").value.trim();
+  if(tx.length !== 64) return showToast("Invalid TXID length.");
+  try {
+    const res = await fetch(`${API_URL}/api/verify-txid`, {
+      method: 'POST', headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({ orderId: activeOrderId, txid: tx })
+    });
+    const data = await res.json();
+    if(data.success) { showToast("Transaction Verified!"); } else { showToast(data.error); }
+  } catch(e) { showToast("Error verifying."); }
+}
+
+async function trackOrder() {
+  const id = $("track-id").value.trim().toUpperCase();
+  if(!id) return;
+  $("track-res").innerHTML = "Searching...";
+  try {
+    const res = await fetch(`${API_URL}/api/status/${id}`);
+    if(res.ok) {
+      const d = await res.json();
+      $("track-res").innerHTML = `
+        <div class="card" style="padding:15px; margin-top:15px; text-align:left;">
+          <b style="color:var(--accent);">${d.orderId}</b>
+          <span style="float:right; color:var(--success); font-weight:bold;">${d.status.toUpperCase()}</span>
+          <p style="margin-top:10px;">${d.type === 'boost' ? d.productName : 'Donation'} - $${d.usd.toFixed(2)}</p>
+          ${d.secretKey ? `<p style="margin-top:10px; font-size:12px; color:var(--text-secondary);">Key: ${d.secretKey}</p>` : ''}
+        </div>
+      `;
+    } else { $("track-res").innerHTML = "<span style='color:var(--error)'>Order not found.</span>"; }
+  } catch(e) { $("track-res").innerHTML = "Network error."; }
+}
 </script>
 </body>
 </html>
